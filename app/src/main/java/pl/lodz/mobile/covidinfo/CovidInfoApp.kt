@@ -1,6 +1,7 @@
 package pl.lodz.mobile.covidinfo
 
 import android.app.Application
+import android.content.Context
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -68,12 +69,19 @@ private val retrofitModule = module {
     single<OkHttpClient>(named<CovidPlApi>()) {
         OkHttpClient.Builder()
             .addInterceptor { chain ->
-                val request = chain
-                    .request()
-                    .newBuilder()
-                    .addHeader("Origin", CovidPlApi.siteUrl)
-                    .build()
-                chain.proceed(request)
+                val oldRequest = chain.request()
+                val url = oldRequest.url()
+                        .newBuilder()
+                        .addQueryParameter("apiKey", get<Context>().getString(R.string.covid_pl_api_key))
+                        .build()
+
+                val newRequest = oldRequest
+                        .newBuilder()
+                        .url(url)
+                        .addHeader("Origin", CovidPlApi.siteUrl)
+                        .build()
+
+                chain.proceed(newRequest)
             }.build()
     }
 

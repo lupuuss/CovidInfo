@@ -23,12 +23,12 @@ interface CovidPlApi {
     fun getProvinces(): Single<List<ProvinceSummary>>
 
     @GET("provincesdeths")
-    fun getDailyProvincesDeaths(): List<ProvincesDailyDetails>
+    fun getDailyProvincesDeaths(): Single<List<ProvincesDailyDetails>>
 
     @GET("provincesconfirmed")
-    fun getDailyProvincesCases(): List<ProvincesDailyDetails>
+    fun getDailyProvincesCases(): Single<List<ProvincesDailyDetails>>
 
     @GET("provincesrecovered")
-    fun getDailyProvincesRecovered(): List<ProvincesDailyDetails>
+    fun getDailyProvincesRecovered(): Single<List<ProvincesDailyDetails>>
 
 }
