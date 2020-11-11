@@ -7,4 +7,8 @@ class MainPresenter : BasePresenter<MainContract.View>(), MainContract.Presenter
     override fun goToSettings() {
         view?.navigateToSettings()
     }
+
+    override fun goToCovidInYourArea() {
+        view?.navigateToCovidInYourArea()
+    }
 }

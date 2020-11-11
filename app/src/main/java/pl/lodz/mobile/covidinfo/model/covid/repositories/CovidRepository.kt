@@ -13,7 +13,9 @@ interface CovidRepository {
 
     fun getGlobalSummary(): Single<CovidData>
 
-    fun getCountriesSummaries(): Single<List<CovidData>>
+    fun getCountriesSummaries(): Single<Map<Region, CovidData>>
+
+    fun getCountrySummary(region: Region): Single<CovidData>
 
     fun getCountryRepository(region: Region): LocalCovidRepository
 }

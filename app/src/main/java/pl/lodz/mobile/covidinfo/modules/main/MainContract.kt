@@ -7,9 +7,11 @@ interface MainContract {
 
     interface View : BaseView {
         fun navigateToSettings()
+        fun navigateToCovidInYourArea()
     }
 
     interface Presenter : BasePresenterActions<View> {
         fun goToSettings()
+        fun goToCovidInYourArea()
     }
 }

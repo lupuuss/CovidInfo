@@ -6,7 +6,7 @@ data class CovidData (
     val totalDeaths: Int?,
     val newDeaths: Int?,
     val totalRecovered: Int?,
-    val newRecovered: Int,
+    val newRecovered: Int?,
     val totalActive: Int?,
     val newActive: Int?
 )
