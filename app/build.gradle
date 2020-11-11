@@ -44,6 +44,8 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
     implementation "org.koin:koin-android:$project.ext.koin_version"
     implementation "org.koin:koin-core:$project.ext.koin_version"
 
@@ -53,7 +55,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofi_version"
     implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofi_version"
 
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
