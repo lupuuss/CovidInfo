@@ -11,7 +11,9 @@ interface CovidRepository {
 
     fun getDailyForCountry(region: Region): Single<List<CovidDaily>>
 
-    fun getSummaryForCountry(region: Region): Single<CovidData>
+    fun getGlobalSummary(): Single<CovidData>
+
+    fun getCountriesSummaries(): Single<List<CovidData>>
 
     fun getCountryRepository(region: Region): LocalCovidRepository
 }
