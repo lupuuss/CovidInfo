@@ -12,6 +12,9 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.CovidApi
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.CovidPlApi
+import pl.lodz.mobile.covidinfo.modules.main.MainActivity
+import pl.lodz.mobile.covidinfo.modules.main.MainContract
+import pl.lodz.mobile.covidinfo.modules.main.MainPresenter
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -96,4 +99,9 @@ private val retrofitModule = module {
     }
 }
 
-private val androidModule = module { }
+private val androidModule = module {
+
+    scope<MainActivity> {
+        scoped<MainContract.Presenter> { MainPresenter() }
+    }
+}

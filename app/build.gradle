@@ -33,6 +33,7 @@ android {
 }
 
 project.ext.koin_version= "2.1.6"
+project.ext.retrofi_version = "2.9.0"
 
 dependencies {
 
@@ -46,14 +47,13 @@ dependencies {
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    implementation "org.koin:koin-android-scope:$project.ext.koin_version"
     implementation "org.koin:koin-android:$project.ext.koin_version"
     implementation "org.koin:koin-core:$project.ext.koin_version"
 
-    ext.retrofi_version = "2.9.0"
-
-    implementation "com.squareup.retrofit2:retrofit:$retrofi_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofi_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofi_version"
+    implementation "com.squareup.retrofit2:retrofit:$project.ext.retrofi_version"
+    implementation "com.squareup.retrofit2:converter-gson:$project.ext.retrofi_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$project.ext.retrofi_version"
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
