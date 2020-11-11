@@ -1,9 +1,9 @@
-package pl.lodz.mobile.covidinfo.model.covid.retrofit.local.pl
+package pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl
 
 import io.reactivex.rxjava3.core.Single
-import pl.lodz.mobile.covidinfo.model.covid.retrofit.local.pl.objects.DistrictsData
-import pl.lodz.mobile.covidinfo.model.covid.retrofit.local.pl.objects.ProvinceSummary
-import pl.lodz.mobile.covidinfo.model.covid.retrofit.local.pl.objects.ProvincesDailyDetails
+import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objects.DistrictsData
+import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objects.ProvinceSummary
+import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objects.ProvincesDailyDetails
 import retrofit2.http.GET
 
 /**

@@ -10,8 +10,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import pl.lodz.mobile.covidinfo.model.covid.retrofit.global.Covid19Api
-import pl.lodz.mobile.covidinfo.model.covid.retrofit.local.pl.CovidPlApi
+import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.CovidApi
+import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.CovidPlApi
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -56,14 +56,14 @@ private val retrofitModule = module {
 
     single { OkHttpClient() }
 
-    single<Covid19Api> {
+    single<CovidApi> {
         Retrofit.Builder()
-            .baseUrl(Covid19Api.url)
+            .baseUrl(CovidApi.url)
             .addConverterFactory(get(Converter.Factory::class.java))
             .addCallAdapterFactory(get(CallAdapter.Factory::class.java))
             .client(get(OkHttpClient::class.java))
             .build()
-            .create(Covid19Api::class.java)
+            .create(CovidApi::class.java)
     }
 
     single<OkHttpClient>(named<CovidPlApi>()) {

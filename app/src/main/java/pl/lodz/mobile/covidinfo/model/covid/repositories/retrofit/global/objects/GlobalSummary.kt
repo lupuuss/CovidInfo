@@ -1,4 +1,4 @@
-package pl.lodz.mobile.covidinfo.model.covid.retrofit.global.objects
+package pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.objects
 
 import com.google.gson.annotations.SerializedName
 

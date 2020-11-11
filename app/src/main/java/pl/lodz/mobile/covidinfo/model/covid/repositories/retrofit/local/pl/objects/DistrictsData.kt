@@ -1,4 +1,4 @@
-package pl.lodz.mobile.covidinfo.model.covid.retrofit.local.pl.objects
+package pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objects
 
 data class DistrictsData (
 

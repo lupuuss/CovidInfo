@@ -1,6 +1,4 @@
-package pl.lodz.mobile.covidinfo.model.covid.retrofit.local.pl.objects
-
-import com.google.gson.annotations.SerializedName
+package pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objects
 
 data class ProvincesDailyDetails (
 	// skipped _id
