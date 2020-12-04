@@ -4,8 +4,6 @@ import android.app.Application
 import android.content.Context
 import com.google.gson.Gson
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -14,11 +12,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import pl.lodz.mobile.covidinfo.model.covid.data.CovidDaily
-import pl.lodz.mobile.covidinfo.model.covid.data.CovidData
-import pl.lodz.mobile.covidinfo.model.covid.data.Region
+import pl.lodz.mobile.covidinfo.model.covid.repositories.BasicCovidRepository
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
-import pl.lodz.mobile.covidinfo.model.covid.repositories.LocalCovidRepository
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.CovidApi
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.CovidPlApi
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
@@ -34,8 +29,7 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import timber.log.Timber.DebugTree
-import java.io.IOException
-import java.util.concurrent.TimeUnit
+import java.util.*
 
 
 class CovidInfoApp : Application() {
@@ -66,6 +60,16 @@ private val baseModule = module {
     single { Gson() }
     single(named("frontScheduler")) { AndroidSchedulers.mainThread() }
     single(named("backScheduler")) { Schedulers.computation() }
+    single(named("timeProvider")) { { System.currentTimeMillis() } }
+
+    single<Locale> {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            androidContext().resources.configuration.locales[0]
+        } else {
+            @Suppress("DEPRECATION")
+            androidContext().resources.configuration.locale
+        }
+    }
 }
 
 private val retrofitModule = module {
@@ -117,7 +121,9 @@ private val retrofitModule = module {
 }
 
 private val repositoryModule = module {
-
+    single<CovidRepository> {
+        BasicCovidRepository(get(), get(), emptyMap(), get(named("timeProvider")))
+    }
 }
 
 private val androidModule = module {
@@ -127,10 +133,10 @@ private val androidModule = module {
     }
 
     scope<SummaryFragment> {
-        scoped<SummaryContract.Presenter> {
+        scoped<SummaryContract.Presenter> { (target: SummaryContract.Target) ->
             SummaryPresenter(
                 get(),
-                SummaryContract.Target.Global,
+                target,
                 frontScheduler = get(named("frontScheduler")),
                 backScheduler = get(named("backScheduler"))
             )

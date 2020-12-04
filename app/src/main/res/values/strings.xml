@@ -8,7 +8,7 @@
     <string name="total_recovered">Total recovered</string>
     <string name="total_active">Total active</string>
 
-    <string name="total_stat_plus_new"><![CDATA[%s: <b>%s</b> (<font color="%s">+%s</font>)]]></string>
+    <string name="total_stat_plus_new"><![CDATA[%s: <b>%s</b> (<font color="%s">%s</font>)]]></string>
     <string name="no_data">No data</string>
     <string name="world">World</string>
     <string name="content_loading_failed">Content could not be loaded!</string>

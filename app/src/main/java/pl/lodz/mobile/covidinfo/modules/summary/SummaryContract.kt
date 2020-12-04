@@ -11,10 +11,10 @@ interface SummaryContract {
     }
 
     interface View : BaseView {
-        fun setTotalCases(total: String?, new: String? = null)
-        fun setTotalDeaths(total: String?, new: String? = null)
-        fun setTotalActive(total: String?, new: String? = null)
-        fun setTotalRecovered(total: String?, new: String? = null)
+        fun setCases(total: String?, new: String? = null, isPositive: Boolean)
+        fun setDeaths(total: String?, new: String? = null, isPositive: Boolean)
+        fun setActive(total: String?, new: String? = null, isPositive: Boolean)
+        fun setRecovered(total: String?, new: String? = null, isPositive: Boolean)
 
         var isLoading: Boolean
         var isContentVisible: Boolean

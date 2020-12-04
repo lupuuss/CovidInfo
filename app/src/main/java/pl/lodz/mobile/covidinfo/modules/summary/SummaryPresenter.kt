@@ -5,6 +5,8 @@ import io.reactivex.rxjava3.disposables.Disposable
 import pl.lodz.mobile.covidinfo.base.BasePresenter
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidData
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
+import timber.log.Timber
+import java.text.DecimalFormat
 
 class SummaryPresenter(
     private val covidRepository: CovidRepository,
@@ -63,22 +65,26 @@ class SummaryPresenter(
             return
         }
 
-        view?.setTotalCases(
+        view?.setCases(
             getTotal(data.totalCases, data.newCases),
-            data.newCases?.toString()
+            getNew(data.newCases),
+            isPositive(data.newCases, false)
         )
 
-        view?.setTotalDeaths(
+        view?.setDeaths(
             getTotal(data.totalDeaths, data.newDeaths),
-            data.newDeaths?.toString()
+            getNew(data.newDeaths),
+            isPositive(data.newDeaths, false)
         )
-        view?.setTotalRecovered(
+        view?.setRecovered(
             getTotal(data.totalRecovered, data.newRecovered),
-            data.newRecovered?.toString()
+            getNew(data.newRecovered),
+            isPositive(data.newRecovered, true)
         )
-        view?.setTotalActive(
+        view?.setActive(
             getTotal(data.totalActive, data.newActive),
-            data.newActive?.toString()
+            getNew(data.newActive),
+            isPositive(data.newActive, false)
         )
 
         view?.isLoading = false
@@ -86,17 +92,40 @@ class SummaryPresenter(
         view?.isContentVisible = true
     }
 
+    private fun getNew(newCases: Int?): String? {
+
+        newCases ?: return null
+
+        val newDataFormat = DecimalFormat("+#,##0;-#")
+
+        return newDataFormat.format(newCases)
+    }
+
+    private fun isPositive(newCases: Int?, default: Boolean): Boolean {
+        if (newCases == null) {
+            return default
+        }
+
+        return if (newCases > 0) {
+            default
+        } else {
+            !default
+        }
+    }
+
     private fun getTotal(total: Int?, new: Int?): String? {
+
+        val formatter = DecimalFormat("#,##0")
 
         return when {
             total == null -> {
                 null
             }
             new == null -> {
-                total.toString()
+                formatter.format(total)
             }
             else -> {
-                (total - new).toString()
+                formatter.format(total - new)
             }
         }
     }

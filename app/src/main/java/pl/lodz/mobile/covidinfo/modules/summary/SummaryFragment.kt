@@ -13,12 +13,14 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.fragment_summary.*
 import org.koin.android.scope.currentScope
+import org.koin.core.parameter.parametersOf
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseFragment
+import timber.log.Timber
 
 class SummaryFragment : BaseFragment(), SummaryContract.View {
 
-    private val presenter: SummaryContract.Presenter by currentScope.inject()
+    private lateinit var presenter: SummaryContract.Presenter
 
     var target: SummaryContract.Target = SummaryContract.Target.Global
 
@@ -45,6 +47,7 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let { bundle ->
             bundle.getString(countryNameBundle)?.let {
                 target = SummaryContract.Target.Country(it)
@@ -64,9 +67,11 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        refreshButton.setOnClickListener { presenter.refresh() }
+        presenter = currentScope.get(parameters = { parametersOf(target) })
 
         presenter.init(this)
+
+        refreshButton.setOnClickListener { presenter.refresh() }
     }
 
     override fun onDestroyView() {
@@ -108,21 +113,21 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
         }
     }
 
-    override fun setTotalCases(total: String?, new: String?) {
+    override fun setCases(total: String?, new: String?, isPositive: Boolean) {
 
-        totalCases.text = buildCasesString(R.string.total_cases, total, new, false)
+        totalCases.text = buildCasesString(R.string.total_cases, total, new, isPositive)
     }
 
-    override fun setTotalDeaths(total: String?, new: String?) {
-        totalDeaths.text = buildCasesString(R.string.total_deaths, total, new, false)
+    override fun setDeaths(total: String?, new: String?, isPositive: Boolean) {
+        totalDeaths.text = buildCasesString(R.string.total_deaths, total, new, isPositive)
     }
 
-    override fun setTotalActive(total: String?, new: String?) {
-        totalActive.text = buildCasesString(R.string.total_active, total, new, false)
+    override fun setActive(total: String?, new: String?, isPositive: Boolean) {
+        totalActive.text = buildCasesString(R.string.total_active, total, new, isPositive)
     }
 
-    override fun setTotalRecovered(total: String?, new: String?) {
-        totalRecovered.text = buildCasesString(R.string.total_recovered, total, new, true)
+    override fun setRecovered(total: String?, new: String?, isPositive: Boolean) {
+        totalRecovered.text = buildCasesString(R.string.total_recovered, total, new, isPositive)
     }
 
     companion object {

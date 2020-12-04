@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
+import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 
 class MainActivity : BaseActivity(), MainContract.View {
@@ -35,7 +36,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         mainScrollContainer.addView(worldCard)
 
         supportFragmentManager.beginTransaction()
-            .add(container.id, SummaryFragment.getInstance())
+            .add(container.id, SummaryFragment.getInstance(SummaryContract.Target.Global))
             .commit()
     }
 

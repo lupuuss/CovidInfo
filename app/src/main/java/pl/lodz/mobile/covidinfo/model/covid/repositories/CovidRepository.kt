@@ -17,5 +17,5 @@ interface CovidRepository {
 
     fun getCountrySummary(region: Region): Single<CovidData>
 
-    fun getCountryRepository(region: Region): LocalCovidRepository
+    fun getCountryRepository(id: String): LocalCovidRepository
 }
