@@ -36,7 +36,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         mainScrollContainer.addView(worldCard)
 
         supportFragmentManager.beginTransaction()
-            .add(container.id, SummaryFragment.getInstance(SummaryContract.Target.Global))
+            .add(container.id, SummaryFragment.getInstance(allowPickingTarget = true))
             .commit()
     }
 

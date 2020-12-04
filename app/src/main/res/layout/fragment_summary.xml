@@ -6,22 +6,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/rounded_background_primary_variant"
     tools:context=".modules.summary.SummaryFragment"
-    android:padding="20dp"
+    android:padding="10dp"
     android:minWidth="250dp"
     android:animateLayoutChanges="true">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/pickTargetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_menu_open_24"
+        android:backgroundTint="?colorOnPrimary"
+        android:contentDescription="@string/refresh"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabCustomSize="30dp"
+        app:tint="?colorPrimaryVariant"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/summaryTitle"
+        app:layout_constraintBottom_toBottomOf="@id/summaryTitle"/>
+
     <TextView
         android:id="@+id/summaryTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="?colorOnPrimary"
         android:text="@string/summary"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textAlignment="center"
+        android:scrollHorizontally="false"
         android:textStyle="bold"
         android:textAllCaps="true"
         android:textSize="20sp"
+        android:paddingVertical="10dp"
+        tools:text="Poland summary"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/pickTargetButton"
+        app:layout_constraintEnd_toStartOf="@id/refreshButton"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/refreshButton"
@@ -64,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="?colorOnPrimary"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="0dp"
         android:textAllCaps="true"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"

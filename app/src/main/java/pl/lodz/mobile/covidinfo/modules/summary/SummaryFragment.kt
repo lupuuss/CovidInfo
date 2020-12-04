@@ -1,5 +1,7 @@
 package pl.lodz.mobile.covidinfo.modules.summary
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -8,6 +10,7 @@ import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.annotation.StringRes
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -20,9 +23,19 @@ import timber.log.Timber
 
 class SummaryFragment : BaseFragment(), SummaryContract.View {
 
+    private var allowPickingTarget: Boolean = false
+
+    private var target: SummaryContract.Target = SummaryContract.Target.Global
+
     private lateinit var presenter: SummaryContract.Presenter
 
-    var target: SummaryContract.Target = SummaryContract.Target.Global
+    private var possibleTargets: List<String> = emptyList()
+
+    override var isPickTargetAvailable: Boolean = false
+        set(value) {
+            field = value
+            pickTargetButton.isInvisible = !value
+        }
 
     override var isLoading: Boolean = true
         set(value) {
@@ -52,6 +65,8 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
             bundle.getString(countryNameBundle)?.let {
                 target = SummaryContract.Target.Country(it)
             }
+
+            allowPickingTarget = bundle.getBoolean(allowPickingTargetBundle)
         }
     }
 
@@ -67,11 +82,30 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = currentScope.get(parameters = { parametersOf(target) })
+        presenter = currentScope.get(parameters = { parametersOf(target, allowPickingTarget) })
 
         presenter.init(this)
 
         refreshButton.setOnClickListener { presenter.refresh() }
+        pickTargetButton.setOnClickListener { openPickDialog() }
+    }
+
+    private fun openPickDialog() {
+
+        val arrayAdapter = ArrayAdapter<String>(this.context!!, android.R.layout.select_dialog_singlechoice)
+
+        arrayAdapter.addAll(possibleTargets)
+
+        val dialog = AlertDialog.Builder(this.context)
+            .setTitle(R.string.pick_summary_target)
+            .setAdapter(arrayAdapter) { dialog, position ->
+                presenter.pickTarget(position)
+                dialog.dismiss()
+            }.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        dialog.show()
     }
 
     override fun onDestroyView() {
@@ -130,24 +164,34 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
         totalRecovered.text = buildCasesString(R.string.total_recovered, total, new, isPositive)
     }
 
+    override fun setTargetsList(targets: List<String>) {
+        this.possibleTargets = targets;
+    }
+
+    override fun setSummaryName(name: String) {
+        summaryTitle.text = getString(R.string.summary_name, name)
+    }
+
     companion object {
 
         private const val countryNameBundle = "CountryNameBundle"
+        private const val allowPickingTargetBundle = "AllowPickingTargetBundle"
 
-        fun getInstance(target: SummaryContract.Target = SummaryContract.Target.Global): SummaryFragment {
+        fun getInstance(
+            allowPickingTarget: Boolean = false,
+            target: SummaryContract.Target = SummaryContract.Target.Global
+        ): SummaryFragment {
 
-            return if (target is SummaryContract.Target.Country) {
+            val bundle = Bundle()
 
-                val bundle = Bundle()
-
+            if (target is SummaryContract.Target.Country) {
                 bundle.putString(countryNameBundle, target.id)
+            }
 
-                SummaryFragment().apply {
-                    arguments = bundle
-                }
+            bundle.putBoolean(allowPickingTargetBundle, allowPickingTarget)
 
-            } else {
-                SummaryFragment()
+            return SummaryFragment().apply {
+                arguments = bundle
             }
         }
     }

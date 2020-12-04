@@ -5,9 +5,15 @@ data class Region(
         val name: String,
         val level: Level
 ) {
+
     enum class Level {
+        Global,
         Country,
         AdministrationLevel1,
         AdministrationLevel2
+    }
+
+    companion object {
+        val global = Region("global", "Global", Level.Global)
     }
 }

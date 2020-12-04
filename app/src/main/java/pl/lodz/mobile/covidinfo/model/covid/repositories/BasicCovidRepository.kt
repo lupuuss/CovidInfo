@@ -7,7 +7,6 @@ import pl.lodz.mobile.covidinfo.model.covid.data.Region
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.CovidApi
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.objects.CountryDaily
 import pl.lodz.mobile.covidinfo.utility.CachedSingle
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -23,7 +22,7 @@ class BasicCovidRepository(
         PL("poland")
     }
 
-    private var countriesCached = CachedSingle(timeProvider, 30, TimeUnit.SECONDS) {
+    private var countriesCached = CachedSingle(timeProvider, 12, TimeUnit.HOURS) {
         covidApi
             .getCountries()
             .map { list ->
@@ -32,6 +31,8 @@ class BasicCovidRepository(
                     .toMap()
             }
     }
+
+    private var summariesCached = CachedSingle(timeProvider, 1, TimeUnit.HOURS) { covidApi.getSummary() }
 
     override fun getCountries(): Single<List<Region>> {
 
@@ -96,8 +97,8 @@ class BasicCovidRepository(
     }
 
     override fun getGlobalSummary(): Single<CovidData> {
-        return covidApi
-            .getSummary()
+        return summariesCached
+            .observable
             .map {
                 val global = it.global
 
@@ -114,7 +115,8 @@ class BasicCovidRepository(
 
     override fun getCountriesSummaries(): Single<Map<Region, CovidData>> {
 
-        return covidApi.getSummary()
+        return summariesCached
+            .observable
             .map { it.countrySummaries }
             .map { summaries ->
 
@@ -123,21 +125,20 @@ class BasicCovidRepository(
                 summaries
                     .filter { countries.containsKey(it.slug) }
                     .map {
-                      countries[it.slug]!! to CovidData(
-                        it.totalConfirmed,
-                        it.newConfirmed,
-                        it.totalDeaths,
-                        it.newDeaths,
-                        it.totalRecovered,
-                        it.newRecovered
-                    )
-                }.toMap()
+                        countries[it.slug]!! to CovidData(
+                            it.totalConfirmed,
+                            it.newConfirmed,
+                            it.totalDeaths,
+                            it.newDeaths,
+                            it.totalRecovered,
+                            it.newRecovered
+                        )
+                    }.toMap()
             }
     }
 
     override fun getCountrySummary(region: Region): Single<CovidData> {
-        return getCountriesSummaries()
-            .map { it[region] }
+        return getCountriesSummaries().map { it[region] }
     }
 
     override fun getCountryRepository(id: String): LocalCovidRepository {

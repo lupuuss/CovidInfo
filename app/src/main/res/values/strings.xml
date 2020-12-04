@@ -13,4 +13,6 @@
     <string name="world">World</string>
     <string name="content_loading_failed">Content could not be loaded!</string>
     <string name="refresh">Refresh</string>
+    <string name="pick_summary_target">Pick target to summary</string>
+    <string name="summary_name">Summary %s</string>
 </resources>

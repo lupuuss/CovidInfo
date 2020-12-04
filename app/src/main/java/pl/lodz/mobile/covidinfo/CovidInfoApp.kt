@@ -133,12 +133,13 @@ private val androidModule = module {
     }
 
     scope<SummaryFragment> {
-        scoped<SummaryContract.Presenter> { (target: SummaryContract.Target) ->
+        scoped<SummaryContract.Presenter> { (target: SummaryContract.Target, allowPickingTarget: Boolean) ->
             SummaryPresenter(
                 get(),
                 target,
                 frontScheduler = get(named("frontScheduler")),
-                backScheduler = get(named("backScheduler"))
+                backScheduler = get(named("backScheduler")),
+                allowPickingTarget
             )
         }
     }
