@@ -17,7 +17,7 @@ class CachedSingle<T>(
 
     private var lastRealGet = 0L
     private var cache: T? = null
-    private val cacheSubject: Subject<T> = PublishSubject.create();
+    private val cacheSubject: Subject<T> = PublishSubject.create()
     private val timeoutInMs = TimeUnit.MILLISECONDS.convert(time, unit)
     private var queryInProgress: AtomicBoolean = AtomicBoolean(false)
 
@@ -48,9 +48,9 @@ class CachedSingle<T>(
             queryInProgress.set(false)
         }
 
-        cacheSubject.onNext(cache)
-
         lastRealGet = currentTime
+
+        cacheSubject.onNext(cache)
 
         Timber.d("$this provided new data!")
 

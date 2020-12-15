@@ -6,6 +6,7 @@ import pl.lodz.mobile.covidinfo.base.BasePresenter
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidData
 import pl.lodz.mobile.covidinfo.model.covid.data.Region
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
+import timber.log.Timber
 import java.lang.IllegalStateException
 import java.text.DecimalFormat
 import java.util.*
@@ -48,8 +49,6 @@ class SummaryPresenter(
         view?.isLoading = true
         view?.isContentLoadingError = false
         view?.isContentVisible = false
-
-        covidRepository.getCountries().subscribe()
 
         val single = covidRepository
             .getCountries()
