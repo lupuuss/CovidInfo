@@ -35,6 +35,7 @@ android {
 
 project.ext.koin_version= "2.1.6"
 project.ext.retrofi_version = "2.9.0"
+project.ext.glide_version = "4.11.0"
 
 dependencies {
 
@@ -57,6 +58,11 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava3:$project.ext.retrofi_version"
 
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+
+    implementation "com.github.bumptech.glide:glide:$project.ext.glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$project.ext.glide_version"
+
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

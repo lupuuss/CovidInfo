@@ -13,6 +13,7 @@ interface TwitterContract {
         var isContentLoadingError: Boolean
 
         fun addTweets(tweets: List<TweetDto>)
+        fun clearTweets()
     }
 
     interface Presenter : BasePresenterActions<View> {

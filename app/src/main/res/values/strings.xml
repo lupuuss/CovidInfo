@@ -15,4 +15,6 @@
     <string name="refresh">Refresh</string>
     <string name="pick_summary_target">Pick target to summary</string>
     <string name="summary_name">Summary %s</string>
+    <string name="twitter">Twitter</string>
+    <string name="profile_image">Profile image</string>
 </resources>

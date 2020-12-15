@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class Tweet (
 
-		@SerializedName("id") val id : Int,
-		@SerializedName("text") val text : String,
-		@SerializedName("created_at") val createAt : LocalDateTime
+		@SerializedName("id") val id: String,
+		@SerializedName("text") val text: String,
+		@SerializedName("created_at") val createAt: String
 )

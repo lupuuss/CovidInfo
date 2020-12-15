@@ -23,6 +23,11 @@ import pl.lodz.mobile.covidinfo.modules.summary.SummaryPresenter
 import pl.lodz.mobile.covidinfo.modules.main.MainActivity
 import pl.lodz.mobile.covidinfo.modules.main.MainContract
 import pl.lodz.mobile.covidinfo.modules.main.MainPresenter
+import pl.lodz.mobile.covidinfo.modules.twitter.TwitterContract
+import pl.lodz.mobile.covidinfo.modules.twitter.TwitterFragment
+import pl.lodz.mobile.covidinfo.modules.twitter.TwitterPresenter
+import pl.lodz.mobile.covidinfo.utility.date.AndroidDateFormatter
+import pl.lodz.mobile.covidinfo.utility.date.DateFormatter
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -71,6 +76,8 @@ private val baseModule = module {
             androidContext().resources.configuration.locale
         }
     }
+
+    single<DateFormatter> { AndroidDateFormatter(get(named("timeProvider")), get()) }
 }
 
 private val retrofitModule = module {
@@ -159,6 +166,17 @@ private val androidModule = module {
 
     scope<MainActivity> {
         scoped<MainContract.Presenter> { MainPresenter() }
+    }
+
+    scope<TwitterFragment> {
+        scoped<TwitterContract.Presenter> {
+            TwitterPresenter(
+                get(),
+                frontScheduler = get(named("frontScheduler")),
+                backScheduler = get(named("backScheduler")),
+                get()
+            )
+        }
     }
 
     scope<SummaryFragment> {

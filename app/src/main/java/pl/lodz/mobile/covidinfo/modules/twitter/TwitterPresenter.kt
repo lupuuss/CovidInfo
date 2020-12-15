@@ -4,15 +4,20 @@ import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.Disposable
 import pl.lodz.mobile.covidinfo.base.BasePresenter
 import pl.lodz.mobile.covidinfo.model.twitter.TwitterApi
+import pl.lodz.mobile.covidinfo.model.twitter.TwitterApi.Companion.getNextTweetsByUser
+import pl.lodz.mobile.covidinfo.model.twitter.TwitterApi.Companion.getTweetsByUser
 import pl.lodz.mobile.covidinfo.model.twitter.data.Tweet
 import pl.lodz.mobile.covidinfo.model.twitter.data.TweetsData
 import pl.lodz.mobile.covidinfo.model.twitter.data.User
+import pl.lodz.mobile.covidinfo.model.twitter.data.UserResponse
 import pl.lodz.mobile.covidinfo.modules.twitter.dto.TweetDto
+import pl.lodz.mobile.covidinfo.utility.date.DateFormatter
 
 class TwitterPresenter(
         private val api: TwitterApi,
         private val frontScheduler: Scheduler,
         private val backScheduler: Scheduler,
+        private val dateFormatter: DateFormatter
         ) : BasePresenter<TwitterContract.View>(), TwitterContract.Presenter {
 
     private val userToDisplay = "MZ_GOV_PL"
@@ -21,14 +26,27 @@ class TwitterPresenter(
 
     private var nextToken: String? = null
 
+    override fun init(view: TwitterContract.View) {
+        super.init(view)
+
+        loadMoreTweets()
+    }
+
     override fun refresh() {
+
+        view?.clearTweets()
+
+        view?.isLoading = true
+        view?.isContentLoadingError = false
+        view?.isContentVisible = false
+
         nextToken = null
         disposables.forEach(Disposable::dispose)
 
         val disposable = api.getUserByUserName(userToDisplay)
                 .doOnSuccess(::handleUser)
                 .flatMap {
-                    api.getTweetsForUser(it.userName)
+                    api.getTweetsByUser(userToDisplay)
                 }
                 .subscribeOn(backScheduler)
                 .observeOn(frontScheduler)
@@ -37,8 +55,8 @@ class TwitterPresenter(
         disposables.add(disposable)
     }
 
-    private fun handleUser(user: User?) {
-        this.user = user
+    private fun handleUser(user: UserResponse?) {
+        this.user = user?.data
     }
 
     private fun handleTwitterResponse(data: TweetsData?, error: Throwable?) {
@@ -52,9 +70,8 @@ class TwitterPresenter(
             return
         }
 
-        val name = user?.let {
-            it.name + "(@${it.userName})"
-        } ?: userToDisplay
+        val name = user?.let { it.name + "(@${it.userName})" }
+            ?: userToDisplay
 
         val link = user?.profileImageUrl ?: ""
 
@@ -62,25 +79,26 @@ class TwitterPresenter(
             it.toTweetDto(name, link)
         }
 
-        view?.addTweets(tweets)
-
         view?.isLoading = false
         view?.isContentLoadingError = false
         view?.isContentVisible = true
+
+        view?.addTweets(tweets)
     }
 
     override fun loadMoreTweets() {
 
         nextToken?.let { nextToken ->
 
-            val disposable = api.getNextTweetsForUser(userToDisplay, nextToken)
+            val disposable = api.getNextTweetsByUser(userToDisplay, nextToken)
                     .subscribeOn(backScheduler)
                     .observeOn(frontScheduler)
                     .subscribe(this::handleTwitterResponse)
 
             disposables.add(disposable)
+        }
 
-        } ?: return
+        if (nextToken != null) return
 
         refresh()
     }
@@ -90,11 +108,12 @@ class TwitterPresenter(
     }
 
     private fun Tweet.toTweetDto(user: String, imageUrl: String): TweetDto {
+
         return TweetDto(
-                user,
-                imageUrl,
-                this.text,
-                this.createAt.toString()
+            user,
+            imageUrl,
+            this.text,
+            dateFormatter.getRelativeDateStringFromIsoDate(this.createAt)
         )
     }
 }

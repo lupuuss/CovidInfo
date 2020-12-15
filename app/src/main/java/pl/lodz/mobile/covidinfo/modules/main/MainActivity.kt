@@ -7,12 +7,14 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
+import pl.lodz.mobile.covidinfo.modules.twitter.TwitterFragment
 
 class MainActivity : BaseActivity(), MainContract.View {
 
@@ -37,6 +39,10 @@ class MainActivity : BaseActivity(), MainContract.View {
 
         supportFragmentManager.beginTransaction()
             .add(container.id, SummaryFragment.getInstance(allowPickingTarget = true))
+            .commit()
+
+        supportFragmentManager.beginTransaction()
+            .add(mainScrollContainer.id, TwitterFragment.newInstance(TwitterFragment.Orientation.Horizontal))
             .commit()
     }
 
