@@ -16,6 +16,7 @@ import pl.lodz.mobile.covidinfo.model.covid.repositories.BasicCovidRepository
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.CovidApi
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.CovidPlApi
+import pl.lodz.mobile.covidinfo.model.twitter.TwitterApi
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryPresenter
@@ -117,6 +118,34 @@ private val retrofitModule = module {
             .client(get(named<CovidPlApi>()))
             .build()
             .create(CovidPlApi::class.java)
+    }
+
+    single<OkHttpClient>(named<TwitterApi>()) {
+        OkHttpClient.Builder()
+                .addInterceptor { chain ->
+                    val oldRequest = chain.request()
+                    val url = oldRequest.url()
+                            .newBuilder()
+                            .build()
+
+                    val newRequest = oldRequest
+                            .newBuilder()
+                            .url(url)
+                            .addHeader("Authorization", get<Context>().getString(R.string.twitter_auth))
+                            .build()
+
+                    chain.proceed(newRequest)
+                }.build()
+    }
+
+    single<TwitterApi> {
+        Retrofit.Builder()
+                .baseUrl(TwitterApi.url)
+                .addConverterFactory(get(Converter.Factory::class.java))
+                .addCallAdapterFactory(get(CallAdapter.Factory::class.java))
+                .client(get(named<TwitterApi>()))
+                .build()
+                .create(TwitterApi::class.java)
     }
 }
 
