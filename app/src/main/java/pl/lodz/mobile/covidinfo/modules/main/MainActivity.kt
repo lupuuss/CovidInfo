@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
+import pl.lodz.mobile.covidinfo.modules.ranking.RankingFragment
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
@@ -38,13 +39,16 @@ class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragme
 
         mainScrollContainer.addView(worldCard)
 
-        val fragment = SummaryFragment.getInstance(
+        val summaryFragment = SummaryFragment.getInstance(
                 target = SummaryContract.Target.Global,
                 allowPickingTarget = false
         )
 
+        val rankingFragment = RankingFragment.newInstance(10, false)
+
         supportFragmentManager.beginTransaction()
-            .add(container.id, fragment)
+            .add(container.id, summaryFragment)
+            .add(container.id, rankingFragment)
             .commit()
 
         supportFragmentManager.beginTransaction()

@@ -12,6 +12,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import pl.lodz.mobile.covidinfo.localization.AndroidResourcesManager
+import pl.lodz.mobile.covidinfo.localization.ResourcesManager
 import pl.lodz.mobile.covidinfo.model.covid.repositories.BasicCovidRepository
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.CovidApi
@@ -23,6 +25,9 @@ import pl.lodz.mobile.covidinfo.modules.summary.SummaryPresenter
 import pl.lodz.mobile.covidinfo.modules.main.MainActivity
 import pl.lodz.mobile.covidinfo.modules.main.MainContract
 import pl.lodz.mobile.covidinfo.modules.main.MainPresenter
+import pl.lodz.mobile.covidinfo.modules.ranking.RankingContract
+import pl.lodz.mobile.covidinfo.modules.ranking.RankingFragment
+import pl.lodz.mobile.covidinfo.modules.ranking.RankingPresenter
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterContract
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterFragment
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterPresenter
@@ -78,6 +83,8 @@ private val baseModule = module {
     }
 
     single<DateFormatter> { AndroidDateFormatter(get(named("timeProvider")), get()) }
+
+    single<ResourcesManager> { AndroidResourcesManager(androidContext()) }
 }
 
 private val retrofitModule = module {
@@ -187,6 +194,18 @@ private val androidModule = module {
                 frontScheduler = get(named("frontScheduler")),
                 backScheduler = get(named("backScheduler")),
                 allowPickingTarget
+            )
+        }
+    }
+
+    scope<RankingFragment> {
+        scoped<RankingContract.Presenter> { (limit: Int) ->
+            RankingPresenter(
+                    get(),
+                    get(),
+                    frontScheduler = get(named("frontScheduler")),
+                    backScheduler = get(named("backScheduler")),
+                    limit
             )
         }
     }

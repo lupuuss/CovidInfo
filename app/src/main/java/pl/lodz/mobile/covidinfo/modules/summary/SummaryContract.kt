@@ -2,6 +2,7 @@ package pl.lodz.mobile.covidinfo.modules.summary
 
 import pl.lodz.mobile.covidinfo.base.BasePresenterActions
 import pl.lodz.mobile.covidinfo.base.BaseView
+import pl.lodz.mobile.covidinfo.base.DynamicContentView
 
 interface SummaryContract {
 
@@ -50,7 +51,8 @@ interface SummaryContract {
         }
     }
 
-    interface View : BaseView {
+    interface View : DynamicContentView {
+
         fun setCases(total: String?, new: String? = null, isPositive: Boolean)
         fun setDeaths(total: String?, new: String? = null, isPositive: Boolean)
         fun setActive(total: String?, new: String? = null, isPositive: Boolean)
@@ -60,9 +62,6 @@ interface SummaryContract {
         fun setSummaryName(name: String)
 
         var isPickTargetAvailable: Boolean
-        var isLoading: Boolean
-        var isContentVisible: Boolean
-        var isContentLoadingError: Boolean
     }
 
     interface Presenter : BasePresenterActions<View> {
