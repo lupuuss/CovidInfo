@@ -22,6 +22,9 @@ class TwitterPresenter(
         ) : BasePresenter<TwitterContract.View>(), TwitterContract.Presenter {
 
     private val userToDisplay = "MZ_GOV_PL"
+
+    private var moreAvailable = true
+
     private val disposables = mutableListOf<Disposable>()
     private var user: User? = null
 
@@ -33,6 +36,10 @@ class TwitterPresenter(
         loadMoreTweets()
     }
 
+    override fun close() {
+        disposables.forEach(Disposable::dispose)
+    }
+
     override fun refresh() {
 
         view?.clearTweets()
@@ -41,7 +48,9 @@ class TwitterPresenter(
         view?.isContentLoadingError = false
         view?.isContentVisible = false
 
+        moreAvailable = true
         nextToken = null
+
         disposables.forEach(Disposable::dispose)
 
         val disposable = api.getUserByUserName(userToDisplay)
@@ -54,6 +63,25 @@ class TwitterPresenter(
                 .subscribe(this::handleTwitterResponse)
 
         disposables.add(disposable)
+    }
+
+    override fun loadMoreTweets() {
+
+        if (!moreAvailable) return
+
+        nextToken?.let { nextToken ->
+
+            val disposable = api.getNextTweetsByUser(userToDisplay, nextToken)
+                    .subscribeOn(backScheduler)
+                    .observeOn(frontScheduler)
+                    .subscribe(this::handleTwitterResponse)
+
+            disposables.add(disposable)
+        }
+
+        if (nextToken != null) return
+
+        refresh()
     }
 
     private fun handleUser(user: UserResponse?) {
@@ -73,6 +101,8 @@ class TwitterPresenter(
 
         nextToken = data.meta.nextToken
 
+        moreAvailable = nextToken != null
+
         val name = user?.let { it.name + "(@${it.userName})" }
             ?: userToDisplay
 
@@ -87,27 +117,6 @@ class TwitterPresenter(
         view?.isContentVisible = true
 
         view?.addTweets(tweets)
-    }
-
-    override fun loadMoreTweets() {
-
-        nextToken?.let { nextToken ->
-
-            val disposable = api.getNextTweetsByUser(userToDisplay, nextToken)
-                    .subscribeOn(backScheduler)
-                    .observeOn(frontScheduler)
-                    .subscribe(this::handleTwitterResponse)
-
-            disposables.add(disposable)
-        }
-
-        if (nextToken != null) return
-
-        refresh()
-    }
-
-    override fun close() {
-        disposables.forEach(Disposable::dispose)
     }
 
     private fun Tweet.toTweetDto(user: String, imageUrl: String): TweetDto {

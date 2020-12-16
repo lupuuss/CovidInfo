@@ -57,8 +57,8 @@ class TwitterFragment : BaseFragment(), TwitterContract.View {
     }
 
     override fun clearTweets() {
-        this.tweets.addAll(tweets)
-        recycler.adapter?.notifyItemRangeRemoved(0, tweets.size)
+        this.tweets.clear()
+        recycler.adapter?.notifyDataSetChanged()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
