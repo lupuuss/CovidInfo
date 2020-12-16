@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_twitter.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
@@ -14,16 +16,19 @@ import pl.lodz.mobile.covidinfo.modules.twitter.dto.TweetDto
 import pl.lodz.mobile.covidinfo.utility.decorations.BottomSpaceItemDecoration
 import pl.lodz.mobile.covidinfo.utility.decorations.LeftRightSpaceItemDecoration
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
-import timber.log.Timber
 
 
 class TwitterFragment : BaseFragment(), TwitterContract.View {
 
-    enum class Orientation(val linearLayoutOrientation: Int) {
-        Vertical(LinearLayoutManager.VERTICAL), Horizontal(LinearLayoutManager.HORIZONTAL)
+    fun interface OnFragmentClick {
+        fun onTwitterFragmentClick(fragment: TwitterFragment)
     }
 
-    private lateinit var orientation: Orientation
+    enum class Mode(val linearLayoutOrientation: Int) {
+        InnerFullscreen(LinearLayoutManager.VERTICAL), Widget(LinearLayoutManager.HORIZONTAL)
+    }
+
+    private lateinit var mode: Mode
 
     private val presenter: TwitterContract.Presenter by currentScope.inject()
 
@@ -46,7 +51,7 @@ class TwitterFragment : BaseFragment(), TwitterContract.View {
         }
 
     override fun addTweets(tweets: List<TweetDto>) {
-        val previousSize = tweets.size
+        val previousSize = this.tweets.size
         this.tweets.addAll(tweets)
         recycler.adapter?.notifyItemRangeInserted(previousSize, tweets.size)
     }
@@ -60,7 +65,7 @@ class TwitterFragment : BaseFragment(), TwitterContract.View {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            orientation = Orientation.valueOf(it.getString(orientationBundle)!!)
+            mode = Mode.valueOf(it.getString(orientationBundle)!!)
         }
     }
 
@@ -71,24 +76,48 @@ class TwitterFragment : BaseFragment(), TwitterContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val decoration: RecyclerView.ItemDecoration
 
-        recycler.adapter = TweetsRecyclerAdapter(tweets, orientation)
-        recycler.isNestedScrollingEnabled = orientation == Orientation.Horizontal
-        recycler.layoutManager =
-            LinearLayoutManager(this.context, orientation.linearLayoutOrientation, false)
+        when (mode) {
+            Mode.InnerFullscreen -> {
+                getView()?.background?.alpha = 0
+                refreshButton.isGone = true
+                title.isGone = true
+                decoration = BottomSpaceItemDecoration(dpToPixels(requireContext(), 10))
+            }
+            Mode.Widget -> {
 
-        val decoration = when (orientation) {
-            Orientation.Vertical -> BottomSpaceItemDecoration(dpToPixels(requireContext(), 10))
-            Orientation.Horizontal -> LeftRightSpaceItemDecoration(dpToPixels(requireContext(), 10))
+                decoration = LeftRightSpaceItemDecoration(dpToPixels(requireContext(), 10))
+            }
         }
+
+
+        recycler.adapter = TweetsRecyclerAdapter(tweets, mode)
+        recycler.isNestedScrollingEnabled = mode == Mode.Widget
+        recycler.layoutManager =
+            LinearLayoutManager(this.context, mode.linearLayoutOrientation, false)
 
         recycler.addItemDecoration(decoration)
 
         refreshButton.setOnClickListener {
-            Timber.d("XDDXD")
-            presenter.refresh() }
+            refresh()
+        }
+
+        if (activity is OnFragmentClick) {
+            getView()?.setOnClickListener {
+                (activity as OnFragmentClick).onTwitterFragmentClick(this)
+            }
+        }
 
         presenter.init(this)
+    }
+
+    fun refresh() {
+        presenter.refresh()
+    }
+
+    fun loadMore() {
+        presenter.loadMoreTweets()
     }
 
     override fun onDestroy() {
@@ -101,10 +130,10 @@ class TwitterFragment : BaseFragment(), TwitterContract.View {
 
         private const val orientationBundle = "TwitterFragmentOrientationBundle"
 
-        fun newInstance(orientation: Orientation): TwitterFragment {
+        fun newInstance(mode: Mode): TwitterFragment {
             val args = Bundle()
 
-            args.putString(orientationBundle, orientation.name)
+            args.putString(orientationBundle, mode.name)
 
             return TwitterFragment().apply { arguments = args }
         }

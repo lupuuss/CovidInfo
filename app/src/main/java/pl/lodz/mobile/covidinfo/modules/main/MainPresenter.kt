@@ -11,4 +11,8 @@ class MainPresenter : BasePresenter<MainContract.View>(), MainContract.Presenter
     override fun goToCovidInYourArea() {
         view?.navigateToCovidInYourArea()
     }
+
+    override fun goToTwitter() {
+        view?.navigateToTwitter()
+    }
 }

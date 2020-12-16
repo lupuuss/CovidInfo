@@ -1,5 +1,6 @@
 package pl.lodz.mobile.covidinfo.modules.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -7,16 +8,15 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
-import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
+import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterFragment
 
-class MainActivity : BaseActivity(), MainContract.View {
+class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragmentClick {
 
     private val presenter: MainContract.Presenter by currentScope.inject()
 
@@ -42,7 +42,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             .commit()
 
         supportFragmentManager.beginTransaction()
-            .add(mainScrollContainer.id, TwitterFragment.newInstance(TwitterFragment.Orientation.Horizontal))
+            .add(mainScrollContainer.id, TwitterFragment.newInstance(TwitterFragment.Mode.Widget))
             .commit()
     }
 
@@ -91,10 +91,18 @@ class MainActivity : BaseActivity(), MainContract.View {
         TODO("Not yet implemented")
     }
 
+    override fun navigateToTwitter() {
+        startActivity(Intent(this, TwitterActivity::class.java))
+    }
+
     // onClicks
 
     @Suppress("UNUSED_PARAMETER")
     fun onClickCovidInYourArea(view: View) {
         presenter.goToCovidInYourArea()
+    }
+
+    override fun onTwitterFragmentClick(fragment: TwitterFragment) {
+        presenter.goToTwitter()
     }
 }

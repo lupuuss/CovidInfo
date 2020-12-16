@@ -1,11 +1,9 @@
 package pl.lodz.mobile.covidinfo.modules.twitter
 
-import android.app.ActionBar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -16,22 +14,22 @@ import pl.lodz.mobile.covidinfo.modules.twitter.dto.TweetDto
 
 class TweetsRecyclerAdapter(
     private val tweets: List<TweetDto>,
-    private val orientation: TwitterFragment.Orientation
+    private val mode: TwitterFragment.Mode
 ) : RecyclerView.Adapter<TweetsRecyclerAdapter.TweetViewHolder>() {
 
     class TweetViewHolder(
         val view: View,
-        orientation: TwitterFragment.Orientation
+        mode: TwitterFragment.Mode
     ) : RecyclerView.ViewHolder(view) {
 
         init {
 
-            when (orientation) {
-                TwitterFragment.Orientation.Vertical -> {
+            when (mode) {
+                TwitterFragment.Mode.InnerFullscreen -> {
                     view.layoutParams.width = ConstraintLayout.LayoutParams.MATCH_PARENT
                     view.layoutParams.height = ConstraintLayout.LayoutParams.WRAP_CONTENT
                 }
-                TwitterFragment.Orientation.Horizontal -> {
+                TwitterFragment.Mode.Widget -> {
                     view.layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT
                     view.layoutParams.height = ConstraintLayout.LayoutParams.MATCH_PARENT
                 }
@@ -60,7 +58,7 @@ class TweetsRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TweetViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.tweet_item, parent, false)
 
-        return TweetViewHolder(view, orientation)
+        return TweetViewHolder(view, mode)
     }
 
     override fun onBindViewHolder(holder: TweetViewHolder, position: Int) {

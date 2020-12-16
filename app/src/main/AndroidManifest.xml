@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
+
     <application
         android:name=".CovidInfoApp"
         android:allowBackup="true"
@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidInfo">
-        <activity android:name=".modules.main.MainActivity">
+        <activity android:name=".modules.twitter.TwitterActivity"
+            android:label="@string/twitter"/>
+        <activity android:name=".modules.main.MainActivity" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
