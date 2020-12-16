@@ -14,7 +14,7 @@ interface SummaryContract {
             }
 
             override fun toString(): String {
-                return "Target { Global }"
+                return "global"
             }
         }
 
@@ -46,7 +46,7 @@ interface SummaryContract {
             }
 
             override fun toString(): String {
-                return "Target { id: $id }"
+                return id
             }
         }
     }

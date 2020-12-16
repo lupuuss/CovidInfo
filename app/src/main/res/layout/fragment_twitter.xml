@@ -27,7 +27,7 @@
         android:textColor="?colorOnPrimary"
         android:textAllCaps="true"
         android:textSize="20sp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:text="@string/twitter"
         app:layout_constraintStart_toEndOf="@id/refreshButton"
         app:layout_constraintTop_toTopOf="@id/refreshButton"

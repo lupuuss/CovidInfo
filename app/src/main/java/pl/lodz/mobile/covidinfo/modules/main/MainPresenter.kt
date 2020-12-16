@@ -15,4 +15,8 @@ class MainPresenter : BasePresenter<MainContract.View>(), MainContract.Presenter
     override fun goToTwitter() {
         view?.navigateToTwitter()
     }
+
+    override fun goToWorld() {
+        view?.navigateToWorld()
+    }
 }

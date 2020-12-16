@@ -29,6 +29,9 @@ class SummaryPresenter(
 
     override fun init(view: SummaryContract.View) {
         super.init(view)
+
+        view.isPickTargetAvailable = false
+
         refresh()
     }
 

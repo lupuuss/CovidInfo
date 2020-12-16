@@ -17,6 +17,7 @@ import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterFragment
+import pl.lodz.mobile.covidinfo.modules.world.WorldActivity
 
 class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragmentClick {
 
@@ -26,12 +27,12 @@ class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragme
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fillMainContainer()
+        fillMainContainer(savedInstanceState == null)
 
         presenter.init(this)
     }
 
-    private fun fillMainContainer() {
+    private fun fillMainContainer(initFragments: Boolean) {
         val worldCard = getCardWithTitle(R.string.world)
         val container = worldCard.findViewById<LinearLayout>(R.id.container)
 
@@ -39,7 +40,9 @@ class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragme
 
         mainScrollContainer.addView(worldCard)
 
-        val summaryFragment = SummaryFragment.getInstance(
+        worldCard.setOnClickListener { onClickWorldCard() }
+
+        val summaryFragment = SummaryFragment.newInstance(
                 target = SummaryContract.Target.Global,
                 allowPickingTarget = false
         )
@@ -51,9 +54,16 @@ class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragme
             .add(container.id, rankingFragment)
             .commit()
 
-        supportFragmentManager.beginTransaction()
-            .add(mainScrollContainer.id, TwitterFragment.newInstance(TwitterFragment.Mode.Widget))
-            .commit()
+        if (initFragments) {
+
+            supportFragmentManager.beginTransaction()
+                    .add(mainScrollContainer.id, TwitterFragment.newInstance(TwitterFragment.Mode.Widget))
+                    .commit()
+        }
+    }
+
+    private fun onClickWorldCard() {
+        presenter.goToWorld()
     }
 
     private fun getCardWithTitle(@StringRes title: Int): View {
@@ -103,6 +113,10 @@ class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragme
 
     override fun navigateToTwitter() {
         startActivity(Intent(this, TwitterActivity::class.java))
+    }
+
+    override fun navigateToWorld() {
+        startActivity(Intent(this, WorldActivity::class.java))
     }
 
     // onClicks

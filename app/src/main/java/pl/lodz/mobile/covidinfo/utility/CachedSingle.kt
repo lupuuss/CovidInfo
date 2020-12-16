@@ -43,6 +43,7 @@ class CachedSingle<T>(
             cache = provider().blockingGet()
         } catch (e: Exception) {
             Timber.d("$this provider threw an exception: $e")
+            cacheSubject.onError(e)
             throw e
         } finally {
             queryInProgress.set(false)

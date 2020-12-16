@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.google.gson.Gson
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -50,6 +51,10 @@ class CovidInfoApp : Application() {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
+        }
+
+        RxJavaPlugins.setErrorHandler {
+            Timber.d("Unhandled exception! $it")
         }
 
         startKoin {

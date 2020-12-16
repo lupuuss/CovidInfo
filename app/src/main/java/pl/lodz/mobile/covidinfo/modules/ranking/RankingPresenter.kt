@@ -50,8 +50,6 @@ class RankingPresenter(
 
     override fun refresh() {
 
-        view?.clearRanking()
-
         view?.isLoading = true
         view?.isContentLoadingError = false
         view?.isContentVisible = false
@@ -87,6 +85,8 @@ class RankingPresenter(
         view?.isContentLoadingError = false
 
         val limited = if (limit != 0) data.take(limit) else data
+
+        view?.clearRanking()
 
         limited.forEach {
             view?.addNextPositionToRanking(it.first, formatNumber(it.second))

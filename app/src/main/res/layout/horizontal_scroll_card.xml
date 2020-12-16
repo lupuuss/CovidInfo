@@ -4,17 +4,16 @@
     android:layout_height="300dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
     android:background="@drawable/rounded_background_primary"
     android:padding="10dp">
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:textColor="?colorOnPrimary"
         android:textSize="22sp"
         android:textAllCaps="true"
+        android:layout_marginStart="50dp"
         android:layout_marginBottom="15dp"
         tools:text="@string/world"/>
 

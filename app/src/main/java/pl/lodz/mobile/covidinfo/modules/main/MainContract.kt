@@ -9,11 +9,13 @@ interface MainContract {
         fun navigateToSettings()
         fun navigateToCovidInYourArea()
         fun navigateToTwitter()
+        fun navigateToWorld()
     }
 
     interface Presenter : BasePresenterActions<View> {
         fun goToSettings()
         fun goToCovidInYourArea()
         fun goToTwitter()
+        fun goToWorld()
     }
 }

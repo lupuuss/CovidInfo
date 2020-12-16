@@ -165,7 +165,7 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
     }
 
     override fun setTargetsList(targets: List<String>) {
-        this.possibleTargets = targets;
+        this.possibleTargets = targets
     }
 
     override fun setSummaryName(name: String) {
@@ -177,7 +177,7 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
         private const val countryNameBundle = "CountryNameBundle"
         private const val allowPickingTargetBundle = "AllowPickingTargetBundle"
 
-        fun getInstance(
+        fun newInstance(
             allowPickingTarget: Boolean = false,
             target: SummaryContract.Target = SummaryContract.Target.Global
         ): SummaryFragment {

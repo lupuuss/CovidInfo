@@ -8,9 +8,10 @@ import android.view.View
 import androidx.core.widget.NestedScrollView
 import kotlinx.android.synthetic.main.activity_twitter.*
 import pl.lodz.mobile.covidinfo.R
+import pl.lodz.mobile.covidinfo.base.BaseActivity
 import timber.log.Timber
 
-class TwitterActivity : AppCompatActivity() {
+class TwitterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_twitter)
