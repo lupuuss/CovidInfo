@@ -8,7 +8,12 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.horizontal_scroll_card.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
@@ -18,6 +23,7 @@ import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterFragment
 import pl.lodz.mobile.covidinfo.modules.world.WorldActivity
+import pl.lodz.mobile.covidinfo.utility.dpToPixels
 
 class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragmentClick {
 
@@ -33,26 +39,22 @@ class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragme
     }
 
     private fun fillMainContainer(initFragments: Boolean) {
-        val worldCard = getCardWithTitle(R.string.world)
-        val container = worldCard.findViewById<LinearLayout>(R.id.container)
 
-        container.id = View.generateViewId()
+        val card = getCardWithTitle(R.string.world)
 
-        mainScrollContainer.addView(worldCard)
+        val pager = card.findViewById<ViewPager2>(R.id.pager)
 
-        worldCard.setOnClickListener { onClickWorldCard() }
+        pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20)))
 
-        val summaryFragment = SummaryFragment.newInstance(
-                target = SummaryContract.Target.Global,
-                allowPickingTarget = false
-        )
+        val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
 
-        val rankingFragment = RankingFragment.newInstance(10, false)
+        pager.adapter = WorldFragmentsAdapter(this)
 
-        supportFragmentManager.beginTransaction()
-            .add(container.id, summaryFragment)
-            .add(container.id, rankingFragment)
-            .commit()
+        TabLayoutMediator(indicator, pager) { _, _ -> }.attach()
+
+        card.setOnClickListener { onClickWorldCard() }
+
+        mainScrollContainer.addView(card)
 
         if (initFragments) {
 

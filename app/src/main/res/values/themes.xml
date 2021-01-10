@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimaryTransparent">#80FFFFFF</item>
 
         <item name="colorPositive">#4CAF50</item>
         <item name="colorNegative">#F44336</item>

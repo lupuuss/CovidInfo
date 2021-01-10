@@ -2,4 +2,5 @@
 <resources>
     <attr name="colorPositive" format="color|reference"/>
     <attr name="colorNegative" format="color|reference"/>
+    <attr name="colorOnPrimaryTransparent" format="color|reference"/>
 </resources>
