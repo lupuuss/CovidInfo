@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ListView
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.fragment_ranking.*
 import org.koin.android.scope.currentScope
@@ -28,7 +30,7 @@ class RankingFragment : BaseFragment(), RankingContract.View {
     override var isContentVisible: Boolean = false
         set (value) {
             field = value
-            rankingList.isVisible = value
+            rankingList.isInvisible = !value
         }
 
     override var isContentLoadingError: Boolean = false
@@ -62,7 +64,17 @@ class RankingFragment : BaseFragment(), RankingContract.View {
             savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_ranking, container, false)
+        val view = inflater.inflate(R.layout.fragment_ranking, container, false)
+
+
+        customHeightDp?.let {
+
+            view.findViewById<ListView>(R.id.rankingList)
+                    .layoutParams
+                    .height = dpToPixels(requireContext(), it)
+        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,10 +88,6 @@ class RankingFragment : BaseFragment(), RankingContract.View {
 
         rankingList.isNestedScrollingEnabled = true
         rankingList.isSmoothScrollbarEnabled = true
-
-        customHeightDp?.let {
-            rankingList.layoutParams.height = dpToPixels(requireContext(), it)
-        }
 
         refreshButton.setOnClickListener { presenter.refresh() }
 
