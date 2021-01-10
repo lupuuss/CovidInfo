@@ -12,7 +12,6 @@ import pl.lodz.mobile.covidinfo.model.twitter.data.User
 import pl.lodz.mobile.covidinfo.model.twitter.data.UserResponse
 import pl.lodz.mobile.covidinfo.modules.twitter.dto.TweetDto
 import pl.lodz.mobile.covidinfo.utility.date.DateFormatter
-import timber.log.Timber
 
 class TwitterPresenter(
         private val api: TwitterApi,
@@ -103,7 +102,7 @@ class TwitterPresenter(
 
         moreAvailable = nextToken != null
 
-        val name = user?.let { it.name + "(@${it.userName})" }
+        val name = user?.name
             ?: userToDisplay
 
         val link = user?.profileImageUrl ?: ""
