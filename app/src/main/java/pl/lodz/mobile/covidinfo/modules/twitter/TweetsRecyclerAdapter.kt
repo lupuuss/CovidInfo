@@ -1,11 +1,12 @@
 package pl.lodz.mobile.covidinfo.modules.twitter
 
+import android.text.method.LinkMovementMethod
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -13,29 +14,13 @@ import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.modules.twitter.dto.TweetDto
 
 class TweetsRecyclerAdapter(
-    private val tweets: List<TweetDto>,
-    private val mode: TwitterFragment.Mode
+        private val tweets: List<TweetDto>,
+        private val childrenWrapsContent: Boolean = false
 ) : RecyclerView.Adapter<TweetsRecyclerAdapter.TweetViewHolder>() {
 
     class TweetViewHolder(
-        val view: View,
-        mode: TwitterFragment.Mode
+        val view: View
     ) : RecyclerView.ViewHolder(view) {
-
-        init {
-
-            when (mode) {
-                TwitterFragment.Mode.InnerFullscreen -> {
-                    view.layoutParams.width = ConstraintLayout.LayoutParams.MATCH_PARENT
-                    view.layoutParams.height = ConstraintLayout.LayoutParams.WRAP_CONTENT
-                }
-                TwitterFragment.Mode.Widget -> {
-                    view.layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT
-                    view.layoutParams.height = ConstraintLayout.LayoutParams.MATCH_PARENT
-                }
-            }
-
-        }
 
         private val name: TextView = view.findViewById(R.id.name)
         private val whenText: TextView = view.findViewById(R.id.whenTextView)
@@ -47,6 +32,8 @@ class TweetsRecyclerAdapter(
             whenText.text = dto.createdAt
             content.text = dto.text
 
+            content.movementMethod = LinkMovementMethod.getInstance()
+
             Glide.with(view)
                 .load(dto.userImageLink)
                 .circleCrop()
@@ -56,9 +43,15 @@ class TweetsRecyclerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TweetViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.tweet_item, parent, false)
 
-        return TweetViewHolder(view, mode)
+        val layoutId = if (childrenWrapsContent)
+            R.layout.tweet_item_wrap_content
+        else
+            R.layout.tweet_item_match_parent
+
+        val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+
+        return TweetViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: TweetViewHolder, position: Int) {

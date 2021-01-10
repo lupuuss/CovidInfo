@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -17,15 +16,14 @@ import kotlinx.android.synthetic.main.horizontal_scroll_card.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
-import pl.lodz.mobile.covidinfo.modules.ranking.RankingFragment
-import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
-import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
+import pl.lodz.mobile.covidinfo.modules.twitter.TweetsPreviewFragment
+import pl.lodz.mobile.covidinfo.modules.twitter.TweetsRecyclerAdapter
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
-import pl.lodz.mobile.covidinfo.modules.twitter.TwitterFragment
+import pl.lodz.mobile.covidinfo.modules.twitter.TwitterContract
 import pl.lodz.mobile.covidinfo.modules.world.WorldActivity
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
 
-class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragmentClick {
+class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.OnFragmentClick {
 
     private val presenter: MainContract.Presenter by currentScope.inject()
 
@@ -33,35 +31,39 @@ class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragme
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fillMainContainer(savedInstanceState == null)
+        addWorldModule()
+
+        mainScrollView.isNestedScrollingEnabled = false
+
+        if (savedInstanceState == null) {
+            addTwitterModule()
+        }
 
         presenter.init(this)
     }
 
-    private fun fillMainContainer(initFragments: Boolean) {
+    private fun addWorldModule() {
 
-        val card = getCardWithTitle(R.string.world)
-
-        val pager = card.findViewById<ViewPager2>(R.id.pager)
+        val worldCard = getCardWithTitle(R.string.world)
+        val pager = worldCard.findViewById<ViewPager2>(R.id.pager)
 
         pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20)))
 
-        val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
+        val indicator = worldCard.findViewById<TabLayout>(R.id.tabsIndicator)
 
         pager.adapter = WorldFragmentsAdapter(this)
 
         TabLayoutMediator(indicator, pager) { _, _ -> }.attach()
 
-        card.setOnClickListener { onClickWorldCard() }
+        worldCard.setOnClickListener { onClickWorldCard() }
 
-        mainScrollContainer.addView(card)
+        mainScrollContainer.addView(worldCard)
+    }
 
-        if (initFragments) {
-
-            supportFragmentManager.beginTransaction()
-                    .add(mainScrollContainer.id, TwitterFragment.newInstance(TwitterFragment.Mode.Widget))
-                    .commit()
-        }
+    private fun addTwitterModule() {
+        supportFragmentManager.beginTransaction()
+                .add(mainScrollContainer.id, TweetsPreviewFragment())
+                .commit()
     }
 
     private fun onClickWorldCard() {
@@ -128,7 +130,7 @@ class MainActivity : BaseActivity(), MainContract.View, TwitterFragment.OnFragme
         presenter.goToCovidInYourArea()
     }
 
-    override fun onTwitterFragmentClick(fragment: TwitterFragment) {
+    override fun onTweetsPreviewFragmentClick(fragment: TweetsPreviewFragment) {
         presenter.goToTwitter()
     }
 }

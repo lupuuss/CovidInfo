@@ -12,6 +12,7 @@ import pl.lodz.mobile.covidinfo.model.twitter.data.User
 import pl.lodz.mobile.covidinfo.model.twitter.data.UserResponse
 import pl.lodz.mobile.covidinfo.modules.twitter.dto.TweetDto
 import pl.lodz.mobile.covidinfo.utility.date.DateFormatter
+import timber.log.Timber
 
 class TwitterPresenter(
         private val api: TwitterApi,
@@ -67,6 +68,9 @@ class TwitterPresenter(
     override fun loadMoreTweets() {
 
         if (!moreAvailable) return
+
+        view?.isLoading = true
+        view?.isContentLoadingError = false
 
         nextToken?.let { nextToken ->
 

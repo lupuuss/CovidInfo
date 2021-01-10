@@ -1,6 +1,5 @@
 package pl.lodz.mobile.covidinfo.koin
 
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import pl.lodz.mobile.covidinfo.modules.main.MainActivity
 import pl.lodz.mobile.covidinfo.modules.main.MainContract
@@ -11,8 +10,9 @@ import pl.lodz.mobile.covidinfo.modules.ranking.RankingPresenter
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryPresenter
+import pl.lodz.mobile.covidinfo.modules.twitter.TweetsPreviewFragment
+import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterContract
-import pl.lodz.mobile.covidinfo.modules.twitter.TwitterFragment
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterPresenter
 
 object KoinAndroidModule {
@@ -22,13 +22,24 @@ object KoinAndroidModule {
             scoped<MainContract.Presenter> { MainPresenter() }
         }
 
-        scope<TwitterFragment> {
+        scope<TwitterActivity> {
             scoped<TwitterContract.Presenter> {
                 TwitterPresenter(
                     get(),
                     frontScheduler = KoinBaseModule.getFrontScheduler(this),
                     backScheduler = KoinBaseModule.getBackScheduler(this),
                     get()
+                )
+            }
+        }
+
+        scope<TweetsPreviewFragment> {
+            scoped<TwitterContract.Presenter> {
+                TwitterPresenter(
+                        get(),
+                        frontScheduler = KoinBaseModule.getFrontScheduler(this),
+                        backScheduler = KoinBaseModule.getBackScheduler(this),
+                        get()
                 )
             }
         }
