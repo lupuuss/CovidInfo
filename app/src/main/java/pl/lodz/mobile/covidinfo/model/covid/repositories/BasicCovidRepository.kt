@@ -18,10 +18,6 @@ class BasicCovidRepository(
     timeProvider: () -> Long
 ) : CovidRepository {
 
-    enum class SupportedLocals(val slug: String) {
-        PL("poland")
-    }
-
     private var countriesCached = CachedSingle(timeProvider, 12, TimeUnit.HOURS) {
         covidApi
             .getCountries()
