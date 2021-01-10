@@ -12,14 +12,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.horizontal_scroll_card.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
 import pl.lodz.mobile.covidinfo.modules.twitter.TweetsPreviewFragment
-import pl.lodz.mobile.covidinfo.modules.twitter.TweetsRecyclerAdapter
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
-import pl.lodz.mobile.covidinfo.modules.twitter.TwitterContract
 import pl.lodz.mobile.covidinfo.modules.world.WorldActivity
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
 
@@ -32,6 +29,7 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
         setContentView(R.layout.activity_main)
 
         addWorldModule()
+        addPolandModule()
 
         mainScrollView.isNestedScrollingEnabled = false
 
@@ -44,20 +42,37 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
 
     private fun addWorldModule() {
 
-        val worldCard = getCardWithTitle(R.string.world)
-        val pager = worldCard.findViewById<ViewPager2>(R.id.pager)
+        val card = getCardWithTitle(R.string.world)
+        val pager = card.findViewById<ViewPager2>(R.id.pager)
 
         pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20)))
 
-        val indicator = worldCard.findViewById<TabLayout>(R.id.tabsIndicator)
+        val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
 
         pager.adapter = WorldFragmentsAdapter(this)
 
         TabLayoutMediator(indicator, pager) { _, _ -> }.attach()
 
-        worldCard.setOnClickListener { onClickWorldCard() }
+        card.setOnClickListener { onClickWorldCard() }
 
-        mainScrollContainer.addView(worldCard)
+        mainScrollContainer.addView(card)
+    }
+
+    private fun addPolandModule() {
+        val card = getCardWithTitle(R.string.poland)
+        val pager = card.findViewById<ViewPager2>(R.id.pager)
+
+        pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20)))
+
+        val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
+
+        pager.adapter = PolandFragmentsAdapter(this)
+
+        TabLayoutMediator(indicator, pager) { _, _ -> }.attach()
+
+        card.setOnClickListener { onClickWorldCard() }
+
+        mainScrollContainer.addView(card)
     }
 
     private fun addTwitterModule() {

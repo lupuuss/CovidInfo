@@ -22,7 +22,7 @@ interface CovidPlApi {
     @GET("provinces")
     fun getProvinces(): Single<List<ProvinceSummary>>
 
-    @GET("provincesdeths")
+    @GET("provincesdeaths")
     fun getDailyProvincesDeaths(): Single<List<ProvincesDailyDetails>>
 
     @GET("provincesconfirmed")

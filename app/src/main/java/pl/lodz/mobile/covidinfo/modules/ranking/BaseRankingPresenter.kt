@@ -1,27 +1,24 @@
 package pl.lodz.mobile.covidinfo.modules.ranking
 
 import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import pl.lodz.mobile.covidinfo.base.BasePresenter
 import pl.lodz.mobile.covidinfo.localization.ResourcesManager
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidProperty
-import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
 import java.text.DecimalFormat
 
-class RankingPresenter(
-        private val covidRepository: CovidRepository,
-        private val resourcesManager: ResourcesManager,
-        private val frontScheduler: Scheduler,
-        private val backScheduler: Scheduler,
+abstract class BaseRankingPresenter(
+        protected val resourcesManager: ResourcesManager,
+        protected val frontScheduler: Scheduler,
+        protected val backScheduler: Scheduler,
         private val limit: Int
 ): BasePresenter<RankingContract.View>(), RankingContract.Presenter {
 
-    var disposable: Disposable? = null
+    protected var disposable: Disposable? = null
 
     private lateinit var properties: List<CovidPropertyDto>
 
-    private var currentProperty: CovidProperty = CovidProperty.TotalCases
+    protected var currentProperty: CovidProperty = CovidProperty.TotalCases
 
     private val decimalFormat = DecimalFormat("#,##0")
 
@@ -48,28 +45,7 @@ class RankingPresenter(
         disposable?.dispose()
     }
 
-    override fun refresh() {
-
-        view?.isLoading = true
-        view?.isContentLoadingError = false
-        view?.isContentVisible = false
-
-        disposable = covidRepository.getCountriesSummaries()
-                .flatMap { data ->
-
-                    val ranking = data.entries
-                            .map { resourcesManager.resolveCountryNameBySlug(it.key.id) to currentProperty.extractFrom(it.value) }
-                            .sortedByDescending { it.second }
-                            .mapIndexed { i, item -> "${i + 1}. ${item.first}" to item.second }
-                            .toList()
-
-                    Single.just(ranking)
-                }.subscribeOn(backScheduler)
-                .observeOn(frontScheduler)
-                .subscribe(::handleRankingResponse)
-    }
-
-    private fun handleRankingResponse(data: List<Pair<String, Int?>>?, error: Throwable?) {
+    protected fun handleRankingResponse(data: List<Pair<String, Int?>>?, error: Throwable?) {
 
         view?.isLoading = false
 

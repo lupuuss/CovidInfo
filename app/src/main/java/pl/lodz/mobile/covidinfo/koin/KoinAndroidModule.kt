@@ -1,12 +1,15 @@
 package pl.lodz.mobile.covidinfo.koin
 
 import org.koin.dsl.module
+import pl.lodz.mobile.covidinfo.model.covid.repositories.SupportedLocals
+import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import pl.lodz.mobile.covidinfo.modules.main.MainActivity
 import pl.lodz.mobile.covidinfo.modules.main.MainContract
 import pl.lodz.mobile.covidinfo.modules.main.MainPresenter
 import pl.lodz.mobile.covidinfo.modules.ranking.RankingContract
 import pl.lodz.mobile.covidinfo.modules.ranking.RankingFragment
-import pl.lodz.mobile.covidinfo.modules.ranking.RankingPresenter
+import pl.lodz.mobile.covidinfo.modules.ranking.GlobalRankingPresenter
+import pl.lodz.mobile.covidinfo.modules.ranking.LocalRankingPresenter
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryPresenter
@@ -45,7 +48,7 @@ object KoinAndroidModule {
         }
 
         scope<SummaryFragment> {
-            scoped<SummaryContract.Presenter> { (target: SummaryContract.Target, allowPickingTarget: Boolean) ->
+            scoped<SummaryContract.Presenter> { (target: CovidTarget, allowPickingTarget: Boolean) ->
                 SummaryPresenter(
                     get(),
                     target,
@@ -57,14 +60,24 @@ object KoinAndroidModule {
         }
 
         scope<RankingFragment> {
-            scoped<RankingContract.Presenter> { (limit: Int) ->
-                RankingPresenter(
-                    get(),
-                    get(),
-                    frontScheduler = KoinBaseModule.getFrontScheduler(this),
-                    backScheduler = KoinBaseModule.getBackScheduler(this),
-                    limit
-                )
+            scoped<RankingContract.Presenter> { (limit: Int, target: CovidTarget) ->
+                if (target is CovidTarget.Global) {
+                    GlobalRankingPresenter(
+                        get(),
+                        get(),
+                        frontScheduler = KoinBaseModule.getFrontScheduler(this),
+                        backScheduler = KoinBaseModule.getBackScheduler(this),
+                        limit
+                    )
+                } else {
+                    LocalRankingPresenter(
+                            KoinRepositoryModule.getLocalCovidRepository(this, SupportedLocals.PL),
+                            get(),
+                            frontScheduler = KoinBaseModule.getFrontScheduler(this),
+                            backScheduler = KoinBaseModule.getBackScheduler(this),
+                            limit
+                    )
+                }
             }
         }
     }

@@ -14,6 +14,8 @@ import org.koin.android.scope.currentScope
 import org.koin.core.parameter.parametersOf
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseFragment
+import pl.lodz.mobile.covidinfo.modules.CovidTarget
+import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
 
 class RankingFragment : BaseFragment(), RankingContract.View {
@@ -80,7 +82,13 @@ class RankingFragment : BaseFragment(), RankingContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = currentScope.get(parameters = { parametersOf(limit) })
+        var target: CovidTarget = CovidTarget.Global
+
+        arguments?.getString(targetBundle)?.let {
+            target = CovidTarget.Country(it)
+        }
+
+        presenter = currentScope.get(parameters = { parametersOf(limit, target) })
 
         adapter = RankingArrayAdapter(requireContext(), items)
 
@@ -138,11 +146,13 @@ class RankingFragment : BaseFragment(), RankingContract.View {
         private const val itemsLimitBundle = "ItemsLimitBundle"
         private const val allowSwitchPropertyBundle = "AllowSwitchPropertyBundle"
         private const val customHeightDpBundle = "CustomHeightDpBundle"
+        private const val targetBundle = "TargetBundle"
 
         fun newInstance(
             limit: Int = 0,
             allowSwitchProperty: Boolean = true,
-            customHeightDp: Int? = null
+            customHeightDp: Int? = null,
+            target: CovidTarget = CovidTarget.Global
         ): RankingFragment {
 
             val args = Bundle()
@@ -153,6 +163,11 @@ class RankingFragment : BaseFragment(), RankingContract.View {
             customHeightDp?.let {
                 args.putInt(customHeightDpBundle, it)
             }
+
+            if (target is CovidTarget.Country) {
+                args.putString(targetBundle, target.id)
+            }
+
 
             return RankingFragment().apply {
                 arguments = args

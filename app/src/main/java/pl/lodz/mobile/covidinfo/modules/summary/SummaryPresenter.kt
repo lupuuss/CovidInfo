@@ -6,23 +6,24 @@ import pl.lodz.mobile.covidinfo.base.BasePresenter
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidData
 import pl.lodz.mobile.covidinfo.model.covid.data.Region
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
+import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import timber.log.Timber
 import java.lang.IllegalStateException
 import java.text.DecimalFormat
 import java.util.*
 
 class SummaryPresenter(
-    private val covidRepository: CovidRepository,
-    private var target: SummaryContract.Target,
-    private val frontScheduler: Scheduler,
-    private val backScheduler: Scheduler,
-    private val allowPickingTarget: Boolean
+        private val covidRepository: CovidRepository,
+        private var target: CovidTarget,
+        private val frontScheduler: Scheduler,
+        private val backScheduler: Scheduler,
+        private val allowPickingTarget: Boolean
 ) : BasePresenter<SummaryContract.View>(), SummaryContract.Presenter {
 
     private var disposable: Disposable? = null
 
-    private val possibleTargets = TreeSet<SummaryContract.Target>().apply {
-        add(SummaryContract.Target.Global)
+    private val possibleTargets = TreeSet<CovidTarget>().apply {
+        add(CovidTarget.Global)
     }
 
     private var currentRegion: Region? = null
@@ -62,11 +63,11 @@ class SummaryPresenter(
 
                 when (val target = this.target) {
 
-                    is SummaryContract.Target.Global -> {
+                    is CovidTarget.Global -> {
                         this.currentRegion = Region.global
                         covidRepository.getGlobalSummary()
                     }
-                    is SummaryContract.Target.Country -> {
+                    is CovidTarget.Country -> {
                         val region = countries.find { it.id == target.id } ?: throw IllegalStateException("Region not found!")
 
                         this.currentRegion = region
@@ -82,7 +83,7 @@ class SummaryPresenter(
     }
 
     private fun handleCountries(countries: List<Region>) {
-        possibleTargets.addAll(countries.map { SummaryContract.Target.Country(it.id) })
+        possibleTargets.addAll(countries.map { CovidTarget.Country(it.id) })
         view?.isPickTargetAvailable = allowPickingTarget
 
         if (allowPickingTarget) {

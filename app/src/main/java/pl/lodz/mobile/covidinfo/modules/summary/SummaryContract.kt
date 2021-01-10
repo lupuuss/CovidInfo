@@ -6,51 +6,6 @@ import pl.lodz.mobile.covidinfo.base.DynamicContentView
 
 interface SummaryContract {
 
-    sealed class Target : Comparable<Target> {
-
-        object Global : Target() {
-            override fun compareTo(other: Target): Int {
-                return -1
-            }
-
-            override fun toString(): String {
-                return "global"
-            }
-        }
-
-        class Country(val id: String) : Target() {
-
-            override fun equals(other: Any?): Boolean {
-
-                if (this === other) return true
-                if (javaClass != other?.javaClass) return false
-
-                other as Country
-
-                if (id != other.id) return false
-
-                return true
-            }
-
-            override fun hashCode(): Int {
-                return id.hashCode()
-            }
-
-            override fun compareTo(other: Target): Int {
-
-                return if (other is Country) {
-                    this.id.compareTo(other.id)
-                } else {
-                    1
-                }
-            }
-
-            override fun toString(): String {
-                return id
-            }
-        }
-    }
-
     interface View : DynamicContentView {
 
         fun setCases(total: String?, new: String? = null, isPositive: Boolean)

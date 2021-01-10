@@ -19,13 +19,14 @@ import org.koin.android.scope.currentScope
 import org.koin.core.parameter.parametersOf
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseFragment
+import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import timber.log.Timber
 
 class SummaryFragment : BaseFragment(), SummaryContract.View {
 
     private var allowPickingTarget: Boolean = false
 
-    private var target: SummaryContract.Target = SummaryContract.Target.Global
+    private var target: CovidTarget = CovidTarget.Global
 
     private lateinit var presenter: SummaryContract.Presenter
 
@@ -63,7 +64,7 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
 
         arguments?.let { bundle ->
             bundle.getString(countryNameBundle)?.let {
-                target = SummaryContract.Target.Country(it)
+                target = CovidTarget.Country(it)
             }
 
             allowPickingTarget = bundle.getBoolean(allowPickingTargetBundle)
@@ -179,12 +180,12 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
 
         fun newInstance(
             allowPickingTarget: Boolean = false,
-            target: SummaryContract.Target = SummaryContract.Target.Global
+            target: CovidTarget = CovidTarget.Global
         ): SummaryFragment {
 
             val bundle = Bundle()
 
-            if (target is SummaryContract.Target.Country) {
+            if (target is CovidTarget.Country) {
                 bundle.putString(countryNameBundle, target.id)
             }
 
