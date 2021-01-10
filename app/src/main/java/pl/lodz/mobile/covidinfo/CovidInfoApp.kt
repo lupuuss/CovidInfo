@@ -17,6 +17,8 @@ import pl.lodz.mobile.covidinfo.localization.AndroidResourcesManager
 import pl.lodz.mobile.covidinfo.localization.ResourcesManager
 import pl.lodz.mobile.covidinfo.model.covid.repositories.BasicCovidRepository
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
+import pl.lodz.mobile.covidinfo.model.covid.repositories.LocalCovidRepository
+import pl.lodz.mobile.covidinfo.model.covid.repositories.local.PolandCovidRepository
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.CovidApi
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.CovidPlApi
 import pl.lodz.mobile.covidinfo.model.twitter.TwitterApi
@@ -169,8 +171,22 @@ private val retrofitModule = module {
 }
 
 private val repositoryModule = module {
+
+    single<LocalCovidRepository>(named(BasicCovidRepository.SupportedLocals.PL)) {
+        PolandCovidRepository(
+            get(),
+            get(named("timeProvider")),
+            get()
+        )
+    }
+
     single<CovidRepository> {
-        BasicCovidRepository(get(), get(), emptyMap(), get(named("timeProvider")))
+        BasicCovidRepository(
+            get(),
+            get(),
+            emptyMap(),
+            get(named("timeProvider"))
+        )
     }
 }
 

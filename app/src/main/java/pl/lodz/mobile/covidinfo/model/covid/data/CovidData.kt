@@ -1,14 +1,14 @@
 package pl.lodz.mobile.covidinfo.model.covid.data
 
 data class CovidData (
-    val totalCases: Int?,
-    val newCases: Int?,
-    val totalDeaths: Int?,
-    val newDeaths: Int?,
-    val totalRecovered: Int?,
-    val newRecovered: Int?,
-    val totalActive: Int?,
-    val newActive: Int?
+    val totalCases: Int? = null,
+    val newCases: Int? = null,
+    val totalDeaths: Int? = null,
+    val newDeaths: Int? = null,
+    val totalRecovered: Int? = null,
+    val newRecovered: Int? = null,
+    val totalActive: Int? = null,
+    val newActive: Int? = null
 ) {
     constructor(
         totalCases: Int,

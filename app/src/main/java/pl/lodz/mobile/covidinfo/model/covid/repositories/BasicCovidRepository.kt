@@ -7,7 +7,7 @@ import pl.lodz.mobile.covidinfo.model.covid.data.Region
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.CovidApi
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.objects.CountryDaily
 import pl.lodz.mobile.covidinfo.utility.CachedSingle
-import java.text.SimpleDateFormat
+import pl.lodz.mobile.covidinfo.utility.date.DateUtils.parseAsIsoDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -46,8 +46,7 @@ class BasicCovidRepository(
         previousRecovered: Int
     ): CovidDaily {
 
-        val formatter = SimpleDateFormat("", locale)
-        val date = formatter.parse(this.date) ?: Date()
+        val date = this.date.parseAsIsoDate(locale) ?: Date()
 
         val data = CovidData(
             this.confirmed,
