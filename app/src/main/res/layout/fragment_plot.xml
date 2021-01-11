@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/rounded_background_primary_variant"
+    android:padding="10dp">
+
+
+    <Spinner
+        android:id="@+id/region"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundTint="?colorOnPrimary"
+        android:dropDownWidth="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/ranking_property_spinner_item"/>
+
+    <Spinner
+        android:id="@+id/subregion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundTint="?colorOnPrimary"
+        android:dropDownWidth="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/region"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/ranking_property_spinner_item"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/plot"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/subregion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/propertyButtonsFlow"/>
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/propertyButtonsFlow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:constraint_referenced_ids="deathsButton, casesButton, recoveredButton, activeButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deathsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorOnPrimary"
+        android:src="@drawable/ic_baseline_person_remove_8"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:fabCustomSize="30dp"
+        app:tint="?colorPrimaryVariant"
+        tools:ignore="ContentDescription" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/casesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorOnPrimary"
+        android:src="@drawable/ic_baseline_coronavirus_8"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:fabCustomSize="30dp"
+        app:tint="?colorPrimaryVariant"
+        tools:ignore="ContentDescription" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/recoveredButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorOnPrimary"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:src="@drawable/ic_baseline_person_add_alt_1_8"
+        app:fabCustomSize="30dp"
+        app:tint="?colorPrimaryVariant"
+        tools:ignore="ContentDescription" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/activeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorOnPrimary"
+        android:src="@drawable/ic_baseline_sick_8"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:fabCustomSize="30dp"
+        app:tint="?colorPrimaryVariant"
+        tools:ignore="ContentDescription" />
+</androidx.constraintlayout.widget.ConstraintLayout>

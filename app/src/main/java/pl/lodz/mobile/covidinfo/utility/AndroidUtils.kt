@@ -5,7 +5,7 @@ import android.util.DisplayMetrics
 import kotlin.math.roundToInt
 
 
-fun dpToPixels(context: Context, dp: Int): Int {
+fun dpToPixels(context: Context, dp: Float): Int {
     val displayMetrics: DisplayMetrics = context.resources.displayMetrics
     return (dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
 }

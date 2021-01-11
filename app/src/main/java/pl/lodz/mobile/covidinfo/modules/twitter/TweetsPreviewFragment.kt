@@ -68,7 +68,7 @@ class TweetsPreviewFragment : BaseFragment(), TwitterContract.View {
         }
 
         pager.adapter = TweetsRecyclerAdapter(tweets)
-        pager.setPageTransformer(MarginPageTransformer(dpToPixels(requireContext(), 20)))
+        pager.setPageTransformer(MarginPageTransformer(dpToPixels(requireContext(), 20f)))
 
         refreshButton.setOnClickListener { refresh() }
 

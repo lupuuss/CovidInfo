@@ -2,7 +2,7 @@ package pl.lodz.mobile.covidinfo.modules.ranking
 
 import pl.lodz.mobile.covidinfo.base.BasePresenterActions
 import pl.lodz.mobile.covidinfo.base.DynamicContentView
-import pl.lodz.mobile.covidinfo.model.covid.data.CovidProperty
+import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
 
 interface RankingContract {
 
@@ -17,6 +17,6 @@ interface RankingContract {
     interface Presenter : BasePresenterActions<View> {
 
         fun refresh()
-        fun setProperty(property: CovidPropertyDto)
+        fun pickedProperty(propertyName: CovidPropertyDto.Name)
     }
 }

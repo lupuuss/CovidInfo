@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import pl.lodz.mobile.covidinfo.base.BasePresenter
 import pl.lodz.mobile.covidinfo.localization.ResourcesManager
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidProperty
+import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
 import java.text.DecimalFormat
 
 abstract class BaseRankingPresenter(
@@ -27,12 +28,12 @@ abstract class BaseRankingPresenter(
 
         properties = CovidProperty.values().map {
             CovidPropertyDto(
-                    it.name,
-                    resourcesManager.resolveProperty(it)
+                CovidPropertyDto.Name.valueOf(it.name),
+                resourcesManager.resolveProperty(it),
             )
         }
 
-        val currentPropertyDto = properties.find { it.name == currentProperty.name }
+        val currentPropertyDto = properties.find { it.name.name == currentProperty.name }
 
         view.setPossibleProperties(properties)
         view.setCurrentProperty(currentPropertyDto!!)
@@ -73,8 +74,8 @@ abstract class BaseRankingPresenter(
         return decimalFormat.format(number ?: 0)
     }
 
-    override fun setProperty(property: CovidPropertyDto) {
-        currentProperty = CovidProperty.valueOf(property.name)
+    override fun pickedProperty(propertyName: CovidPropertyDto.Name) {
+        currentProperty = CovidProperty.valueOf(propertyName.name)
         refresh()
     }
 }

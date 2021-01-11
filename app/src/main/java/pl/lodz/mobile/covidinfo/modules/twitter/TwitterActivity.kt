@@ -42,7 +42,7 @@ class TwitterActivity : BaseActivity(), TwitterContract.View {
 
         recycler.adapter = TweetsRecyclerAdapter(tweets, true)
         recycler.layoutManager = LinearLayoutManager(this)
-        recycler.addItemDecoration(BottomSpaceItemDecoration(dpToPixels(this, 10)))
+        recycler.addItemDecoration(BottomSpaceItemDecoration(dpToPixels(this, 10f)))
 
         twitterScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, _, _, _ ->
 

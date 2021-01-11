@@ -14,8 +14,8 @@ import org.koin.android.scope.currentScope
 import org.koin.core.parameter.parametersOf
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseFragment
+import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
-import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
 
 class RankingFragment : BaseFragment(), RankingContract.View {
@@ -73,7 +73,7 @@ class RankingFragment : BaseFragment(), RankingContract.View {
 
             view.findViewById<ListView>(R.id.rankingList)
                     .layoutParams
-                    .height = dpToPixels(requireContext(), it)
+                    .height = dpToPixels(requireContext(), it.toFloat())
         }
 
         return view
@@ -104,7 +104,7 @@ class RankingFragment : BaseFragment(), RankingContract.View {
         propertyChoose.isEnabled = allowSwitchProperty
         propertyChoose.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                presenter.setProperty(properties[position])
+                presenter.pickedProperty(properties[position].name)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}

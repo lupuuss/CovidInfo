@@ -25,4 +25,5 @@
     <string name="ranking">Ranking</string>
     <string name="rankingBy">Ranking by</string>
     <string name="poland">Polska</string>
+    <string name="days_ago">%s days ago</string>
 </resources>

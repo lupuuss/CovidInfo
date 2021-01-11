@@ -45,7 +45,7 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
         val card = getCardWithTitle(R.string.world)
         val pager = card.findViewById<ViewPager2>(R.id.pager)
 
-        pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20)))
+        pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20f)))
 
         val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
 
@@ -62,7 +62,7 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
         val card = getCardWithTitle(R.string.poland)
         val pager = card.findViewById<ViewPager2>(R.id.pager)
 
-        pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20)))
+        pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20f)))
 
         val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
 

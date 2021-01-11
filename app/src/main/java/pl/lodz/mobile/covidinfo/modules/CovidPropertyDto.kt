@@ -1,9 +1,14 @@
-package pl.lodz.mobile.covidinfo.modules.ranking
+package pl.lodz.mobile.covidinfo.modules
 
 class CovidPropertyDto(
-        val name: String,
-        val localizedName: String
+    val name: Name,
+    val localizedName: String
 ) {
+
+    enum class Name {
+        TotalCases, Cases, TotalDeaths, Deaths, TotalRecovered, Recovered, TotalActive, Active
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -18,4 +23,6 @@ class CovidPropertyDto(
     override fun hashCode(): Int {
         return name.hashCode()
     }
+
+
 }
