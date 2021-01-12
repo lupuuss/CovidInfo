@@ -17,13 +17,17 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlinx.android.synthetic.main.fragment_plot.*
+import org.koin.android.scope.currentScope
+import org.koin.core.parameter.parametersOf
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseFragment
 import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
+import pl.lodz.mobile.covidinfo.modules.CovidTarget
+import pl.lodz.mobile.covidinfo.utility.OnlyUserSelectionListener
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
 import timber.log.Timber
+import java.lang.IllegalStateException
 import kotlin.math.roundToInt
-import kotlin.random.Random
 
 
 class PlotFragment : BaseFragment(), PlotContract.View {
@@ -45,6 +49,26 @@ class PlotFragment : BaseFragment(), PlotContract.View {
 
     private var properties: List<CovidPropertyDto> = emptyList()
 
+    private lateinit var presenter: PlotContract.Presenter
+
+    override var isLoading: Boolean = false
+        set(value) {
+            field = value
+            progressBar.isVisible = value
+        }
+
+    override var isContentVisible: Boolean = false
+        set(value) {
+            field = value
+            plot.isVisible = value
+        }
+
+    override var isContentLoadingError: Boolean = false
+        set(value) {
+            field = value
+            errorMessage.isVisible = value
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +79,56 @@ class PlotFragment : BaseFragment(), PlotContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val limit = arguments!!.getInt(limitBundle)
+        val countryId = arguments?.getString(countryBundle)
+        val level1Id = arguments?.getString(level1Bundle)
+
+        val allowTargetSwitch = arguments?.getBoolean(allowTargetSwitchBundle) ?: false
+
+        val target = when {
+            countryId != null && level1Id != null -> {
+                CovidTarget.RegionLevel1(level1Id, CovidTarget.Country(countryId))
+            }
+            countryId != null -> {
+                CovidTarget.Country(countryId)
+            }
+            else -> {
+                throw IllegalStateException("Not supported target for PlotFragment!")
+            }
+        }
+
+        presenter = currentScope.get(parameters = { parametersOf(limit, target) })
+
+        configPlot()
+
+        region.isEnabled = allowTargetSwitch
+        subregion.isEnabled = allowTargetSwitch
+
+        val listenerRegion = OnlyUserSelectionListener {
+            presenter.pickRegion(it)
+        }
+
+        region.setOnTouchListener(listenerRegion)
+        region.onItemSelectedListener = listenerRegion
+
+        val listenerSubRegion = OnlyUserSelectionListener {
+            presenter.pickSubRegion(it)
+        }
+
+        subregion.setOnTouchListener(listenerSubRegion)
+        subregion.onItemSelectedListener = listenerSubRegion
+
+        deathsButton.setOnClickListener { onClickProperty(it.id) }
+        casesButton.setOnClickListener { onClickProperty(it.id) }
+        recoveredButton.setOnClickListener { onClickProperty(it.id) }
+        activeButton.setOnClickListener { onClickProperty(it.id) }
+        refreshButton.setOnClickListener { presenter.refresh() }
+
+        presenter.init(this)
+
+    }
+
+    private fun configPlot() {
         val colorOnPrimary = getAttrColor(requireContext(), R.attr.colorOnPrimary)
 
         plot.axisLeft.textColor = colorOnPrimary
@@ -88,11 +162,11 @@ class PlotFragment : BaseFragment(), PlotContract.View {
                 )
             }
         }
+    }
 
-        deathsButton.setOnClickListener { onClickProperty(it.id) }
-
-        setData("Total cases", List(30) { Random.nextInt(0, 30) })
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.close()
     }
 
     private fun onClickProperty(id: Int) {
@@ -105,10 +179,11 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         }
 
         if (properties.find { it.name == propertyName } != null) {
-            // presenter.pickProperty(propertyName)
+            presenter.pickProperty(propertyName)
         }
     }
 
+    @Suppress("SameParameterValue")
     @ColorInt
     private fun getAttrColor(context: Context, @AttrRes colorOnPrimary: Int): Int {
         val typedValue = TypedValue()
@@ -127,6 +202,8 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         val line = LineData(set).apply(lineDataSettings)
 
         plot.data = line
+
+        plot.invalidate()
     }
 
     override fun setRegions(regions: List<String>) {
@@ -164,5 +241,45 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         propertyButtonsFlow.isVisible = properties.isNotEmpty()
 
         this.properties = properties
+    }
+
+    override fun setCurrentRegion(position: Int) {
+        region.setSelection(position)
+    }
+
+    override fun setCurrentSubRegion(position: Int) {
+        subregion.setSelection(position)
+    }
+
+    companion object {
+
+        private const val limitBundle = "LimitBundle"
+        private const val countryBundle = "CountryBundle"
+        private const val level1Bundle = "Level1Bundle"
+        private const val allowTargetSwitchBundle = "AllowTargetSwitchBundle"
+
+        fun newInstance(
+            limit: Int,
+            defaultTarget: CovidTarget,
+            allowTargetSwitch: Boolean
+        ): PlotFragment {
+
+            val args = Bundle().apply {
+                putInt(limitBundle, limit)
+                putBoolean(allowTargetSwitchBundle, allowTargetSwitch)
+                if (defaultTarget is CovidTarget.Country) {
+                    putString(countryBundle, defaultTarget.id)
+                }
+
+                if (defaultTarget is CovidTarget.RegionLevel1) {
+                    putString(countryBundle, defaultTarget.country.id)
+                    putString(level1Bundle, defaultTarget.id)
+                }
+            }
+
+            val fragment = PlotFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

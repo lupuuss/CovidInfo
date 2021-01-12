@@ -1,7 +1,6 @@
 package pl.lodz.mobile.covidinfo.modules.summary
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -20,7 +19,6 @@ import org.koin.core.parameter.parametersOf
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseFragment
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
-import timber.log.Timber
 
 class SummaryFragment : BaseFragment(), SummaryContract.View {
 

@@ -6,6 +6,9 @@ import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import pl.lodz.mobile.covidinfo.modules.main.MainActivity
 import pl.lodz.mobile.covidinfo.modules.main.MainContract
 import pl.lodz.mobile.covidinfo.modules.main.MainPresenter
+import pl.lodz.mobile.covidinfo.modules.plot.CountryPlotPresenter
+import pl.lodz.mobile.covidinfo.modules.plot.PlotContract
+import pl.lodz.mobile.covidinfo.modules.plot.PlotFragment
 import pl.lodz.mobile.covidinfo.modules.ranking.RankingContract
 import pl.lodz.mobile.covidinfo.modules.ranking.RankingFragment
 import pl.lodz.mobile.covidinfo.modules.ranking.GlobalRankingPresenter
@@ -77,6 +80,24 @@ object KoinAndroidModule {
                             backScheduler = KoinBaseModule.getBackScheduler(this),
                             limit
                     )
+                }
+            }
+        }
+
+        scope<PlotFragment> {
+            scoped<PlotContract.Presenter> { (limit: Int, target: CovidTarget) ->
+
+                if (target is CovidTarget.Country) {
+                    CountryPlotPresenter(
+                        limit,
+                        get(),
+                        KoinBaseModule.getFrontScheduler(this),
+                        KoinBaseModule.getBackScheduler(this),
+                        get(),
+                        target
+                    )
+                } else {
+                    null!!
                 }
             }
         }

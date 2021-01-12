@@ -5,7 +5,7 @@ import java.util.*
 
 object DateUtils {
     fun String.parseAsIsoDate(locale: Locale): Date? {
-        val formatter = SimpleDateFormat("", locale)
+        val formatter = SimpleDateFormat("yyyy-MM-DD'T'hh:mm:ss'Z'", locale)
         return formatter.parse(this)
     }
 }

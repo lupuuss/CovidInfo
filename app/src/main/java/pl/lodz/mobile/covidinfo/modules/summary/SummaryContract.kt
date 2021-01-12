@@ -9,9 +9,13 @@ interface SummaryContract {
     interface View : DynamicContentView {
 
         fun setCases(total: String?, new: String? = null, isPositive: Boolean)
+
         fun setDeaths(total: String?, new: String? = null, isPositive: Boolean)
+
         fun setActive(total: String?, new: String? = null, isPositive: Boolean)
+
         fun setRecovered(total: String?, new: String? = null, isPositive: Boolean)
+
         fun setTargetsList(targets: List<String>)
 
         fun setSummaryName(name: String)

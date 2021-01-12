@@ -7,10 +7,9 @@ import pl.lodz.mobile.covidinfo.model.covid.data.CovidData
 import pl.lodz.mobile.covidinfo.model.covid.data.Region
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
-import timber.log.Timber
-import java.lang.IllegalStateException
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.IllegalStateException
 
 class SummaryPresenter(
         private val covidRepository: CovidRepository,
@@ -73,6 +72,8 @@ class SummaryPresenter(
                         this.currentRegion = region
                         covidRepository.getCountrySummary(region)
                     }
+
+                    else -> throw IllegalStateException("Not supported target!")
                 }
             }
 

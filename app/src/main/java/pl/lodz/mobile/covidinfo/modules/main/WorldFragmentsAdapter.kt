@@ -21,7 +21,11 @@ class WorldFragmentsAdapter(activity: FragmentActivity) : FragmentStateAdapter(a
                 limit = 10,
                 allowSwitchProperty = false,
         )
-        2 -> PlotFragment()
+        2 -> PlotFragment.newInstance(
+            limit = 30,
+            allowTargetSwitch = false,
+            defaultTarget = CovidTarget.Country("germany")
+        )
         else -> throw ArrayIndexOutOfBoundsException(position)
     }
 }

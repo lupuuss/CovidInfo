@@ -7,7 +7,25 @@
     android:background="@drawable/rounded_background_primary_variant"
     android:padding="10dp">
 
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:flow_horizontalStyle="packed"
+        app:flow_horizontalAlign="start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="refreshButton, region"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorOnPrimary"
+        android:src="@drawable/ic_baseline_refresh_24"
+        app:fabCustomSize="30dp"
+        app:tint="?colorPrimaryVariant"
+        tools:ignore="ContentDescription" />
     <Spinner
         android:id="@+id/region"
         android:layout_width="wrap_content"
@@ -16,8 +34,7 @@
         android:dropDownWidth="match_parent"
         android:visibility="gone"
         tools:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingStart="10dp"
         tools:listitem="@layout/ranking_property_spinner_item"/>
 
     <Spinner
@@ -28,9 +45,30 @@
         android:dropDownWidth="match_parent"
         android:visibility="gone"
         tools:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/region"
+        app:layout_constraintTop_toBottomOf="@id/flow"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/ranking_property_spinner_item"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="?colorOnPrimary"
+        app:layout_constraintStart_toStartOf="@id/plot"
+        app:layout_constraintEnd_toEndOf="@id/plot"
+        app:layout_constraintTop_toTopOf="@id/plot"
+        app:layout_constraintBottom_toBottomOf="@id/plot"/>
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:text="@string/content_loading_failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/plot"
+        app:layout_constraintEnd_toEndOf="@id/plot"
+        app:layout_constraintTop_toTopOf="@id/plot"
+        app:layout_constraintBottom_toBottomOf="@id/plot"
+        />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/plot"

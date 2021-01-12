@@ -12,14 +12,14 @@ sealed class CovidTarget : Comparable<CovidTarget> {
         }
     }
 
-    class Country(val id: String) : CovidTarget() {
+    open class IdTarget(val id: String) : CovidTarget() {
 
         override fun equals(other: Any?): Boolean {
 
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
 
-            other as Country
+            other as IdTarget
 
             if (id != other.id) return false
 
@@ -32,7 +32,7 @@ sealed class CovidTarget : Comparable<CovidTarget> {
 
         override fun compareTo(other: CovidTarget): Int {
 
-            return if (other is Country) {
+            return if (other is IdTarget) {
                 this.id.compareTo(other.id)
             } else {
                 1
@@ -43,4 +43,8 @@ sealed class CovidTarget : Comparable<CovidTarget> {
             return id
         }
     }
+
+    class Country(id: String) : IdTarget(id)
+
+    class RegionLevel1(id: String, val country: Country) : IdTarget(id)
 }

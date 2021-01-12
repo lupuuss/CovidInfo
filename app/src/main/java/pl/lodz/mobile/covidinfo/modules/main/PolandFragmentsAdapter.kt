@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import pl.lodz.mobile.covidinfo.modules.ranking.RankingFragment
-import pl.lodz.mobile.covidinfo.modules.summary.SummaryContract
 import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 
 class PolandFragmentsAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
