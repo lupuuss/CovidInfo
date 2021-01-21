@@ -9,6 +9,5 @@
     android:textAllCaps="true"
     android:background="?colorPrimaryVariant"
     android:textAlignment="center"
-    android:textColor="?colorOnPrimary"
     android:padding="5dp"
     />

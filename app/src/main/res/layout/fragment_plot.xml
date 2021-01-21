@@ -63,7 +63,6 @@
         android:paddingStart="10dp"
         android:textAllCaps="true"
         android:textSize="20sp"
-        android:textColor="?colorOnPrimary"
         android:dropDownWidth="match_parent"
         tools:text="Poland"/>
 
@@ -82,7 +81,6 @@
         android:text="@string/content_loading_failed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?colorOnPrimary"
         app:layout_constraintStart_toStartOf="@id/plot"
         app:layout_constraintEnd_toEndOf="@id/plot"
         app:layout_constraintTop_toTopOf="@id/plot"

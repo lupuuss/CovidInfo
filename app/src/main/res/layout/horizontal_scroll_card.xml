@@ -11,7 +11,6 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?colorOnPrimary"
         android:textSize="22sp"
         android:textAllCaps="true"
         android:layout_marginStart="50dp"
