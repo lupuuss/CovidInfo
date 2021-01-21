@@ -3,6 +3,7 @@ package pl.lodz.mobile.covidinfo.modules.summary
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.Disposable
 import pl.lodz.mobile.covidinfo.base.BasePresenter
+import pl.lodz.mobile.covidinfo.localization.ResourcesManager
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidData
 import pl.lodz.mobile.covidinfo.model.covid.data.Region
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
@@ -16,7 +17,8 @@ class SummaryPresenter(
         private var target: CovidTarget,
         private val frontScheduler: Scheduler,
         private val backScheduler: Scheduler,
-        private val allowPickingTarget: Boolean
+        private val allowPickingTarget: Boolean,
+        private val resourcesManager: ResourcesManager
 ) : BasePresenter<SummaryContract.View>(), SummaryContract.Presenter {
 
     private var disposable: Disposable? = null
@@ -88,7 +90,7 @@ class SummaryPresenter(
         view?.isPickTargetAvailable = allowPickingTarget
 
         if (allowPickingTarget) {
-            view?.setTargetsList(possibleTargets.map { it.toString() })
+            view?.setTargetsList(possibleTargets.map { resourcesManager.resolveTarget(it)})
         }
     }
 

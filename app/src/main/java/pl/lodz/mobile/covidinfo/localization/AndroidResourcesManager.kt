@@ -4,6 +4,7 @@ import android.content.Context
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidProperty
 import pl.lodz.mobile.covidinfo.model.covid.data.Region
+import pl.lodz.mobile.covidinfo.modules.CovidTarget
 
 class AndroidResourcesManager(private val context: Context) : ResourcesManager {
 
@@ -22,11 +23,11 @@ class AndroidResourcesManager(private val context: Context) : ResourcesManager {
         return context.getString(id)
     }
 
-    override fun resolveCountryNameBySlug(slug: String): String {
-        return slug
-    }
-
     override fun resolveRegion(region: Region): String {
         return region.name
+    }
+
+    override fun resolveTarget(target: CovidTarget): String {
+        return target.toString()
     }
 }

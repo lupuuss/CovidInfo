@@ -27,7 +27,7 @@ class GlobalRankingPresenter(
                 .flatMap { data ->
 
                     val ranking = data.entries
-                            .map { resourcesManager.resolveCountryNameBySlug(it.key.id) to currentProperty.extractFrom(it.value) }
+                            .map { resourcesManager.resolveRegion(it.key)to currentProperty.extractFrom(it.value) }
                             .sortedByDescending { it.second }
                             .mapIndexed { i, item -> "${i + 1}. ${item.first}" to item.second }
                             .toList()

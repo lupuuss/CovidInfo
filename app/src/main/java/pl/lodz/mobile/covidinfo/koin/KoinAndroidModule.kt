@@ -55,11 +55,12 @@ object KoinAndroidModule {
         scope<SummaryFragment> {
             scoped<SummaryContract.Presenter> { (target: CovidTarget, allowPickingTarget: Boolean) ->
                 SummaryPresenter(
-                    get(),
-                    target,
-                    frontScheduler = KoinBaseModule.getFrontScheduler(this),
-                    backScheduler = KoinBaseModule.getBackScheduler(this),
-                    allowPickingTarget
+                        get(),
+                        target,
+                        frontScheduler = KoinBaseModule.getFrontScheduler(this),
+                        backScheduler = KoinBaseModule.getBackScheduler(this),
+                        allowPickingTarget,
+                        get()
                 )
             }
         }
@@ -68,11 +69,11 @@ object KoinAndroidModule {
             scoped<RankingContract.Presenter> { (limit: Int, target: CovidTarget) ->
                 if (target is CovidTarget.Global) {
                     GlobalRankingPresenter(
-                        get(),
-                        get(),
-                        frontScheduler = KoinBaseModule.getFrontScheduler(this),
-                        backScheduler = KoinBaseModule.getBackScheduler(this),
-                        limit
+                            get(),
+                            get(),
+                            frontScheduler = KoinBaseModule.getFrontScheduler(this),
+                            backScheduler = KoinBaseModule.getBackScheduler(this),
+                            limit
                     )
                 } else {
                     LocalRankingPresenter(

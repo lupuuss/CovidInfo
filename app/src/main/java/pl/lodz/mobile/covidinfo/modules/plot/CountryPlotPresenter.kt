@@ -52,7 +52,7 @@ class CountryPlotPresenter(
         regions = countries
 
         val mapping = regions.map {
-            resourcesManager.resolveCountryNameBySlug(it.id)
+            resourcesManager.resolveRegion(it)
         }
 
         view?.setRegions(mapping)
