@@ -33,7 +33,9 @@
     <style name="Theme.CovidInfo.RefreshableTitle" parent="Theme.CovidInfo">
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingStart">10dp</item>
     </style>
 
     <style name="Theme.CovidInfo.SummaryStat" parent="Theme.CovidInfo">
