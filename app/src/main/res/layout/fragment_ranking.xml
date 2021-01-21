@@ -32,10 +32,8 @@
         android:id="@+id/rankingTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:textSize="18sp"
-        android:textAllCaps="true"
         android:text="@string/rankingBy"
+        style="@style/Theme.CovidInfo.RefreshableTitle"
         tools:ignore="RtlSymmetry" />
 
     <Spinner

@@ -59,11 +59,8 @@
         android:id="@+id/regionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:foregroundTint="?colorOnPrimary"
-        android:paddingStart="10dp"
-        android:textAllCaps="true"
-        android:textSize="20sp"
         android:dropDownWidth="match_parent"
+        style="@style/Theme.CovidInfo.RefreshableTitle"
         tools:text="Poland"/>
 
     <ProgressBar

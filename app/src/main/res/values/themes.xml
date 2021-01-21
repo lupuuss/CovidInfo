@@ -25,7 +25,20 @@
     <style name="Theme.CovidInfo.Dialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="colorAccent">?colorOnPrimary</item>
     </style>
+
     <style name="Theme.CovidInfo.Dialog.PositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="colorAccent">?colorOnPrimary</item>
+    </style>
+
+    <style name="Theme.CovidInfo.RefreshableTitle" parent="Theme.CovidInfo">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="Theme.CovidInfo.SummaryStat" parent="Theme.CovidInfo">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">20dp</item>
     </style>
 </resources>

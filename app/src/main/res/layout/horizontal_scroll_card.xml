@@ -11,10 +11,9 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:textAllCaps="true"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="15dp"
+        style="@style/Theme.CovidInfo.RefreshableTitle"
         tools:text="@string/world"/>
 
     <androidx.viewpager2.widget.ViewPager2
