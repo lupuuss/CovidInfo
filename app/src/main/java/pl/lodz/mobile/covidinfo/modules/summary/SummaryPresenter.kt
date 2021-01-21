@@ -58,6 +58,7 @@ class SummaryPresenter(
             .subscribeOn(backScheduler)
             .observeOn(frontScheduler)
             .doOnSuccess(::handleCountries)
+            .observeOn(backScheduler)
             .flatMap { countries ->
 
                 when (val target = this.target) {
@@ -78,7 +79,6 @@ class SummaryPresenter(
             }
 
         disposable = single
-            .subscribeOn(backScheduler)
             .observeOn(frontScheduler)
             .subscribe(::handleSummaryResponse)
     }
