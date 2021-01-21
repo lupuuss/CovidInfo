@@ -23,13 +23,4 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
             show()
         }
     }
-
-    @ColorInt
-    fun getColorForAttr(@AttrRes attr: Int): Int {
-
-        val typedValue = TypedValue()
-        theme.resolveAttribute(attr, typedValue, true)
-        return typedValue.data
-    }
-
 }

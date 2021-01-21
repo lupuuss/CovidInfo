@@ -9,16 +9,22 @@ import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_summary.*
 import org.koin.android.scope.currentScope
 import org.koin.core.parameter.parametersOf
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseFragment
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
+import pl.lodz.mobile.covidinfo.modules.FilteredDialog
+import pl.lodz.mobile.covidinfo.modules.FilteredStringAdapter
+import pl.lodz.mobile.covidinfo.utility.getColorForAttr
+import java.util.*
 
 class SummaryFragment : BaseFragment(), SummaryContract.View {
 
@@ -90,21 +96,11 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
     }
 
     private fun openPickDialog() {
-
-        val arrayAdapter = ArrayAdapter<String>(this.context!!, android.R.layout.select_dialog_singlechoice)
-
-        arrayAdapter.addAll(possibleTargets)
-
-        val dialog = AlertDialog.Builder(this.context)
-            .setTitle(R.string.pick_summary_target)
-            .setAdapter(arrayAdapter) { dialog, position ->
-                presenter.pickTarget(position)
-                dialog.dismiss()
-            }.setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.dismiss()
-            }
-
-        dialog.show()
+        FilteredDialog.Builder(requireContext())
+                .setOnItemSelect { position, _ ->
+                    presenter.pickTarget(position)
+                }.setValues(possibleTargets)
+                .show()
     }
 
     override fun onDestroyView() {

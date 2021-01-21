@@ -10,8 +10,21 @@
         <item name="colorPositive">#4CAF50</item>
         <item name="colorNegative">#F44336</item>
 
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:editTextColor">?colorOnPrimary</item>
+
+    </style>
+
+    <style name="Theme.CovidInfo.Dialog" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/rounded_background_primary_variant</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Theme.CovidInfo.Dialog.NegativeButton</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/Theme.CovidInfo.Dialog.PositiveButton</item>
+    </style>
+
+    <style name="Theme.CovidInfo.Dialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="colorAccent">?colorOnPrimary</item>
+    </style>
+    <style name="Theme.CovidInfo.Dialog.PositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="colorAccent">?colorOnPrimary</item>
     </style>
 </resources>
