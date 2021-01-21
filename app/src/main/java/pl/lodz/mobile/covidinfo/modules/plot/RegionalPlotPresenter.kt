@@ -25,6 +25,7 @@ class RegionalPlotPresenter(
                 .subscribeOn(backScheduler)
                 .observeOn(frontScheduler)
                 .doOnSuccess(::handleRegions1)
+                .observeOn(backScheduler)
                 .flatMap { regions1 ->
                     val id = currentRegion?.id
                             ?: regions.find { it.id == target.id }?.id
@@ -37,15 +38,14 @@ class RegionalPlotPresenter(
                     if (currentVisibleRegion == null) currentVisibleRegion = currentRegion
                     
                     repository.getRegionsLevel2(region)
-                }.subscribeOn(backScheduler)
-                .subscribeOn(backScheduler)
+                }
                 .observeOn(frontScheduler)
                 .doOnSuccess(::handleRegions2)
+                .observeOn(backScheduler)
                 .flatMap { _ -> repository.getDailyForRegion(currentVisibleRegion!!) }
                 .map { it.takeLast(daysLimit) }
 
         disposable = single
-                .subscribeOn(backScheduler)
                 .observeOn(frontScheduler)
                 .subscribe(::handleDailyReport)
     }

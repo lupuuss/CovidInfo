@@ -23,10 +23,11 @@ class CountryPlotPresenter(
 
         val single = repository
             .getCountries()
-            .map { cts -> cts.sortedBy { it.name } }
             .subscribeOn(backScheduler)
+            .map { cts -> cts.sortedBy { it.name } }
             .observeOn(frontScheduler)
             .doOnSuccess(::handleCountries)
+            .observeOn(backScheduler)
             .flatMap { regions ->
                 val id = currentRegion?.id
                     ?: regions.find { it.id == target.id }?.id
@@ -43,7 +44,6 @@ class CountryPlotPresenter(
             }
 
         disposable = single
-            .subscribeOn(backScheduler)
             .observeOn(frontScheduler)
             .subscribe(::handleDailyReport)
     }
