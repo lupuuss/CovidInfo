@@ -19,4 +19,8 @@ class MainPresenter : BasePresenter<MainContract.View>(), MainContract.Presenter
     override fun goToWorld() {
         view?.navigateToWorld()
     }
+
+    override fun goToPoland() {
+        view?.navigateToPoland()
+    }
 }

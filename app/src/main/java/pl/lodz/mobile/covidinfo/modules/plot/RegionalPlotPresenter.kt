@@ -38,6 +38,7 @@ class RegionalPlotPresenter(
                     
                     repository.getRegionsLevel2(region)
                 }.subscribeOn(backScheduler)
+                .subscribeOn(backScheduler)
                 .observeOn(frontScheduler)
                 .doOnSuccess(::handleRegions2)
                 .flatMap { _ -> repository.getDailyForRegion(currentVisibleRegion!!) }
@@ -84,7 +85,7 @@ class RegionalPlotPresenter(
             return
         }
 
-        currentSubRegion = regions[position]
+        currentSubRegion = subRegions[position]
         currentVisibleRegion = currentSubRegion
         refresh()
     }

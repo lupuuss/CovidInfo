@@ -34,6 +34,7 @@ import kotlin.math.roundToInt
 
 class PlotFragment : BaseFragment(), PlotContract.View {
 
+    private var allowTargetSwitch: Boolean = false
     private var customHeightDp: Int? = null
 
     private val supportedProperties = arrayOf(
@@ -100,7 +101,7 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         val countryId = arguments?.getString(countryBundle)
         val level1Id = arguments?.getString(level1Bundle)
 
-        val allowTargetSwitch = arguments?.getBoolean(allowTargetSwitchBundle) ?: false
+        allowTargetSwitch = arguments?.getBoolean(allowTargetSwitchBundle) ?: false
 
         val target = when {
             countryId != null && level1Id != null -> {
@@ -234,6 +235,9 @@ class PlotFragment : BaseFragment(), PlotContract.View {
     }
 
     override fun setSubRegions(subRegions: List<String>) {
+
+        if (!allowTargetSwitch) return
+
         subregion.isVisible = subRegions.isNotEmpty()
         subregion.adapter = ArrayAdapter(
             requireContext(),

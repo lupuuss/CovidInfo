@@ -10,6 +10,7 @@ interface MainContract {
         fun navigateToCovidInYourArea()
         fun navigateToTwitter()
         fun navigateToWorld()
+        fun navigateToPoland()
     }
 
     interface Presenter : BasePresenterActions<View> {
@@ -17,5 +18,6 @@ interface MainContract {
         fun goToCovidInYourArea()
         fun goToTwitter()
         fun goToWorld()
+        fun goToPoland()
     }
 }

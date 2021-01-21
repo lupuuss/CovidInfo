@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
+import pl.lodz.mobile.covidinfo.modules.poland.PolandActivity
 import pl.lodz.mobile.covidinfo.modules.twitter.TweetsPreviewFragment
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
 import pl.lodz.mobile.covidinfo.modules.world.WorldActivity
@@ -70,9 +71,13 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
 
         TabLayoutMediator(indicator, pager) { _, _ -> }.attach()
 
-        card.setOnClickListener { onClickWorldCard() }
+        card.setOnClickListener { onClickPolandCard() }
 
         mainScrollContainer.addView(card)
+    }
+
+    private fun onClickPolandCard() {
+        presenter.goToPoland()
     }
 
     private fun addTwitterModule() {
@@ -136,6 +141,10 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
 
     override fun navigateToWorld() {
         startActivity(Intent(this, WorldActivity::class.java))
+    }
+
+    override fun navigateToPoland() {
+        startActivity(Intent(this, PolandActivity::class.java))
     }
 
     // onClicks

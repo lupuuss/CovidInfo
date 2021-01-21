@@ -172,7 +172,7 @@ class PolandCovidRepository(
 
     private fun DistrictsDailyData.toCovidDaily(locale: Locale): CovidDaily {
         return CovidDaily(
-            date.parseAsIsoDate(locale) ?: Date(),
+            date.parseDate(locale, "yyyy-MM-DD") ?: Date(),
             CovidData(
                 totalCases = totalCases,
                 newCases = todayCases,

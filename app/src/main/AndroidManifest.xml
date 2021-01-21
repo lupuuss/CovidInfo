@@ -13,9 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidInfo">
+        <activity android:name=".modules.poland.PolandActivity"></activity>
         <activity
             android:name=".modules.world.WorldActivity"
-            android:label="@string/world"/>
+            android:label="@string/world" />
         <activity
             android:name=".modules.twitter.TwitterActivity"
             android:label="@string/twitter" />
