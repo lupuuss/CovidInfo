@@ -13,31 +13,21 @@
         android:id="@+id/pickTargetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_menu_open_24"
-        android:backgroundTint="?colorOnPrimary"
-        android:contentDescription="@string/refresh"
-        android:clickable="true"
-        android:focusable="true"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
+        style="@style/Theme.CovidInfo.PickActionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/summaryTitle"
-        app:layout_constraintBottom_toBottomOf="@id/summaryTitle"/>
+        app:layout_constraintBottom_toBottomOf="@id/summaryTitle"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_refresh_24"
-        android:backgroundTint="?colorOnPrimary"
-        android:contentDescription="@string/refresh"
-        android:clickable="true"
-        android:focusable="true"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
+        style="@style/Theme.CovidInfo.RefreshButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/summaryTitle"
-        app:layout_constraintBottom_toBottomOf="@id/summaryTitle"/>
+        app:layout_constraintBottom_toBottomOf="@id/summaryTitle"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/summaryTitle"

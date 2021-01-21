@@ -18,7 +18,6 @@
     <string name="world">World</string>
     <string name="content_loading_failed">Content could not be loaded!</string>
     <string name="refresh">Refresh</string>
-    <string name="pick_summary_target">Pick target to summary</string>
     <string name="summary_name">Summary %s</string>
     <string name="twitter">Twitter</string>
     <string name="profile_image">Profile image</string>
@@ -26,4 +25,5 @@
     <string name="rankingBy">Ranking by</string>
     <string name="poland">Poland</string>
     <string name="days_ago">%s days ago</string>
+    <string name="pick">Pick…</string>
 </resources>

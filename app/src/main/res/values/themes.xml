@@ -43,4 +43,19 @@
         <item name="android:textSize">16sp</item>
         <item name="android:layout_marginTop">20dp</item>
     </style>
+
+    <style name="Theme.CovidInfo.SmallFab" parent="Theme.CovidInfo">
+        <item name="backgroundTint">?colorOnPrimary</item>
+        <item name="contentDescription">@string/pick</item>
+        <item name="fabCustomSize">30dp</item>
+        <item name="tint">?colorPrimaryVariant</item>
+    </style>
+
+    <style name="Theme.CovidInfo.PickActionButton" parent="Theme.CovidInfo.SmallFab">
+        <item name="android:src">@drawable/ic_baseline_menu_open_24</item>
+    </style>
+
+    <style name="Theme.CovidInfo.RefreshButton" parent="Theme.CovidInfo.SmallFab">
+        <item name="android:src">@drawable/ic_baseline_refresh_24</item>
+    </style>
 </resources>

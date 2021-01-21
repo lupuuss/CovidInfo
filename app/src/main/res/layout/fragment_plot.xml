@@ -21,28 +21,17 @@
         android:id="@+id/pickRegionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_menu_open_24"
-        android:backgroundTint="?colorOnPrimary"
-        android:contentDescription="@string/refresh"
-        android:clickable="true"
-        android:focusable="true"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
+        style="@style/Theme.CovidInfo.PickActionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/regionName"
-        app:layout_constraintBottom_toBottomOf="@id/regionName"/>
+        app:layout_constraintBottom_toBottomOf="@id/regionName"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/pickSubRegionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_menu_open_24"
-        android:backgroundTint="?colorOnPrimary"
-        android:contentDescription="@string/refresh"
-        android:clickable="true"
-        android:focusable="true"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
+        style="@style/Theme.CovidInfo.PickActionButton"
         app:layout_constraintTop_toBottomOf="@id/pickRegionButton"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -50,11 +39,9 @@
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="?colorOnPrimary"
-        android:src="@drawable/ic_baseline_refresh_24"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
+        style="@style/Theme.CovidInfo.RefreshButton"
         tools:ignore="ContentDescription" />
+
     <TextView
         android:id="@+id/regionName"
         android:layout_width="wrap_content"
@@ -108,44 +95,36 @@
         android:id="@+id/deathsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="?colorOnPrimary"
         android:src="@drawable/ic_baseline_person_remove_8"
         android:visibility="gone"
         tools:visibility="visible"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
+        style="@style/Theme.CovidInfo.SmallFab"
         tools:ignore="ContentDescription" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/casesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="?colorOnPrimary"
         android:src="@drawable/ic_baseline_coronavirus_8"
         android:visibility="gone"
         tools:visibility="visible"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
+        style="@style/Theme.CovidInfo.SmallFab"
         tools:ignore="ContentDescription" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/recoveredButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="?colorOnPrimary"
         android:visibility="gone"
         tools:visibility="visible"
         android:src="@drawable/ic_baseline_person_add_alt_1_8"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
+        style="@style/Theme.CovidInfo.SmallFab"
         tools:ignore="ContentDescription" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/activeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="?colorOnPrimary"
         android:src="@drawable/ic_baseline_sick_8"
         android:visibility="gone"
+        style="@style/Theme.CovidInfo.SmallFab"
         tools:visibility="visible"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
         tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

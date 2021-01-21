@@ -22,10 +22,7 @@
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="?colorOnPrimary"
-        android:src="@drawable/ic_baseline_refresh_24"
-        app:fabCustomSize="30dp"
-        app:tint="?colorPrimaryVariant"
+        style="@style/Theme.CovidInfo.RefreshButton"
         tools:ignore="ContentDescription" />
 
     <TextView
