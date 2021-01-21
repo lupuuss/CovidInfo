@@ -58,12 +58,6 @@ class RegionalPlotPresenter(
         }
 
         view?.setRegions(mapping)
-
-        val i = regions.indexOf(currentRegion)
-
-        if (i < 0) return
-
-        view?.setCurrentRegion(i);
     }
 
     private fun handleRegions2(regions: List<Region>) {
@@ -76,16 +70,9 @@ class RegionalPlotPresenter(
         view?.setSubRegions(mapping)
 
         val i = subRegions.indexOf(currentSubRegion)
-
-        if (i < 0) return
-
-        view?.setCurrentSubRegion(i);
     }
 
     override fun pickRegion(position: Int) {
-        if (regions.indexOf(currentRegion) == position) {
-            return
-        }
 
         currentRegion = regions[position]
         currentVisibleRegion = currentRegion
@@ -93,9 +80,6 @@ class RegionalPlotPresenter(
     }
 
     override fun pickSubRegion(position: Int) {
-        if (subRegions.indexOf(currentSubRegion) == position) {
-            return
-        }
 
         currentSubRegion = subRegions[position]
         currentVisibleRegion = currentSubRegion

@@ -47,7 +47,6 @@
         android:text="@string/summary"
         android:ellipsize="end"
         android:maxLines="3"
-        android:textAlignment="center"
         android:scrollHorizontally="false"
         android:textAllCaps="true"
         android:textSize="18sp"

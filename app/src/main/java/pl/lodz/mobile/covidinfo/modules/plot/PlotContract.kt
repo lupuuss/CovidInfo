@@ -16,9 +16,7 @@ interface PlotContract {
 
         fun setData(title: String, data: List<Int>)
 
-        fun setCurrentSubRegion(position: Int)
-
-        fun setCurrentRegion(position: Int)
+        fun setTitle(title: String)
     }
 
     interface Presenter : BasePresenterActions<View> {

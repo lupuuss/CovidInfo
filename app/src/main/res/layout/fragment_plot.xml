@@ -15,7 +15,36 @@
         app:flow_horizontalAlign="start"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:constraint_referenced_ids="refreshButton, region"/>
+        app:constraint_referenced_ids="refreshButton, regionName"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/pickRegionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_menu_open_24"
+        android:backgroundTint="?colorOnPrimary"
+        android:contentDescription="@string/refresh"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabCustomSize="30dp"
+        app:tint="?colorPrimaryVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/regionName"
+        app:layout_constraintBottom_toBottomOf="@id/regionName"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/pickSubRegionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_menu_open_24"
+        android:backgroundTint="?colorOnPrimary"
+        android:contentDescription="@string/refresh"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabCustomSize="30dp"
+        app:tint="?colorPrimaryVariant"
+        app:layout_constraintTop_toBottomOf="@id/pickRegionButton"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/refreshButton"
@@ -26,28 +55,17 @@
         app:fabCustomSize="30dp"
         app:tint="?colorPrimaryVariant"
         tools:ignore="ContentDescription" />
-    <Spinner
-        android:id="@+id/region"
+    <TextView
+        android:id="@+id/regionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:foregroundTint="?colorOnPrimary"
-        android:dropDownWidth="match_parent"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:paddingStart="10dp"
-        tools:listitem="@layout/spinner_item"/>
-
-    <Spinner
-        android:id="@+id/subregion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:foregroundTint="?colorOnPrimary"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textColor="?colorOnPrimary"
         android:dropDownWidth="match_parent"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/flow"
-        app:layout_constraintStart_toStartOf="@id/region"
-        tools:listitem="@layout/spinner_item"/>
+        tools:text="Poland"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -75,7 +93,7 @@
         android:id="@+id/plot"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/subregion"
+        app:layout_constraintTop_toBottomOf="@id/pickSubRegionButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/propertyButtonsFlow"/>

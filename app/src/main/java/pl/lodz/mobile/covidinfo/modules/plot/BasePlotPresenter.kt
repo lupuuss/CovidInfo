@@ -75,13 +75,7 @@ abstract class BasePlotPresenter(
 
         view?.setProperties(propertiesDto)
 
-        if (currentRegion != null && currentVisibleRegion == currentRegion) {
-            view?.setCurrentRegion(regions.indexOf(currentRegion!!))
-        }
-
-        if (currentSubRegion != null && currentVisibleRegion == currentSubRegion) {
-            view?.setCurrentSubRegion(subRegions.indexOf(currentSubRegion!!))
-        }
+        view?.setTitle(resourcesManager.resolveRegion(currentVisibleRegion!!))
 
         lastDaily = daily
         setDataToView(daily)

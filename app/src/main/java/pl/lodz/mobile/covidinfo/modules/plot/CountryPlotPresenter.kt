@@ -60,10 +60,6 @@ class CountryPlotPresenter(
 
     override fun pickRegion(position: Int) {
 
-        if (regions.indexOf(currentRegion) == position) {
-            return
-        }
-
         currentRegion = regions[position]
         currentVisibleRegion = currentRegion
         refresh()

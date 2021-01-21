@@ -26,6 +26,7 @@ import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseFragment
 import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
+import pl.lodz.mobile.covidinfo.modules.FilteredDialog
 import pl.lodz.mobile.covidinfo.utility.OnlyUserSelectionListener
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
 import java.lang.IllegalStateException
@@ -33,6 +34,9 @@ import kotlin.math.roundToInt
 
 
 class PlotFragment : BaseFragment(), PlotContract.View {
+
+    private lateinit var regions: List<String>
+    private lateinit var subRegions: List<String>
 
     private var allowTargetSwitch: Boolean = false
     private var customHeightDp: Int? = null
@@ -119,22 +123,12 @@ class PlotFragment : BaseFragment(), PlotContract.View {
 
         configPlot()
 
-        region.isEnabled = allowTargetSwitch
-        subregion.isEnabled = allowTargetSwitch
+        pickRegionButton.isInvisible = true
+        pickSubRegionButton.isVisible = false
 
-        val listenerRegion = OnlyUserSelectionListener {
-            presenter.pickRegion(it)
-        }
+        pickRegionButton.setOnClickListener(::onPickRegionClick)
 
-        region.setOnTouchListener(listenerRegion)
-        region.onItemSelectedListener = listenerRegion
-
-        val listenerSubRegion = OnlyUserSelectionListener {
-            presenter.pickSubRegion(it)
-        }
-
-        subregion.setOnTouchListener(listenerSubRegion)
-        subregion.onItemSelectedListener = listenerSubRegion
+        pickSubRegionButton.setOnClickListener(::onPickSubRegionClick)
 
         deathsButton.setOnClickListener { onClickProperty(it.id) }
         casesButton.setOnClickListener { onClickProperty(it.id) }
@@ -144,6 +138,24 @@ class PlotFragment : BaseFragment(), PlotContract.View {
 
         presenter.init(this)
 
+    }
+
+    private fun onPickRegionClick(view: View?) {
+        FilteredDialog.Builder(requireContext())
+                .setValues(regions)
+                .setOnItemSelect { position, _->
+
+                    presenter.pickRegion(position)
+                }.show()
+    }
+
+    private fun onPickSubRegionClick(view: View?) {
+        FilteredDialog.Builder(requireContext())
+                .setValues(subRegions)
+                .setOnItemSelect { position, _->
+
+                    presenter.pickSubRegion(position)
+                }.show()
     }
 
     private fun configPlot() {
@@ -224,26 +236,24 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         plot.invalidate()
     }
 
+    override fun setTitle(title: String) {
+        regionName.text = title
+    }
+
     override fun setRegions(regions: List<String>) {
 
-        region.isVisible = regions.isNotEmpty()
-        region.adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.spinner_item,
-            regions
-        )
+        if (!allowTargetSwitch) return
+
+        this.regions = regions
+        this.pickRegionButton.isInvisible = regions.isEmpty()
     }
 
     override fun setSubRegions(subRegions: List<String>) {
 
         if (!allowTargetSwitch) return
 
-        subregion.isVisible = subRegions.isNotEmpty()
-        subregion.adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.spinner_item,
-            subRegions
-        )
+        this.subRegions = subRegions
+        this.pickSubRegionButton.isVisible = subRegions.isNotEmpty()
     }
 
     override fun setProperties(properties: List<CovidPropertyDto>) {
@@ -262,14 +272,6 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         propertyButtonsFlow.isVisible = properties.isNotEmpty()
 
         this.properties = properties
-    }
-
-    override fun setCurrentRegion(position: Int) {
-        region.setSelection(position)
-    }
-
-    override fun setCurrentSubRegion(position: Int) {
-        subregion.setSelection(position)
     }
 
     companion object {
