@@ -11,6 +11,8 @@ interface LocalCovidRepository {
 
     fun getRegionsLevel2(): Single<List<Region>>
 
+    fun getRegionsLevel2(parent: Region): Single<List<Region>>
+
     fun getDailyForRegion(region: Region): Single<List<CovidDaily>>
 
     fun getSummaryForRegion(region: Region): Single<CovidData>

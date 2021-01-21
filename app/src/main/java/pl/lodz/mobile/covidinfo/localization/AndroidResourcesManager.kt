@@ -3,6 +3,7 @@ package pl.lodz.mobile.covidinfo.localization
 import android.content.Context
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidProperty
+import pl.lodz.mobile.covidinfo.model.covid.data.Region
 
 class AndroidResourcesManager(private val context: Context) : ResourcesManager {
 
@@ -23,5 +24,9 @@ class AndroidResourcesManager(private val context: Context) : ResourcesManager {
 
     override fun resolveCountryNameBySlug(slug: String): String {
         return slug
+    }
+
+    override fun resolveRegion(region: Region): String {
+        return region.name
     }
 }

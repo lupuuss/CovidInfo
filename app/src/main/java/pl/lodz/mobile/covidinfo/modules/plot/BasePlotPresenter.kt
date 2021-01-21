@@ -8,7 +8,6 @@ import pl.lodz.mobile.covidinfo.model.covid.data.CovidDaily
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidProperty
 import pl.lodz.mobile.covidinfo.model.covid.data.Region
 import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
-import timber.log.Timber
 
 abstract class BasePlotPresenter(
     protected val daysLimit: Int,
@@ -35,6 +34,8 @@ abstract class BasePlotPresenter(
     protected var currentRegion: Region? = null
 
     protected var currentSubRegion: Region? = null
+
+    protected var currentVisibleRegion: Region? = null
 
     private var currentProperty: CovidProperty = properties.first()
 
@@ -74,11 +75,11 @@ abstract class BasePlotPresenter(
 
         view?.setProperties(propertiesDto)
 
-        if (currentRegion != null) {
+        if (currentRegion != null && currentVisibleRegion == currentRegion) {
             view?.setCurrentRegion(regions.indexOf(currentRegion!!))
         }
 
-        if (currentSubRegion != null) {
+        if (currentSubRegion != null && currentVisibleRegion == currentSubRegion) {
             view?.setCurrentSubRegion(subRegions.indexOf(currentSubRegion!!))
         }
 

@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:foregroundTint="?colorOnPrimary"
         android:dropDownWidth="match_parent"
-        tools:listitem="@layout/ranking_property_spinner_item"/>
+        tools:listitem="@layout/spinner_item"/>
 
     <TextView
         android:id="@+id/errorMessage"

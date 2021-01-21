@@ -122,7 +122,7 @@ class RankingFragment : BaseFragment(), RankingContract.View {
 
         propertyChoose.adapter = ArrayAdapter(
                 requireContext(),
-                R.layout.ranking_property_spinner_item,
+                R.layout.spinner_item,
                 properties.map { it.localizedName }
         )
     }

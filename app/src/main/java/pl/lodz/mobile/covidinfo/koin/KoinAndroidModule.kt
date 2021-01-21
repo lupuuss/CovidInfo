@@ -2,6 +2,7 @@ package pl.lodz.mobile.covidinfo.koin
 
 import org.koin.dsl.module
 import pl.lodz.mobile.covidinfo.model.covid.repositories.SupportedLocals
+import pl.lodz.mobile.covidinfo.model.covid.repositories.local.PolandCovidRepository
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import pl.lodz.mobile.covidinfo.modules.main.MainActivity
 import pl.lodz.mobile.covidinfo.modules.main.MainContract
@@ -9,6 +10,7 @@ import pl.lodz.mobile.covidinfo.modules.main.MainPresenter
 import pl.lodz.mobile.covidinfo.modules.plot.CountryPlotPresenter
 import pl.lodz.mobile.covidinfo.modules.plot.PlotContract
 import pl.lodz.mobile.covidinfo.modules.plot.PlotFragment
+import pl.lodz.mobile.covidinfo.modules.plot.RegionalPlotPresenter
 import pl.lodz.mobile.covidinfo.modules.ranking.RankingContract
 import pl.lodz.mobile.covidinfo.modules.ranking.RankingFragment
 import pl.lodz.mobile.covidinfo.modules.ranking.GlobalRankingPresenter
@@ -87,17 +89,30 @@ object KoinAndroidModule {
         scope<PlotFragment> {
             scoped<PlotContract.Presenter> { (limit: Int, target: CovidTarget) ->
 
-                if (target is CovidTarget.Country) {
-                    CountryPlotPresenter(
-                        limit,
-                        get(),
-                        KoinBaseModule.getFrontScheduler(this),
-                        KoinBaseModule.getBackScheduler(this),
-                        get(),
-                        target
-                    )
-                } else {
-                    null!!
+                when (target) {
+                    is CovidTarget.Country -> {
+                        CountryPlotPresenter(
+                            limit,
+                            get(),
+                            KoinBaseModule.getFrontScheduler(this),
+                            KoinBaseModule.getBackScheduler(this),
+                            get(),
+                            target
+                        )
+                    }
+                    is CovidTarget.RegionLevel1 -> {
+                        RegionalPlotPresenter(
+                            limit,
+                            get(),
+                            KoinBaseModule.getFrontScheduler(this),
+                            KoinBaseModule.getBackScheduler(this),
+                            KoinRepositoryModule.getLocalCovidRepository(this, SupportedLocals.PL),
+                            target
+                        )
+                    }
+                    else -> {
+                        null!!
+                    }
                 }
             }
         }

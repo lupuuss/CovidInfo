@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -25,12 +28,13 @@ import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import pl.lodz.mobile.covidinfo.utility.OnlyUserSelectionListener
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
-import timber.log.Timber
 import java.lang.IllegalStateException
 import kotlin.math.roundToInt
 
 
 class PlotFragment : BaseFragment(), PlotContract.View {
+
+    private var customHeightDp: Int? = null
 
     private val supportedProperties = arrayOf(
         CovidPropertyDto.Name.TotalDeaths,
@@ -60,7 +64,7 @@ class PlotFragment : BaseFragment(), PlotContract.View {
     override var isContentVisible: Boolean = false
         set(value) {
             field = value
-            plot.isVisible = value
+            plot.isInvisible = !value
         }
 
     override var isContentLoadingError: Boolean = false
@@ -74,7 +78,20 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_plot, container, false)
+        val view = inflater.inflate(R.layout.fragment_plot, container, false)
+
+        if (arguments?.containsKey(customHeightDpBundle) == true) {
+            customHeightDp = arguments!!.getInt(customHeightDpBundle)
+        }
+
+        customHeightDp?.let {
+
+            view.findViewById<LineChart>(R.id.plot)
+                .layoutParams
+                .height = dpToPixels(requireContext(), it.toFloat())
+        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -211,7 +228,7 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         region.isVisible = regions.isNotEmpty()
         region.adapter = ArrayAdapter(
             requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
+            R.layout.spinner_item,
             regions
         )
     }
@@ -220,7 +237,7 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         subregion.isVisible = subRegions.isNotEmpty()
         subregion.adapter = ArrayAdapter(
             requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
+            R.layout.spinner_item,
             subRegions
         )
     }
@@ -257,11 +274,13 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         private const val countryBundle = "CountryBundle"
         private const val level1Bundle = "Level1Bundle"
         private const val allowTargetSwitchBundle = "AllowTargetSwitchBundle"
+        private const val customHeightDpBundle = "CustomHeightDpBundle"
 
         fun newInstance(
             limit: Int,
             defaultTarget: CovidTarget,
-            allowTargetSwitch: Boolean
+            allowTargetSwitch: Boolean,
+            customHeightDp: Int? = null
         ): PlotFragment {
 
             val args = Bundle().apply {
@@ -274,6 +293,10 @@ class PlotFragment : BaseFragment(), PlotContract.View {
                 if (defaultTarget is CovidTarget.RegionLevel1) {
                     putString(countryBundle, defaultTarget.country.id)
                     putString(level1Bundle, defaultTarget.id)
+                }
+
+                customHeightDp?.let {
+                    putInt(customHeightDpBundle, it)
                 }
             }
 

@@ -11,6 +11,7 @@ import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objec
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objects.ProvincesDailyDetails
 import pl.lodz.mobile.covidinfo.utility.CachedSingle
 import pl.lodz.mobile.covidinfo.utility.date.DateUtils.parseAsIsoDate
+import pl.lodz.mobile.covidinfo.utility.date.DateUtils.parseDate
 import java.lang.IllegalArgumentException
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -53,12 +54,26 @@ class PolandCovidRepository(
         return districtsDailyCached
             .observable
             .map { districts ->
-                districts.map {
-                    Region("${it.provinceName}:${it.name}",
-                        it.districtName, Region.Level.AdministrationLevel2)
-                }
+                districts.map { it.toRegion() }
             }
     }
+
+    override fun getRegionsLevel2(parent: Region): Single<List<Region>> {
+
+        return districtsDailyCached
+            .observable
+            .map { districts ->
+                districts
+                    .filter { it.provinceName == parent.id }
+                    .map { it.toRegion() }
+            }
+    }
+
+    fun DistrictsData.toRegion(): Region = Region(
+        "${provinceName}:${name}",
+        districtName,
+        Region.Level.AdministrationLevel2
+    )
 
     override fun getDailyForRegion(region: Region): Single<List<CovidDaily>> {
 
@@ -97,7 +112,7 @@ class PolandCovidRepository(
                 val (deathsProv, casesProv) = combined.first
                 val recoveredProv = combined.second
 
-                val date = deathsProv.date.parseAsIsoDate(locale) ?: Date()
+                val date = deathsProv.date.parseDate(locale, "DD.MM.yyyy") ?: Date()
 
                 val deaths = deathsProv.getByName(region.id)
                 val newDeaths = deaths - prevDeaths

@@ -10,7 +10,7 @@ import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 
 class WorldFragmentsAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = 4
 
     override fun createFragment(position: Int): Fragment = when (position) {
         0 -> SummaryFragment.newInstance(
@@ -23,8 +23,13 @@ class WorldFragmentsAdapter(activity: FragmentActivity) : FragmentStateAdapter(a
         )
         2 -> PlotFragment.newInstance(
             limit = 30,
-            allowTargetSwitch = false,
-            defaultTarget = CovidTarget.Country("germany")
+            defaultTarget = CovidTarget.Country("germany"),
+            allowTargetSwitch = false
+        )
+        3 -> PlotFragment.newInstance(
+            30,
+            CovidTarget.Country("spain"),
+            allowTargetSwitch = true
         )
         else -> throw ArrayIndexOutOfBoundsException(position)
     }

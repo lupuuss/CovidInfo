@@ -35,6 +35,7 @@ class CountryPlotPresenter(
                 val region = regions?.find { it.id == id }!!
 
                 currentRegion = region
+                currentVisibleRegion = region
 
                 repository.getDailyForCountry(region)
             }.map {
@@ -64,6 +65,7 @@ class CountryPlotPresenter(
         }
 
         currentRegion = regions[position]
+        currentVisibleRegion = currentRegion
         refresh()
     }
 
