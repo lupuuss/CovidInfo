@@ -13,24 +13,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="25sp"
+        android:textSize="27sp"
         android:textAllCaps="true"
         android:textStyle="bold"
-        android:padding="10dp"
+        android:padding="15dp"
         tools:text="@string/world"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="250dp" />
+        android:layout_height="270dp" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabsIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:backgroundTint="?colorPrimary"
+        android:backgroundTint="@android:color/transparent"
+        android:layout_margin="8dp"
         app:tabBackground="@drawable/dot_tab_selector"
         app:tabGravity="center"
+        app:tabIndicatorGravity="center"
         app:tabIndicatorHeight="0dp" />
 </LinearLayout>

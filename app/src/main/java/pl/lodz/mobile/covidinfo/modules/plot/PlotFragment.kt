@@ -6,8 +6,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.view.isInvisible
@@ -27,7 +25,6 @@ import pl.lodz.mobile.covidinfo.base.BaseFragment
 import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import pl.lodz.mobile.covidinfo.modules.FilteredDialog
-import pl.lodz.mobile.covidinfo.utility.OnlyUserSelectionListener
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
 import java.lang.IllegalStateException
 import kotlin.math.roundToInt
@@ -48,13 +45,9 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         CovidPropertyDto.Name.TotalActive
     )
 
-    private val lineDataSetSettings: LineDataSet.() -> Unit = {
-        lineWidth = dpToPixels(requireContext(), 0.8f).toFloat()
-    }
+    private lateinit var lineDataSetSettings: LineDataSet.() -> Unit
 
-    private val lineDataSettings: LineData.() -> Unit = {
-        setDrawValues(false)
-    }
+    private lateinit var lineDataSettings: LineData.() -> Unit
 
     private var properties: List<CovidPropertyDto> = emptyList()
 
@@ -96,6 +89,19 @@ class PlotFragment : BaseFragment(), PlotContract.View {
                 .height = dpToPixels(requireContext(), it.toFloat())
         }
 
+        val colorContrast = getAttrColor(requireContext(), R.attr.colorContrast)
+
+        lineDataSetSettings =  {
+            lineWidth = dpToPixels(requireContext(), 0.8f).toFloat()
+            color = colorContrast
+            setCircleColor(colorContrast)
+            setDrawCircleHole(false)
+        }
+
+        lineDataSettings = {
+            setDrawValues(false)
+        }
+
         return view
     }
 
@@ -130,10 +136,10 @@ class PlotFragment : BaseFragment(), PlotContract.View {
 
         pickSubRegionButton.setOnClickListener(::onPickSubRegionClick)
 
-        deathsButton.setOnClickListener { onClickProperty(it.id) }
-        casesButton.setOnClickListener { onClickProperty(it.id) }
-        recoveredButton.setOnClickListener { onClickProperty(it.id) }
-        activeButton.setOnClickListener { onClickProperty(it.id) }
+        listOf(deathsButton, casesButton, recoveredButton, activeButton).forEach { button ->
+            button.setOnClickListener { onClickProperty(it.id) }
+        }
+
         refreshButton.setOnClickListener { presenter.refresh() }
 
         presenter.init(this)
@@ -175,7 +181,7 @@ class PlotFragment : BaseFragment(), PlotContract.View {
 
         plot.xAxis.position = XAxis.XAxisPosition.BOTTOM
         plot.xAxis.isGranularityEnabled = true
-        plot.legend.textColor = colorOnPrimary
+        plot.legend.isEnabled = false
 
         plot.xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
@@ -230,6 +236,8 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         ).apply(lineDataSetSettings)
 
         val line = LineData(set).apply(lineDataSettings)
+
+        plotTitle.text = title
 
         plot.data = line
 

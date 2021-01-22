@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    tools:context=".modules.world.WorldActivity">
+    tools:context=".modules.world.WorldActivity"
+    android:background="?colorBackground">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
             android:showDividers="middle"
             android:divider="@drawable/empty_vertical_divider_10dp"
             android:orientation="vertical"
+            android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

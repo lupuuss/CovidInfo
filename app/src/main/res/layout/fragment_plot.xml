@@ -8,7 +8,7 @@
     android:padding="10dp">
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow"
+        android:id="@+id/titleFlow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:flow_horizontalStyle="packed"
@@ -16,24 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:constraint_referenced_ids="refreshButton, regionName"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/pickRegionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Theme.CovidInfo.PickActionButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/regionName"
-        app:layout_constraintBottom_toBottomOf="@id/regionName"
-        tools:ignore="ContentDescription" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/pickSubRegionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Theme.CovidInfo.PickActionButton"
-        app:layout_constraintTop_toBottomOf="@id/pickRegionButton"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/refreshButton"
@@ -49,6 +31,36 @@
         android:dropDownWidth="match_parent"
         style="@style/Theme.CovidInfo.RefreshableTitle"
         tools:text="Poland"/>
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/pickFlow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/titleFlow"
+        app:constraint_referenced_ids="pickRegionButton, pickSubRegionButton"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/pickRegionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Theme.CovidInfo.PickActionButton"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/pickSubRegionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Theme.CovidInfo.PickSubActionButton" />
+
+    <TextView
+        android:id="@+id/plotTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        app:layout_constraintTop_toBottomOf="@id/regionName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -75,7 +87,7 @@
         android:id="@+id/plot"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/pickSubRegionButton"
+        app:layout_constraintTop_toBottomOf="@id/plotTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/propertyButtonsFlow"/>

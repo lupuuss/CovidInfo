@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    tools:context=".modules.twitter.TwitterActivity">
+    tools:context=".modules.twitter.TwitterActivity"
+    android:background="?colorBackground">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,6 +14,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:visibility="invisible"
+            android:padding="10dp"
             tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
