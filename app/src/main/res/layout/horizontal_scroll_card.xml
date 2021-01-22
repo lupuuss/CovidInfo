@@ -6,14 +6,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/rounded_background_primary"
-    android:padding="10dp">
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="15dp"
-        style="@style/Theme.CovidInfo.RefreshableTitle"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:padding="10dp"
         tools:text="@string/world"/>
 
     <androidx.viewpager2.widget.ViewPager2
