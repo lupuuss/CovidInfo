@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".modules.main.MainActivity"
-    android:background="?colorBackground">
+    android:background="?colorBackground"
+    android:animateLayoutChanges="true">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/mainScrollView"
