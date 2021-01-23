@@ -28,6 +28,6 @@ class AndroidResourcesManager(private val context: Context) : ResourcesManager {
     }
 
     override fun resolveTarget(target: CovidTarget): String {
-        return target.toString()
+        return target.name
     }
 }

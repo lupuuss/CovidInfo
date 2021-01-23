@@ -1,13 +1,14 @@
 package pl.lodz.mobile.covidinfo.modules
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.utility.getColorForAttr
 import java.util.*

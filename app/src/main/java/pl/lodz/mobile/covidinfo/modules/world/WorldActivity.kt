@@ -34,7 +34,7 @@ class WorldActivity : BaseActivity() {
 
         val plotFragmentGermany = PlotFragment.newInstance(
             30,
-            CovidTarget.Country("germany"),
+            CovidTarget.Country.Germany,
             allowTargetSwitch = true,
             customHeightDp = 200
         )
@@ -42,7 +42,7 @@ class WorldActivity : BaseActivity() {
 
         val plotFragmentUk = PlotFragment.newInstance(
             30,
-            CovidTarget.Country("spain"),
+            CovidTarget.Country.Spain,
             allowTargetSwitch = true,
             customHeightDp = 200
         )

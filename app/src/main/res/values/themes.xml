@@ -28,18 +28,19 @@
     </style>
 
 
-    <style name="Theme.CovidInfo.Dialog" parent="Theme.MaterialComponents.Dialog.Alert">
+    <style name="Theme.CovidInfo.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="android:windowBackground">@drawable/rounded_background_primary_variant</item>
-        <item name="android:buttonBarNegativeButtonStyle">@style/Theme.CovidInfo.Dialog.NegativeButton</item>
-        <item name="android:buttonBarPositiveButtonStyle">@style/Theme.CovidInfo.Dialog.PositiveButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Theme.CovidInfo.Dialog.NegativeButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Theme.CovidInfo.Dialog.PositiveButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Theme.CovidInfo.Dialog.NegativeButton</item>
     </style>
 
     <style name="Theme.CovidInfo.Dialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="colorAccent">?colorOnPrimary</item>
+        <item name="android:textColor">?colorOnPrimary</item>
     </style>
 
     <style name="Theme.CovidInfo.Dialog.PositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="colorAccent">?colorOnPrimary</item>
+        <item name="android:textColor">?colorOnPrimary</item>
     </style>
 
     <style name="Theme.CovidInfo.RefreshableTitle" parent="Theme.CovidInfo">

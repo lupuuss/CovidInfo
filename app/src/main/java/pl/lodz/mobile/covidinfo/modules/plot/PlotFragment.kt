@@ -108,17 +108,22 @@ class PlotFragment : BaseFragment(), PlotContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val limit = arguments!!.getInt(limitBundle)
-        val countryId = arguments?.getString(countryBundle)
-        val level1Id = arguments?.getString(level1Bundle)
+        val country = arguments?.getString(countryBundle)
+        val level1 = arguments?.getString(level1Bundle)
 
         allowTargetSwitch = arguments?.getBoolean(allowTargetSwitchBundle) ?: false
 
         val target = when {
-            countryId != null && level1Id != null -> {
-                CovidTarget.RegionLevel1(level1Id, CovidTarget.Country(countryId))
+            country != null && level1 != null -> {
+
+                val (countryId, countryName) = country.split(":")
+                val (level1Id, level1Name) = level1.split(":")
+
+                CovidTarget.RegionLevel1(level1Id, CovidTarget.Country(countryId, countryName), level1Name)
             }
-            countryId != null -> {
-                CovidTarget.Country(countryId)
+            country != null -> {
+                val (countryId, countryName) = country.split(":")
+                CovidTarget.Country(countryId, countryName)
             }
             else -> {
                 throw IllegalStateException("Not supported target for PlotFragment!")
@@ -301,12 +306,12 @@ class PlotFragment : BaseFragment(), PlotContract.View {
                 putInt(limitBundle, limit)
                 putBoolean(allowTargetSwitchBundle, allowTargetSwitch)
                 if (defaultTarget is CovidTarget.Country) {
-                    putString(countryBundle, defaultTarget.id)
+                    putString(countryBundle, defaultTarget.id + ":" + defaultTarget.name)
                 }
 
                 if (defaultTarget is CovidTarget.RegionLevel1) {
-                    putString(countryBundle, defaultTarget.country.id)
-                    putString(level1Bundle, defaultTarget.id)
+                    putString(countryBundle, defaultTarget.country.id + ":" + defaultTarget.country.name)
+                    putString(level1Bundle, defaultTarget.id + ":" + defaultTarget.name)
                 }
 
                 customHeightDp?.let {

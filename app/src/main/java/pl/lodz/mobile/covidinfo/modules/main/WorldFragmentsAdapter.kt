@@ -23,13 +23,13 @@ class WorldFragmentsAdapter(activity: FragmentActivity) : FragmentStateAdapter(a
         )
         2 -> PlotFragment.newInstance(
             limit = 30,
-            defaultTarget = CovidTarget.Country("germany"),
+            defaultTarget = CovidTarget.Country.Germany,
             allowTargetSwitch = false
         )
         3 -> PlotFragment.newInstance(
             30,
-            CovidTarget.Country("spain"),
-            allowTargetSwitch = true
+            CovidTarget.Country.Spain,
+            allowTargetSwitch = false
         )
         else -> throw ArrayIndexOutOfBoundsException(position)
     }

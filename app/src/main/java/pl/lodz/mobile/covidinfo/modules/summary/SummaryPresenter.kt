@@ -70,7 +70,7 @@ class SummaryPresenter(
                         covidRepository.getGlobalSummary()
                     }
                     is CovidTarget.Country -> {
-                        val region = countries.find { it.id == target.id } ?: throw IllegalStateException("Region not found!")
+                        val region = countries.find { it.id == target.id } ?: throw IllegalStateException("Region with id ${target.id} not found!")
 
                         this.currentRegion = region
                         covidRepository.getCountrySummary(region)
@@ -86,7 +86,7 @@ class SummaryPresenter(
     }
 
     private fun handleCountries(countries: List<Region>) {
-        possibleTargets.addAll(countries.map { CovidTarget.Country(it.id) })
+        possibleTargets.addAll(countries.map { CovidTarget.Country(it.id, it.name) })
         view?.isPickTargetAvailable = allowPickingTarget
 
         if (allowPickingTarget) {

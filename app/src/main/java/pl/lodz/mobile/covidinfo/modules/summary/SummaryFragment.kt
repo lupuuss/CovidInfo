@@ -1,6 +1,5 @@
 package pl.lodz.mobile.covidinfo.modules.summary
 
-import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -10,11 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_summary.*
 import org.koin.android.scope.currentScope
 import org.koin.core.parameter.parametersOf
@@ -22,9 +18,7 @@ import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseFragment
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import pl.lodz.mobile.covidinfo.modules.FilteredDialog
-import pl.lodz.mobile.covidinfo.modules.FilteredStringAdapter
 import pl.lodz.mobile.covidinfo.utility.getColorForAttr
-import java.util.*
 
 class SummaryFragment : BaseFragment(), SummaryContract.View {
 
@@ -67,8 +61,15 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
         super.onCreate(savedInstanceState)
 
         arguments?.let { bundle ->
-            bundle.getString(countryNameBundle)?.let {
-                target = CovidTarget.Country(it)
+
+
+            bundle.getString(targetBundle)?.let {
+
+                val (id, name) = it.split(":")
+
+                if (id != "global") {
+                    target = CovidTarget.Country(id, name)
+                }
             }
 
             allowPickingTarget = bundle.getBoolean(allowPickingTargetBundle)
@@ -169,7 +170,7 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
 
     companion object {
 
-        private const val countryNameBundle = "CountryNameBundle"
+        private const val targetBundle = "CountryNameBundle"
         private const val allowPickingTargetBundle = "AllowPickingTargetBundle"
 
         fun newInstance(
@@ -179,9 +180,7 @@ class SummaryFragment : BaseFragment(), SummaryContract.View {
 
             val bundle = Bundle()
 
-            if (target is CovidTarget.Country) {
-                bundle.putString(countryNameBundle, target.id)
-            }
+            bundle.putString(targetBundle, target.id + ":" + target.name)
 
             bundle.putBoolean(allowPickingTargetBundle, allowPickingTarget)
 

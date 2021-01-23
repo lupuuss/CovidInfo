@@ -85,7 +85,8 @@ class RankingFragment : BaseFragment(), RankingContract.View {
         var target: CovidTarget = CovidTarget.Global
 
         arguments?.getString(targetBundle)?.let {
-            target = CovidTarget.Country(it)
+            val (id, name) = it.split(":")
+            target = CovidTarget.Country(id, name)
         }
 
         presenter = currentScope.get(parameters = { parametersOf(limit, target) })
@@ -164,9 +165,8 @@ class RankingFragment : BaseFragment(), RankingContract.View {
                 args.putInt(customHeightDpBundle, it)
             }
 
-            if (target is CovidTarget.Country) {
-                args.putString(targetBundle, target.id)
-            }
+            args.putString(targetBundle, target.id + ":" + target.name)
+
 
 
             return RankingFragment().apply {

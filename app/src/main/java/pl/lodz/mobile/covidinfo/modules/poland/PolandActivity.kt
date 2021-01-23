@@ -21,19 +21,19 @@ class PolandActivity : BaseActivity() {
 
         val summaryFragment = SummaryFragment.newInstance(
             allowPickingTarget = true,
-            target = CovidTarget.Country("poland")
+            target = CovidTarget.Country.Poland
         )
 
         val rankingFragment = RankingFragment.newInstance(
             limit = 0,
             allowSwitchProperty = true,
             customHeightDp = 300,
-            CovidTarget.Country("poland")
+            CovidTarget.Country.Poland
         )
 
         val plotFragment = PlotFragment.newInstance(
             30,
-            CovidTarget.RegionLevel1("Mazowieckie", CovidTarget.Country("poland")),
+            CovidTarget.RegionLevel1.Mazowieckie,
             allowTargetSwitch = true,
             customHeightDp = 200,
         )
