@@ -13,17 +13,19 @@ class PolandFragmentsAdapter(activity: FragmentActivity) : FragmentStateAdapter(
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment = when (position) {
-        0 -> SummaryFragment.newInstance(false, CovidTarget.Country.Poland)
+
+        0 -> PlotFragment.newInstance(
+                limit = 30,
+                defaultTarget = CovidTarget.RegionLevel1.Mazowieckie,
+                allowTargetSwitch = false
+        )
         1 -> RankingFragment.newInstance(
                 limit = 0,
                 allowSwitchProperty = false,
                 target = CovidTarget.Country.Poland
         )
-        2 -> PlotFragment.newInstance(
-            limit = 30,
-            defaultTarget = CovidTarget.RegionLevel1.Mazowieckie,
-            allowTargetSwitch = false
-        )
+        2 -> SummaryFragment.newInstance(false, CovidTarget.Country.Poland)
+
         else -> throw ArrayIndexOutOfBoundsException(position)
     }
 

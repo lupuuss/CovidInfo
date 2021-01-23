@@ -19,29 +19,29 @@ class PolandActivity : BaseActivity() {
 
     private fun addFragments() {
 
+        val plotFragment = PlotFragment.newInstance(
+                30,
+                CovidTarget.RegionLevel1.Mazowieckie,
+                allowTargetSwitch = true,
+                customHeightDp = 200,
+        )
+
+        val rankingFragment = RankingFragment.newInstance(
+                limit = 0,
+                allowSwitchProperty = true,
+                customHeightDp = 300,
+                CovidTarget.Country.Poland
+        )
+
         val summaryFragment = SummaryFragment.newInstance(
             allowPickingTarget = true,
             target = CovidTarget.Country.Poland
         )
 
-        val rankingFragment = RankingFragment.newInstance(
-            limit = 0,
-            allowSwitchProperty = true,
-            customHeightDp = 300,
-            CovidTarget.Country.Poland
-        )
-
-        val plotFragment = PlotFragment.newInstance(
-            30,
-            CovidTarget.RegionLevel1.Mazowieckie,
-            allowTargetSwitch = true,
-            customHeightDp = 200,
-        )
-
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentsContainer, summaryFragment)
-            .add(R.id.fragmentsContainer, rankingFragment)
-            .add(R.id.fragmentsContainer, plotFragment)
-            .commit()
+                .add(R.id.fragmentsContainer, plotFragment)
+                .add(R.id.fragmentsContainer, summaryFragment)
+                .add(R.id.fragmentsContainer, rankingFragment)
+                .commit()
     }
 }
