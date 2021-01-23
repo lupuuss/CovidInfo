@@ -10,7 +10,6 @@ import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objec
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objects.DistrictsData
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.objects.ProvincesDailyDetails
 import pl.lodz.mobile.covidinfo.utility.CachedSingle
-import pl.lodz.mobile.covidinfo.utility.date.DateUtils.parseAsIsoDate
 import pl.lodz.mobile.covidinfo.utility.date.DateUtils.parseDate
 import java.lang.IllegalArgumentException
 import java.util.*
@@ -69,7 +68,7 @@ class PolandCovidRepository(
             }
     }
 
-    fun DistrictsData.toRegion(): Region = Region(
+    private fun DistrictsData.toRegion(): Region = Region(
         "${provinceName}:${name}",
         districtName,
         Region.Level.AdministrationLevel2
