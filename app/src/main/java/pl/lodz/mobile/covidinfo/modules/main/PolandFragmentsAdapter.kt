@@ -10,21 +10,26 @@ import pl.lodz.mobile.covidinfo.modules.summary.SummaryFragment
 
 class PolandFragmentsAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = 4
 
     override fun createFragment(position: Int): Fragment = when (position) {
 
         0 -> PlotFragment.newInstance(
                 limit = 30,
-                defaultTarget = CovidTarget.RegionLevel1.Mazowieckie,
-                allowTargetSwitch = false
+                defaultTarget = CovidTarget.Country.Poland,
+                allowTargetSwitch = true
         )
-        1 -> RankingFragment.newInstance(
+        1 -> SummaryFragment.newInstance(false, CovidTarget.Country.Poland)
+        2 -> RankingFragment.newInstance(
                 limit = 0,
                 allowSwitchProperty = false,
                 target = CovidTarget.Country.Poland
         )
-        2 -> SummaryFragment.newInstance(false, CovidTarget.Country.Poland)
+        3 -> PlotFragment.newInstance(
+                limit = 30,
+                defaultTarget = CovidTarget.RegionLevel1.Mazowieckie,
+                allowTargetSwitch = false
+        )
 
         else -> throw ArrayIndexOutOfBoundsException(position)
     }
