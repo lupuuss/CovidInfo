@@ -1,12 +1,17 @@
 package pl.lodz.mobile.covidinfo.modules.main
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -15,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.scope.currentScope
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
+import pl.lodz.mobile.covidinfo.modules.area.YourAreaActivity
 import pl.lodz.mobile.covidinfo.modules.poland.PolandActivity
 import pl.lodz.mobile.covidinfo.modules.twitter.TweetsPreviewFragment
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
@@ -22,6 +28,9 @@ import pl.lodz.mobile.covidinfo.modules.world.WorldActivity
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
 
 class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.OnFragmentClick {
+
+
+    private val locationPermissionRequestCode: Int = 1337
 
     private val presenter: MainContract.Presenter by currentScope.inject()
 
@@ -131,8 +140,44 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
         TODO("Not yet implemented")
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode != locationPermissionRequestCode) return
+
+        if (grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
+            onLocationPermissionGranted()
+            return
+        }
+
+        onLocationPermissionDenied()
+    }
+
+    private fun onLocationPermissionDenied() {
+        showQuickDialog(getString(R.string.no_location_permission))
+    }
+
+    private fun onLocationPermissionGranted() {
+        startActivity(Intent(this, YourAreaActivity::class.java))
+    }
+
     override fun navigateToCovidInYourArea() {
-        TODO("Not yet implemented")
+
+        val result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if (result != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                locationPermissionRequestCode
+            )
+
+            return
+        }
+
+        onLocationPermissionGranted()
     }
 
     override fun navigateToTwitter() {

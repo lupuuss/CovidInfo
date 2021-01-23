@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".CovidInfoApp"
@@ -13,9 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidInfo">
+        <activity android:name=".modules.area.YourAreaActivity"
+            android:label="@string/your_area"/>
         <activity
             android:name=".modules.poland.PolandActivity"
-            android:label="@string/poland"/>
+            android:label="@string/poland" />
         <activity
             android:name=".modules.world.WorldActivity"
             android:label="@string/world" />

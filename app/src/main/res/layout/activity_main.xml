@@ -24,7 +24,14 @@
             android:orientation="vertical"
             android:divider="@drawable/empty_vertical_divider_10dp"
             android:showDividers="middle"
-            android:padding="10dp"/>
+            android:padding="10dp">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/your_area"
+                android:onClick="onClickCovidInYourArea"
+                android:background="@drawable/rounded_background_primary_variant"/>
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

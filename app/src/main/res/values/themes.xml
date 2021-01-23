@@ -17,6 +17,20 @@
         <item name="colorContrast">#00BCD4</item>
         <item name="actionBarStyle">@style/Theme.CovidInfo.ActionBar</item>
 
+        <item name="snackbarStyle">@style/Theme.CovidInfo.SnackBar</item>
+        <item name="snackbarButtonStyle">@style/Theme.CovidInfo.SnackBar.Button</item>
+        <item name="snackbarTextViewStyle">@style/Theme.CovidInfo.SnackBar.TextView</item>
+
+    </style>
+
+    <style name="Theme.CovidInfo.SnackBar" parent="Widget.MaterialComponents.Snackbar"/>
+
+    <style name="Theme.CovidInfo.SnackBar.Button" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textColor">?colorOnPrimary</item>
+    </style>
+
+    <style name="Theme.CovidInfo.SnackBar.TextView" parent="Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textColor">?colorOnPrimary</item>
     </style>
 
     <style name="Theme.CovidInfo.ActionBar" parent="Widget.MaterialComponents.ActionBar.Solid">
