@@ -61,6 +61,6 @@ sealed class CovidTarget : Comparable<CovidTarget> {
     }
 
     open class RegionLevel1(id: String, val country: Country, name: String) : IdTarget(id, name) {
-        object Mazowieckie : RegionLevel1("mazowieckie", Country.Poland, "Mazowieckie")
+        object Mazowieckie : RegionLevel1("Mazowieckie", Country.Poland, "Mazowieckie")
     }
 }

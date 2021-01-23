@@ -7,9 +7,15 @@ interface YourAreaContract {
 
     interface View : DynamicContentView {
 
+        fun setCases(total: String?, new: String?, isPositive: Boolean)
+        fun setDeaths(total: String?, new: String?, isPositive: Boolean)
+        fun setActive(total: String?, new: String?, isPositive: Boolean)
+        fun setRecovered(total: String?, new: String?, isPositive: Boolean)
+        fun setAddress(address: String)
+        fun setRegion(region: String)
     }
 
     interface Presenter : BasePresenterActions<View> {
-
+        fun refresh()
     }
 }

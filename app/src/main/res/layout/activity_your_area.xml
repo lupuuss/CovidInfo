@@ -6,4 +6,121 @@
     android:layout_height="match_parent"
     tools:context=".modules.area.YourAreaActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="?colorPrimaryVariant"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?colorPrimaryVariant"
+        android:text="@string/content_loading_failed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/addressFlow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background_primary_variant"
+        android:padding="20dp"
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:constraint_referenced_ids="locationIcon, address"/>
+
+    <ImageView
+        android:id="@+id/locationIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="10dp"
+        android:src="@drawable/ic_baseline_location_on_24"
+        android:contentDescription="@string/location" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Politechnika Łódzka - Kampus, Aleja Politechniki, Stare Polesie, Górna, Łódź-Górna, Łódź, województwo łódzkie, 93-578, Polska"/>
+
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/regionFlow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_background_primary_variant"
+        app:constraint_referenced_ids="regionIcon, regionName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressFlow"/>
+
+    <ImageView
+        android:id="@+id/regionIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="10dp"
+        android:src="@drawable/ic_baseline_map_24"/>
+
+    <TextView
+        android:id="@+id/regionName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        tools:text="Powiat m.Łódź" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/dataFlow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="20dp"
+        android:background="@drawable/rounded_background_primary_variant"
+        app:layout_constraintTop_toBottomOf="@id/regionFlow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:flow_wrapMode="chain"
+        app:flow_verticalGap="10dp"
+        app:constraint_referenced_ids="totalCases,totalActive,totalDeaths,totalRecovered"/>
+
+    <TextView
+        android:id="@+id/totalCases"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Theme.CovidInfo.SummaryStat" />
+
+    <TextView
+        android:id="@+id/totalDeaths"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Theme.CovidInfo.SummaryStat" />
+
+    <TextView
+        android:id="@+id/totalRecovered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Theme.CovidInfo.SummaryStat" />
+
+    <TextView
+        android:id="@+id/totalActive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Theme.CovidInfo.SummaryStat" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

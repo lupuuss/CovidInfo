@@ -69,7 +69,7 @@ class PolandCovidRepository(
     }
 
     private fun DistrictsData.toRegion(): Region = Region(
-        "${provinceName}:${name}",
+        "${provinceName}:${districtName}",
         districtName,
         Region.Level.AdministrationLevel2
     )
@@ -167,7 +167,7 @@ class PolandCovidRepository(
         list: List<DistrictsData>,
         provinceName: String,
         districtName: String
-    ): DistrictsData? = list.find { it.provinceName == provinceName && it.name == districtName }
+    ): DistrictsData? = list.find { it.provinceName == provinceName && it.districtName == districtName }
 
     private fun DistrictsDailyData.toCovidDaily(locale: Locale): CovidDaily {
         return CovidDaily(

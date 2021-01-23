@@ -1,9 +1,18 @@
 package pl.lodz.mobile.covidinfo.koin
 
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import pl.lodz.mobile.covidinfo.location.AndroidLocationProvider
+import pl.lodz.mobile.covidinfo.location.LocationCovidRepository
+import pl.lodz.mobile.covidinfo.location.LocationCovidRepositoryImpl
+import pl.lodz.mobile.covidinfo.location.LocationProvider
+import pl.lodz.mobile.covidinfo.model.covid.repositories.LocalCovidRepository
 import pl.lodz.mobile.covidinfo.model.covid.repositories.SupportedLocals
 import pl.lodz.mobile.covidinfo.model.covid.repositories.local.PolandCovidRepository
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
+import pl.lodz.mobile.covidinfo.modules.area.YourAreaActivity
+import pl.lodz.mobile.covidinfo.modules.area.YourAreaContract
+import pl.lodz.mobile.covidinfo.modules.area.YourAreaPresenter
 import pl.lodz.mobile.covidinfo.modules.main.MainActivity
 import pl.lodz.mobile.covidinfo.modules.main.MainContract
 import pl.lodz.mobile.covidinfo.modules.main.MainPresenter
@@ -115,6 +124,27 @@ object KoinAndroidModule {
                         null!!
                     }
                 }
+            }
+        }
+        scope<YourAreaActivity>() {
+
+            scoped<LocationCovidRepository> {
+                LocationCovidRepositoryImpl(
+                        get(),
+                        mapOf("pl" to get(named(SupportedLocals.PL))),
+                        get(),
+                        get(),
+                        get()
+                )
+            }
+
+            scoped<YourAreaContract.Presenter> {
+                YourAreaPresenter(
+                        get(),
+                        KoinBaseModule.getFrontScheduler(this),
+                        KoinBaseModule.getFrontScheduler(this),
+                        get()
+                )
             }
         }
     }

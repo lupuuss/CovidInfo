@@ -68,7 +68,7 @@ class TwitterActivity : BaseActivity(), TwitterContract.View {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        menuInflater.inflate(R.menu.twitter_menu, menu)
+        menuInflater.inflate(R.menu.refresh_only_menu, menu)
         return true
     }
 

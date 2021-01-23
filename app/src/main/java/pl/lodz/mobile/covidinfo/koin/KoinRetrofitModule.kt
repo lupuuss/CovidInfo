@@ -7,6 +7,7 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import pl.lodz.mobile.covidinfo.R
+import pl.lodz.mobile.covidinfo.location.retrofit.CodezapApi
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.global.CovidApi
 import pl.lodz.mobile.covidinfo.model.covid.repositories.retrofit.local.pl.CovidPlApi
 import pl.lodz.mobile.covidinfo.model.twitter.TwitterApi
@@ -91,6 +92,34 @@ object KoinRetrofitModule {
                 .client(get(named<TwitterApi>()))
                 .build()
                 .create(TwitterApi::class.java)
+        }
+
+        single<OkHttpClient>(named<CodezapApi>()) {
+            OkHttpClient.Builder()
+                    .addInterceptor { chain ->
+                        val oldRequest = chain.request()
+                        val url = oldRequest.url()
+                                .newBuilder()
+                                .build()
+
+                        val newRequest = oldRequest
+                                .newBuilder()
+                                .url(url)
+                                .addHeader("api-key", get<Context>().getString(R.string.codezap_key))
+                                .build()
+
+                        chain.proceed(newRequest)
+                    }.build()
+        }
+
+        single<CodezapApi> {
+            Retrofit.Builder()
+                    .baseUrl(CodezapApi.url)
+                    .addConverterFactory(get(Converter.Factory::class.java))
+                    .addCallAdapterFactory(get(CallAdapter.Factory::class.java))
+                    .client(get(named<CodezapApi>()))
+                    .build()
+                    .create(CodezapApi::class.java)
         }
     }
 }

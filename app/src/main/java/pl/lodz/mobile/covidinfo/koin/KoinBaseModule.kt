@@ -12,6 +12,8 @@ import org.koin.core.scope.Scope
 import org.koin.dsl.module
 import pl.lodz.mobile.covidinfo.localization.AndroidResourcesManager
 import pl.lodz.mobile.covidinfo.localization.ResourcesManager
+import pl.lodz.mobile.covidinfo.location.AndroidLocationProvider
+import pl.lodz.mobile.covidinfo.location.LocationProvider
 import pl.lodz.mobile.covidinfo.utility.date.AndroidDateFormatter
 import pl.lodz.mobile.covidinfo.utility.date.DateFormatter
 import java.util.*
@@ -37,6 +39,10 @@ object KoinBaseModule {
         single<DateFormatter> { AndroidDateFormatter(get(named("timeProvider")), get()) }
 
         single<ResourcesManager> { AndroidResourcesManager(androidContext()) }
+
+        single<LocationProvider> {
+            AndroidLocationProvider()
+        }
     }
 
     fun getFrontScheduler(scope: Scope): Scheduler = scope.get(named("frontScheduler"))
