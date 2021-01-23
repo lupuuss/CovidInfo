@@ -26,7 +26,7 @@
     <string name="poland">Poland</string>
     <string name="days_ago">%s days ago</string>
     <string name="pick">Pick…</string>
-    <string name="no_location_permission">This activity cannot work without localization permission!</string>
+    <string name="no_location_permission">This activity cannot work without location permission!</string>
     <string name="leave">Leave</string>
     <string name="your_area">Covid in your area</string>
     <string name="location">Location</string>
