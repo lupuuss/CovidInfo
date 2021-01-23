@@ -50,6 +50,7 @@ class RankingFragment : BaseFragment(), RankingContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             limit = it.getInt(itemsLimitBundle)
             allowSwitchProperty = it.getBoolean(allowSwitchPropertyBundle)
@@ -68,7 +69,6 @@ class RankingFragment : BaseFragment(), RankingContract.View {
 
         val view = inflater.inflate(R.layout.fragment_ranking, container, false)
 
-
         customHeightDp?.let {
 
             view.findViewById<ListView>(R.id.rankingList)
@@ -81,6 +81,8 @@ class RankingFragment : BaseFragment(), RankingContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        rankingList.layoutTransition.setAnimateParentHierarchy(false)
 
         var target: CovidTarget = CovidTarget.Global
 
