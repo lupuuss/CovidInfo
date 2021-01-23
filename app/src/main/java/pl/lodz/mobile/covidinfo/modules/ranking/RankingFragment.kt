@@ -86,7 +86,10 @@ class RankingFragment : BaseFragment(), RankingContract.View {
 
         arguments?.getString(targetBundle)?.let {
             val (id, name) = it.split(":")
-            target = CovidTarget.Country(id, name)
+
+            if (id != "global") {
+                target = CovidTarget.Country(id, name)
+            }
         }
 
         presenter = currentScope.get(parameters = { parametersOf(limit, target) })
