@@ -8,6 +8,7 @@ import pl.lodz.mobile.covidinfo.localization.ResourcesManager
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidProperty
 import pl.lodz.mobile.covidinfo.model.covid.repositories.CovidRepository
 import java.text.DecimalFormat
+import java.util.concurrent.TimeUnit
 
 class GlobalRankingPresenter(
         private val covidRepository: CovidRepository,
@@ -33,7 +34,8 @@ class GlobalRankingPresenter(
                             .toList()
 
                     Single.just(ranking)
-                }.subscribeOn(backScheduler)
+                }.delay(500, TimeUnit.MILLISECONDS)
+                .subscribeOn(backScheduler)
                 .observeOn(frontScheduler)
                 .subscribe(::handleRankingResponse)
     }

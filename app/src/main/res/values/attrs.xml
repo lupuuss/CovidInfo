@@ -5,4 +5,5 @@
     <attr name="colorOnPrimaryTransparent" format="color|reference"/>
     <attr name="colorContrast" format="color|reference"/>
     <attr name="colorBackground" format="color|reference"/>
+    <attr name="colorPrimaryRipple" format="color|reference"/>
 </resources>

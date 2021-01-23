@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView android:id="@+id/countryNameTextView"
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/countryNameTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?attr/selectableItemBackground"
     android:textSize="22sp"
-    android:padding="10dp"
-    xmlns:tools="http://schemas.android.com/tools" />
+    android:padding="10dp" />

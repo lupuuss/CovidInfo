@@ -4,6 +4,7 @@ import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
 import pl.lodz.mobile.covidinfo.localization.ResourcesManager
 import pl.lodz.mobile.covidinfo.model.covid.repositories.LocalCovidRepository
+import java.util.concurrent.TimeUnit
 
 class LocalRankingPresenter(
         private val covidRepository: LocalCovidRepository,
@@ -36,6 +37,7 @@ class LocalRankingPresenter(
 
                     Single.just(ranking)
                 }.subscribeOn(backScheduler)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .observeOn(frontScheduler)
                 .subscribe(::handleRankingResponse)
     }

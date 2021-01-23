@@ -55,6 +55,8 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
         val card = getCardWithTitle(R.string.world)
         val pager = card.findViewById<ViewPager2>(R.id.pager)
 
+        pager.offscreenPageLimit = 2
+
         pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20f)))
 
         val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
@@ -73,6 +75,8 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
         val pager = card.findViewById<ViewPager2>(R.id.pager)
 
         pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20f)))
+
+        pager.offscreenPageLimit = 2
 
         val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
 
@@ -119,25 +123,6 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
         if (isFinishing) {
             presenter.close()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-            R.id.settings -> presenter.goToSettings()
-        }
-
-        return true
-    }
-
-    override fun navigateToSettings() {
-        TODO("Not yet implemented")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

@@ -6,7 +6,6 @@ import pl.lodz.mobile.covidinfo.base.BaseView
 interface MainContract {
 
     interface View : BaseView {
-        fun navigateToSettings()
         fun navigateToCovidInYourArea()
         fun navigateToTwitter()
         fun navigateToWorld()
@@ -14,7 +13,6 @@ interface MainContract {
     }
 
     interface Presenter : BasePresenterActions<View> {
-        fun goToSettings()
         fun goToCovidInYourArea()
         fun goToTwitter()
         fun goToWorld()
