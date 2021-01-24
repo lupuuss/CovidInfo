@@ -32,6 +32,8 @@ class TwitterPresenter(
     override fun init(view: TwitterContract.View) {
         super.init(view)
 
+        view.isContentVisible = true
+
         loadMoreTweets()
     }
 
@@ -45,7 +47,6 @@ class TwitterPresenter(
 
         view?.isLoading = true
         view?.isContentLoadingError = false
-        view?.isContentVisible = false
 
         moreAvailable = true
         nextToken = null
@@ -97,7 +98,6 @@ class TwitterPresenter(
             error?.printStackTrace()
             view?.isLoading = false
             view?.isContentLoadingError = true
-            view?.isContentVisible = false
             return
         }
 
@@ -116,7 +116,6 @@ class TwitterPresenter(
 
         view?.isLoading = false
         view?.isContentLoadingError = false
-        view?.isContentVisible = true
 
         view?.addTweets(tweets)
     }

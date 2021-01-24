@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.text.toSpanned
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_your_area.*
 import org.koin.android.scope.currentScope
@@ -26,14 +27,14 @@ class YourAreaActivity : BaseActivity(), YourAreaContract.View {
     override var isLoading: Boolean = false
         set(value) {
             field = value
-            progressBar.isVisible = value
+            progressBar.isInvisible = !value
         }
     override var isContentVisible: Boolean = false
         set(value) {
             field = value
-            addressFlow.isVisible = value
-            dataFlow.isVisible = value
-            regionFlow.isVisible = value
+            addressFlow.isInvisible = !value
+            dataFlow.isInvisible = !value
+            regionFlow.isInvisible = !value
         }
     override var isContentLoadingError: Boolean = false
         set(value) {

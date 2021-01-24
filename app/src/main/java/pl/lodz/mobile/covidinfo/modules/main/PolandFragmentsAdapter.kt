@@ -21,7 +21,7 @@ class PolandFragmentsAdapter(
         0 -> PlotFragment.newInstance(
                 limit = 30,
                 defaultTarget = CovidTarget.Country.Poland,
-                allowTargetSwitch = true
+                allowTargetSwitch = false
         )
         1 -> SummaryFragment.newInstance(false, CovidTarget.Country.Poland)
         2 -> RankingFragment.newInstance(

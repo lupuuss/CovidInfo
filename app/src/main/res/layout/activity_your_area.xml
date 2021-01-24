@@ -127,5 +127,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Theme.CovidInfo.SummaryStat" />
+    <ImageView
+        android:id="@+id/distance"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_baseline_6_ft_apart_24"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toBottomOf="@id/dataFlow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cleanHands"/>
+
+    <ImageView
+        android:id="@+id/cleanHands"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_baseline_clean_hands_24"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toBottomOf="@id/dataFlow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/distance"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

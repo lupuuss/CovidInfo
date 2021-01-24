@@ -3,6 +3,7 @@ package pl.lodz.mobile.covidinfo.modules.twitter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +29,7 @@ class TwitterActivity : BaseActivity(), TwitterContract.View {
     override var isContentVisible: Boolean = false
         set(value) {
             field = value
-            recycler.isVisible = value
+            recycler.isInvisible = !value
         }
     override var isContentLoadingError: Boolean = false
         set(value) {
@@ -62,8 +63,9 @@ class TwitterActivity : BaseActivity(), TwitterContract.View {
     }
 
     override fun clearTweets() {
+        val previousSize = this.tweets.size
         this.tweets.clear()
-        recycler.adapter?.notifyDataSetChanged()
+        recycler.adapter?.notifyItemRangeRemoved(0, previousSize)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
