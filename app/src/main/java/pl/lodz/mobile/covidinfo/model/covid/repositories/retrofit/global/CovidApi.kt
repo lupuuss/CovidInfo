@@ -20,6 +20,6 @@ interface CovidApi {
     @GET("summary")
     fun getSummary(): Single<Summary>
 
-    @GET("dayone/country/{slug}")
+    @GET("/total/dayone/country/{slug}")
     fun getDailyByCountry(@Path("slug")countrySlug: String): Single<List<CountryDaily>>
 }
