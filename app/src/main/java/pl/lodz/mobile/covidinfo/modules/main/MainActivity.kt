@@ -27,7 +27,7 @@ import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
 import pl.lodz.mobile.covidinfo.modules.world.WorldActivity
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
 
-class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.OnFragmentClick {
+class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.OnFragmentClick, CardFragment.OnClick{
 
 
     private val locationPermissionRequestCode: Int = 1337
@@ -38,12 +38,11 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        addWorldModule()
-        addPolandModule()
-
         mainScrollView.isNestedScrollingEnabled = false
 
         if (savedInstanceState == null) {
+            addWorldModule()
+            addPolandModule()
             addTwitterModule()
         }
 
@@ -51,70 +50,21 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
     }
 
     private fun addWorldModule() {
-
-        val card = getCardWithTitle(R.string.world)
-        val pager = card.findViewById<ViewPager2>(R.id.pager)
-
-        pager.offscreenPageLimit = 2
-
-        pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20f)))
-
-        val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
-
-        pager.adapter = WorldFragmentsAdapter(this)
-
-        TabLayoutMediator(indicator, pager) { _, _ -> }.attach()
-
-        card.setOnClickListener { onClickWorldCard() }
-
-        mainScrollContainer.addView(card)
+        supportFragmentManager.beginTransaction()
+                .add(mainScrollContainer.id, CardFragment.newInstance(CardFragment.Pager.World))
+                .commit()
     }
 
     private fun addPolandModule() {
-        val card = getCardWithTitle(R.string.poland)
-        val pager = card.findViewById<ViewPager2>(R.id.pager)
-
-        pager.setPageTransformer(MarginPageTransformer(dpToPixels(this, 20f)))
-
-        pager.offscreenPageLimit = 2
-
-        val indicator = card.findViewById<TabLayout>(R.id.tabsIndicator)
-
-        pager.adapter = PolandFragmentsAdapter(this)
-
-        TabLayoutMediator(indicator, pager) { _, _ -> }.attach()
-
-        card.setOnClickListener { onClickPolandCard() }
-
-        mainScrollContainer.addView(card)
-    }
-
-    private fun onClickPolandCard() {
-        presenter.goToPoland()
+        supportFragmentManager.beginTransaction()
+                .add(mainScrollContainer.id, CardFragment.newInstance(CardFragment.Pager.Poland))
+                .commit()
     }
 
     private fun addTwitterModule() {
         supportFragmentManager.beginTransaction()
                 .add(mainScrollContainer.id, TweetsPreviewFragment())
                 .commit()
-    }
-
-    private fun onClickWorldCard() {
-        presenter.goToWorld()
-    }
-
-    private fun getCardWithTitle(@StringRes title: Int): View {
-        val horizontalCard = layoutInflater.inflate(
-            R.layout.horizontal_scroll_card,
-            mainScrollContainer,
-            false
-        )!!
-
-        horizontalCard
-            .findViewById<TextView>(R.id.title)
-            .setText(title)
-
-        return horizontalCard
     }
 
     override fun onDestroy() {
@@ -186,5 +136,12 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
 
     override fun onTweetsPreviewFragmentClick(fragment: TweetsPreviewFragment) {
         presenter.goToTwitter()
+    }
+
+    override fun onClickCardFragment(pager: CardFragment.Pager) {
+        when (pager) {
+            CardFragment.Pager.World -> presenter.goToWorld()
+            CardFragment.Pager.Poland -> presenter.goToPoland()
+        }
     }
 }
