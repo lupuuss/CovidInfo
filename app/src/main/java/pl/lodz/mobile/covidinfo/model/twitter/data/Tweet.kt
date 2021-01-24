@@ -7,5 +7,7 @@ data class Tweet (
 
 		@SerializedName("id") val id: String,
 		@SerializedName("text") val text: String,
-		@SerializedName("created_at") val createAt: String
+		@SerializedName("created_at") val createAt: String,
+
+		@SerializedName("attachments") val attachments : Attachments?,
 )

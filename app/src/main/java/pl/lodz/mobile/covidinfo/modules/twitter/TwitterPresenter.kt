@@ -111,7 +111,8 @@ class TwitterPresenter(
         val link = user?.profileImageUrl ?: ""
 
         val tweets = data.data.map {
-            it.toTweetDto(name, link)
+            val imageLink = extractLink(data, it)
+            it.toTweetDto(name, link, imageLink)
         }
 
         view?.isLoading = false
@@ -120,13 +121,27 @@ class TwitterPresenter(
         view?.addTweets(tweets)
     }
 
-    private fun Tweet.toTweetDto(user: String, imageUrl: String): TweetDto {
+    private fun extractLink(data: TweetsData, it: Tweet): String? {
+
+        if (it.attachments?.mediaKeys?.isEmpty() == true) return null
+
+        val key = it.attachments?.mediaKeys?.first() ?: return null
+
+        val media = data.includes.media.find { it.mediaKey == key } ?: return null
+
+        if (media.type != "photo") return null
+
+        return media.url
+    }
+
+    private fun Tweet.toTweetDto(user: String, imageUrl: String, tweetImageUrl: String?): TweetDto {
 
         return TweetDto(
-            user,
-            imageUrl,
-            this.text,
-            dateFormatter.getRelativeDateStringFromIsoDate(this.createAt)
+                user,
+                imageUrl,
+                this.text,
+                dateFormatter.getRelativeDateStringFromIsoDate(this.createAt),
+                tweetImageUrl
         )
     }
 }

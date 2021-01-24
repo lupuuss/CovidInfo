@@ -4,5 +4,6 @@ data class TweetDto(
         val userName: String,
         val userImageLink: String,
         val text: String,
-        val createdAt: String
+        val createdAt: String,
+        val tweetImageLink: String?,
 )

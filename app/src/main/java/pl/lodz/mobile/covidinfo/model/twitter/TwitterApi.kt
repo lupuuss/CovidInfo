@@ -11,10 +11,10 @@ import retrofit2.http.Query
 interface TwitterApi {
 
 
-    @GET("tweets/search/recent?tweet.fields=id,text,created_at")
+    @GET("tweets/search/recent?tweet.fields=id,text,created_at&expansions=attachments.media_keys&media.fields=url")
     fun getTweetsByQuery(@Query("query") query: String): Single<TweetsData>
 
-    @GET("tweets/search/recent?tweet.fields=id,text,created_at")
+    @GET("tweets/search/recent?tweet.fields=id,text,created_at&expansions=attachments.media_keys&media.fields=url")
     fun getNextTweetsByQuery(@Query("query") query: String, @Query("next_token") nextToken: String): Single<TweetsData>
 
     @GET("users/by/username/{user}?user.fields=profile_image_url")
