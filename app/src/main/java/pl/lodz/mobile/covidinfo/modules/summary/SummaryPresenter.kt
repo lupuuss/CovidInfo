@@ -96,6 +96,10 @@ class SummaryPresenter(
 
     private fun handleSummaryResponse(data: CovidData?, error: Throwable?) {
 
+        val regionString = currentRegion?.let { resourcesManager.resolveRegion(it) } ?: ""
+
+        view?.setSummaryName(regionString)
+
         if (data == null) {
 
             error?.printStackTrace()
@@ -127,9 +131,6 @@ class SummaryPresenter(
             isPositive(data.newActive, false)
         )
 
-        val regionString = currentRegion?.let { resourcesManager.resolveRegion(it) } ?: ""
-
-        view?.setSummaryName(regionString)
         view?.isLoading = false
         view?.isContentLoadingError = false
         view?.isContentVisible = true

@@ -10,13 +10,14 @@
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/titleFlow"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:flow_horizontalStyle="packed"
+        app:constraint_referenced_ids="refreshButton, rankingTitle"
+        app:flow_firstHorizontalStyle="packed"
         app:flow_horizontalAlign="start"
-        app:layout_constraintTop_toTopOf="parent"
+        app:flow_horizontalStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:constraint_referenced_ids="refreshButton, rankingTitle, propertyChoose"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/refreshButton"
@@ -35,11 +36,15 @@
 
     <Spinner
         android:id="@+id/propertyChoose"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:foregroundTint="?colorOnPrimary"
         android:backgroundTint="?colorOnPrimary"
         android:dropDownWidth="match_parent"
+        app:layout_constraintTop_toTopOf="@id/titleFlow"
+        app:layout_constraintStart_toEndOf="@id/titleFlow"
+        app:layout_constraintBottom_toBottomOf="@id/titleFlow"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/spinner_item"/>
 
     <TextView

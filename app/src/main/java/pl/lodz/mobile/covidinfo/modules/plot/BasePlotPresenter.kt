@@ -63,7 +63,11 @@ abstract class BasePlotPresenter(
 
         view?.isLoading = false
 
-        if (daily == null) {
+        currentVisibleRegion?.let {
+            view?.setTitle(resourcesManager.resolveRegion(it))
+        } ?: Timber.d("XDDDDDDDDDDDDDDDDDDD")
+
+        if (daily == null || daily.isEmpty()) {
             view?.isContentVisible = false
             view?.isContentLoadingError = true
 
@@ -76,8 +80,6 @@ abstract class BasePlotPresenter(
         val properties = listAvailableProperties(daily)
 
         view?.setProperties(properties)
-
-        view?.setTitle(resourcesManager.resolveRegion(currentVisibleRegion!!))
 
         lastDaily = daily
         setDataToView(daily)

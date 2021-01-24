@@ -9,28 +9,24 @@
     android:padding="10dp"
     android:animateLayoutChanges="true">
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/titleFlow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:flow_horizontalStyle="packed"
-        app:flow_horizontalAlign="start"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:constraint_referenced_ids="refreshButton, regionName"/>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         style="@style/Theme.CovidInfo.RefreshButton"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/regionName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:dropDownWidth="match_parent"
+        app:layout_constraintTop_toTopOf="@id/refreshButton"
+        app:layout_constraintBottom_toBottomOf="@id/refreshButton"
+        app:layout_constraintStart_toEndOf="@id/refreshButton"
+        app:layout_constraintEnd_toStartOf="@id/pickRegionButton"
         style="@style/Theme.CovidInfo.RefreshableTitle"
         tools:text="Poland"/>
 
@@ -39,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/titleFlow"
+        app:layout_constraintTop_toTopOf="@id/regionName"
         app:constraint_referenced_ids="pickRegionButton, pickSubRegionButton"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

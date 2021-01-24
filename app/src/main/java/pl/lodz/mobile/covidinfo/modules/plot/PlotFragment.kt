@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_plot.*
 import kotlinx.android.synthetic.main.fragment_plot.errorMessage
 import kotlinx.android.synthetic.main.fragment_plot.progressBar
 import kotlinx.android.synthetic.main.fragment_plot.refreshButton
-import kotlinx.android.synthetic.main.fragment_summary.*
 import org.koin.android.scope.currentScope
 import org.koin.core.parameter.parametersOf
 import pl.lodz.mobile.covidinfo.R
@@ -33,7 +32,6 @@ import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import pl.lodz.mobile.covidinfo.modules.FilteredDialog
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
-import timber.log.Timber
 import java.lang.IllegalStateException
 import kotlin.math.roundToInt
 
@@ -317,8 +315,6 @@ class PlotFragment : BaseFragment(), PlotContract.View {
 
     override fun setProperties(properties: List<CovidPropertyDto>) {
 
-        Timber.d(properties.toString())
-
         for (property in supportedProperties) {
 
             val show = properties.find { it.name == property } != null
@@ -338,8 +334,6 @@ class PlotFragment : BaseFragment(), PlotContract.View {
     }
 
     private fun setProperState(button: FloatingActionButton, show: Boolean) {
-
-        Timber.d("show: $show isVisible: ${button.isVisible} isShown: ${button.isShown} isShownOrWillBe: ${button.isOrWillBeShown} ${button.isOrWillBeHidden}")
 
         if (button.isVisible == show) return
 
