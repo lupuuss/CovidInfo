@@ -17,6 +17,8 @@ interface PlotContract {
         fun setData(title: String, data: List<Int>)
 
         fun setTitle(title: String)
+
+        fun setCurrentProperty(property: CovidPropertyDto.Name)
     }
 
     interface Presenter : BasePresenterActions<View> {

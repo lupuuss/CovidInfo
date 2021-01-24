@@ -1,6 +1,7 @@
 package pl.lodz.mobile.covidinfo.modules.plot
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_plot.*
 import org.koin.android.scope.currentScope
 import org.koin.core.parameter.parametersOf
@@ -50,6 +52,9 @@ class PlotFragment : BaseFragment(), PlotContract.View {
     private lateinit var lineDataSettings: LineData.() -> Unit
 
     private var properties: List<CovidPropertyDto> = emptyList()
+
+    private var propertiesStates: MutableMap<CovidPropertyDto.Name, Boolean> =
+        supportedProperties.map { it to false }.toMap().toMutableMap()
 
     private lateinit var presenter: PlotContract.Presenter
 
@@ -212,7 +217,9 @@ class PlotFragment : BaseFragment(), PlotContract.View {
 
     private fun onClickProperty(id: Int) {
         val propertyName = when (id) {
-            R.id.deathsButton -> CovidPropertyDto.Name.TotalDeaths
+            R.id.deathsButton -> {
+                CovidPropertyDto.Name.TotalDeaths
+            }
             R.id.casesButton -> CovidPropertyDto.Name.TotalCases
             R.id.recoveredButton -> CovidPropertyDto.Name.TotalRecovered
             R.id.activeButton -> CovidPropertyDto.Name.TotalActive
@@ -231,6 +238,37 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         val theme = context.theme
         theme.resolveAttribute(colorOnPrimary, typedValue, true)
         return typedValue.data
+    }
+
+    override fun setCurrentProperty(property: CovidPropertyDto.Name) {
+
+        propertiesStates =
+            supportedProperties.map { it to false }.toMap().toMutableMap()
+
+        propertiesStates[property] = true
+
+        invalidateIcons()
+    }
+
+    private fun invalidateIcons() {
+
+        for ((name, state) in propertiesStates) {
+
+            when (name) {
+                CovidPropertyDto.Name.TotalCases -> updateIcon(casesButton, state)
+                CovidPropertyDto.Name.TotalDeaths -> updateIcon(deathsButton, state)
+                CovidPropertyDto.Name.TotalRecovered -> updateIcon(recoveredButton, state)
+                CovidPropertyDto.Name.TotalActive -> updateIcon(activeButton, state)
+            }
+
+        }
+    }
+
+    private fun updateIcon(button: FloatingActionButton, state: Boolean) {
+
+        val color = getAttrColor(requireContext(),  if (state) R.attr.colorOnPrimary else R.attr.colorOnPrimaryTransparent)
+
+        button.backgroundTintList = ColorStateList.valueOf(color)
     }
 
     override fun setData(title: String, data: List<Int>) {

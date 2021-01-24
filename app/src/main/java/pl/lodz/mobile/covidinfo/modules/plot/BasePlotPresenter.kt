@@ -85,6 +85,10 @@ abstract class BasePlotPresenter(
     }
 
     private fun setDataToView(daily: List<CovidDaily>) {
+
+        val currentPropertyName = propertiesDto.find { it.name.name == currentProperty.name }!!.name
+        view?.setCurrentProperty(currentPropertyName)
+
         view?.setData(
             resourcesManager.resolveProperty(currentProperty),
             daily.map { currentProperty.extractFrom(it.covidData) ?: 0 }

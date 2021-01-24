@@ -99,7 +99,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         tools:visibility="visible"
-        app:constraint_referenced_ids="deathsButton, casesButton, recoveredButton, activeButton"
+        app:constraint_referenced_ids="casesButton, activeButton, recoveredButton, deathsButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
