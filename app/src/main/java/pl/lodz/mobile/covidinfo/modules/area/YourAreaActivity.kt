@@ -1,11 +1,14 @@
 package pl.lodz.mobile.covidinfo.modules.area
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.Spanned
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.text.toSpanned
 import androidx.core.view.isVisible
@@ -16,6 +19,7 @@ import pl.lodz.mobile.covidinfo.base.BaseActivity
 import pl.lodz.mobile.covidinfo.location.AndroidLocationProvider
 import pl.lodz.mobile.covidinfo.location.LocationProvider
 import pl.lodz.mobile.covidinfo.utility.getColorForAttr
+
 
 class YourAreaActivity : BaseActivity(), YourAreaContract.View {
 
@@ -123,8 +127,16 @@ class YourAreaActivity : BaseActivity(), YourAreaContract.View {
         this.regionName.text = region
     }
 
+    override fun goToGoogleMaps(lat: Double, lng: Double) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("geo:$lat,$lng")))
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         androidLocationProvider.destroy()
+    }
+
+    fun onClickLocation(view: View) {
+        presenter.navigateToGoogleMaps()
     }
 }

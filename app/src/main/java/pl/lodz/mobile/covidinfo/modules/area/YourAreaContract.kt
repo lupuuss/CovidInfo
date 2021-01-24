@@ -13,9 +13,11 @@ interface YourAreaContract {
         fun setRecovered(total: String?, new: String?, isPositive: Boolean)
         fun setAddress(address: String)
         fun setRegion(region: String)
+        fun goToGoogleMaps(lat: Double, lng: Double)
     }
 
     interface Presenter : BasePresenterActions<View> {
         fun refresh()
+        fun navigateToGoogleMaps()
     }
 }

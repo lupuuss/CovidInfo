@@ -17,10 +17,18 @@ class YourAreaPresenter(
 
     private var disposable: Disposable? = null
 
+    private var currentData: GeoCovidData? = null
+
     override fun init(view: YourAreaContract.View) {
         super.init(view)
 
         refresh()
+    }
+
+    override fun close() {
+        super.close()
+
+        disposable?.dispose()
     }
 
     override fun refresh() {
@@ -34,6 +42,12 @@ class YourAreaPresenter(
                 .subscribeOn(backScheduler)
                 .observeOn(frontScheduler)
                 .subscribe(::handleGeoCovidData)
+    }
+
+    override fun navigateToGoogleMaps() {
+        currentData?.let {
+            view?.goToGoogleMaps(it.latLng.lat, it.latLng.lng)
+        }
     }
 
     private fun handleGeoCovidData(geoCovidData: GeoCovidData?, throwable: Throwable?) {
@@ -51,6 +65,8 @@ class YourAreaPresenter(
         view?.setAddress(geoCovidData.address)
 
         view?.setRegion(resource.resolveRegion(geoCovidData.region))
+
+        currentData = geoCovidData
 
         val data = geoCovidData.covidData
 
@@ -115,11 +131,5 @@ class YourAreaPresenter(
                 formatter.format(total - new)
             }
         }
-    }
-
-    override fun close() {
-        super.close()
-
-        disposable?.dispose()
     }
 }
