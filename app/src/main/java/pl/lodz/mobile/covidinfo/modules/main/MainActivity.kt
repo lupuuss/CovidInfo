@@ -5,19 +5,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
-import androidx.annotation.StringRes
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
-import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.scope.currentScope
+import pl.lodz.mobile.covidinfo.AppTheme
 import pl.lodz.mobile.covidinfo.R
 import pl.lodz.mobile.covidinfo.base.BaseActivity
 import pl.lodz.mobile.covidinfo.modules.area.YourAreaActivity
@@ -25,10 +20,9 @@ import pl.lodz.mobile.covidinfo.modules.poland.PolandActivity
 import pl.lodz.mobile.covidinfo.modules.twitter.TweetsPreviewFragment
 import pl.lodz.mobile.covidinfo.modules.twitter.TwitterActivity
 import pl.lodz.mobile.covidinfo.modules.world.WorldActivity
-import pl.lodz.mobile.covidinfo.utility.dpToPixels
+import timber.log.Timber
 
 class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.OnFragmentClick, CardFragment.OnClick{
-
 
     private val locationPermissionRequestCode: Int = 1337
 
@@ -67,6 +61,41 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
                 .commit()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        menuInflater.inflate(R.menu.main_menu, menu)
+
+        menu?.findItem(R.id.switch_theme_item)?.let {
+
+            it.setActionView(R.layout.theme_switch_layout)
+            val switch = it.actionView?.findViewById<SwitchCompat>(R.id.theme_switch)!!
+            switch.isChecked = AppTheme.get(this) == AppTheme.Name.Dark
+
+            switch.setOnCheckedChangeListener { _, isChecked ->
+                swapTheme(isChecked)
+            }
+        }
+
+
+        return true
+    }
+
+    private fun swapTheme(activated: Boolean) {
+        if (activated) {
+            AppTheme.set(this, AppTheme.Name.Dark)
+        } else {
+            AppTheme.set(this, AppTheme.Name.Light)
+        }
+
+        val intent = intent
+        overridePendingTransition(0, 0)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        finish()
+
+        overridePendingTransition(0, 0)
+        startActivity(intent)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
@@ -75,7 +104,11 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -99,7 +132,10 @@ class MainActivity : BaseActivity(), MainContract.View, TweetsPreviewFragment.On
 
     override fun navigateToCovidInYourArea() {
 
-        val result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val result = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
 
         if (result != PackageManager.PERMISSION_GRANTED) {
 

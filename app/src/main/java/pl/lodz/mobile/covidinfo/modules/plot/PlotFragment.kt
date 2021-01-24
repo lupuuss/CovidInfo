@@ -81,7 +81,9 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_plot, container, false)
+        val view = inflater.inflate(R.layout.fragment_plot, container, false) as ViewGroup
+
+        view.layoutTransition.setAnimateParentHierarchy(false)
 
         if (arguments?.containsKey(customHeightDpBundle) == true) {
             customHeightDp = arguments!!.getInt(customHeightDpBundle)
