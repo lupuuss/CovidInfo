@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.view.isInvisible
@@ -20,6 +21,10 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_plot.*
+import kotlinx.android.synthetic.main.fragment_plot.errorMessage
+import kotlinx.android.synthetic.main.fragment_plot.progressBar
+import kotlinx.android.synthetic.main.fragment_plot.refreshButton
+import kotlinx.android.synthetic.main.fragment_summary.*
 import org.koin.android.scope.currentScope
 import org.koin.core.parameter.parametersOf
 import pl.lodz.mobile.covidinfo.R
@@ -28,6 +33,7 @@ import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
 import pl.lodz.mobile.covidinfo.modules.CovidTarget
 import pl.lodz.mobile.covidinfo.modules.FilteredDialog
 import pl.lodz.mobile.covidinfo.utility.dpToPixels
+import timber.log.Timber
 import java.lang.IllegalStateException
 import kotlin.math.roundToInt
 
@@ -80,7 +86,7 @@ class PlotFragment : BaseFragment(), PlotContract.View {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_plot, container, false) as ViewGroup
 
         view.layoutTransition.setAnimateParentHierarchy(false)
@@ -311,20 +317,38 @@ class PlotFragment : BaseFragment(), PlotContract.View {
 
     override fun setProperties(properties: List<CovidPropertyDto>) {
 
-        for (property in properties) {
+        Timber.d(properties.toString())
 
-            when (property.name) {
-                CovidPropertyDto.Name.TotalCases -> casesButton.isVisible = true
-                CovidPropertyDto.Name.TotalDeaths -> deathsButton.isVisible = true
-                CovidPropertyDto.Name.TotalRecovered -> recoveredButton.isVisible = true
-                CovidPropertyDto.Name.TotalActive -> activeButton.isVisible = true
-                else -> throw IllegalArgumentException("Not supported property! Supported properties: $supportedProperties")
+        for (property in supportedProperties) {
+
+            val show = properties.find { it.name == property } != null
+
+            when (property) {
+                CovidPropertyDto.Name.TotalCases ->  setProperState(casesButton, show)
+                CovidPropertyDto.Name.TotalDeaths -> setProperState(deathsButton, show)
+                CovidPropertyDto.Name.TotalRecovered -> setProperState(recoveredButton, show)
+                CovidPropertyDto.Name.TotalActive -> setProperState(activeButton, show)
             }
         }
 
-        propertyButtonsFlow.isVisible = properties.isNotEmpty()
+        if (propertyButtonsFlow.isVisible != properties.isNotEmpty())
+            propertyButtonsFlow.isVisible = properties.isNotEmpty()
 
         this.properties = properties
+    }
+
+    private fun setProperState(button: FloatingActionButton, show: Boolean) {
+
+        Timber.d("show: $show isVisible: ${button.isVisible} isShown: ${button.isShown} isShownOrWillBe: ${button.isOrWillBeShown} ${button.isOrWillBeHidden}")
+
+        if (button.isVisible == show) return
+
+        if (show) {
+            button.show()
+        } else {
+            button.hide()
+        }
+
     }
 
     companion object {

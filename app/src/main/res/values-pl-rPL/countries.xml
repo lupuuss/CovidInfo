@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="global">Świat</string>
+    <string name="poland">Polska</string>
+    <string name="spain">Hiszpania</string>
+    <string name="germany">Niemcy</string>
+</resources>

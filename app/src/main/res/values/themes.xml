@@ -29,7 +29,7 @@
     <style name="Theme.CovidInfo.Dark" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#393e46</item>
-        <item name="colorPrimaryRipple">#535353</item>
+        <item name="colorPrimaryRipple">#6C6C6C</item>
         <item name="colorPrimaryVariant">#222831</item>
         <item name="colorBackground">#939393</item>
         <item name="colorOnPrimary">#f2f4f7</item>

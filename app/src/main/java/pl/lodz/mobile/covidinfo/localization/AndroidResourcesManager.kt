@@ -24,10 +24,19 @@ class AndroidResourcesManager(private val context: Context) : ResourcesManager {
     }
 
     override fun resolveRegion(region: Region): String {
-        return region.name
+
+        val id = context.resources.getIdentifier(region.id, "string", context.packageName)
+
+        if (id == 0) return region.name
+
+        return context.getString(id)
     }
 
     override fun resolveTarget(target: CovidTarget): String {
-        return target.name
+        val id = context.resources.getIdentifier(target.id, "string", context.packageName)
+
+        if (id == 0) return target.name
+
+        return context.getString(id)
     }
 }

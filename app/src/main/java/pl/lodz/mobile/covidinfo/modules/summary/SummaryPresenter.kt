@@ -127,7 +127,9 @@ class SummaryPresenter(
             isPositive(data.newActive, false)
         )
 
-        view?.setSummaryName(currentRegion?.name ?: "")
+        val regionString = currentRegion?.let { resourcesManager.resolveRegion(it) } ?: ""
+
+        view?.setSummaryName(regionString)
         view?.isLoading = false
         view?.isContentLoadingError = false
         view?.isContentVisible = true

@@ -8,6 +8,7 @@ import pl.lodz.mobile.covidinfo.model.covid.data.CovidDaily
 import pl.lodz.mobile.covidinfo.model.covid.data.CovidProperty
 import pl.lodz.mobile.covidinfo.model.covid.data.Region
 import pl.lodz.mobile.covidinfo.modules.CovidPropertyDto
+import timber.log.Timber
 
 abstract class BasePlotPresenter(
     protected val daysLimit: Int,
@@ -25,7 +26,6 @@ abstract class BasePlotPresenter(
         CovidProperty.TotalActive
     )
 
-    private lateinit var propertiesDto: List<CovidPropertyDto>
 
     protected var regions: List<Region> = emptyList()
 
@@ -44,14 +44,14 @@ abstract class BasePlotPresenter(
     override fun init(view: PlotContract.View) {
         super.init(view)
 
-        propertiesDto = properties.map {
-            CovidPropertyDto(
-                CovidPropertyDto.Name.valueOf(it.name),
-                resourcesManager.resolveProperty(it)
-            )
-        }
-
         refresh()
+    }
+
+    private fun CovidProperty.toDto(): CovidPropertyDto {
+        return CovidPropertyDto(
+                CovidPropertyDto.Name.valueOf(name),
+                resourcesManager.resolveProperty(this)
+        )
     }
 
     override fun close() {
@@ -73,7 +73,9 @@ abstract class BasePlotPresenter(
             return
         }
 
-        view?.setProperties(propertiesDto)
+        val properties = listAvailableProperties(daily)
+
+        view?.setProperties(properties)
 
         view?.setTitle(resourcesManager.resolveRegion(currentVisibleRegion!!))
 
@@ -84,10 +86,22 @@ abstract class BasePlotPresenter(
         view?.isContentLoadingError = false
     }
 
+    private fun listAvailableProperties(daily: List<CovidDaily>): List<CovidPropertyDto> {
+
+        val properties = mutableListOf<CovidProperty>()
+        val data = daily.first().covidData
+
+        if (data.totalActive != null) properties.add(CovidProperty.TotalActive)
+        if (data.totalCases != null) properties.add(CovidProperty.TotalCases)
+        if (data.totalDeaths != null) properties.add(CovidProperty.TotalDeaths)
+        if (data.totalRecovered != null) properties.add(CovidProperty.TotalRecovered)
+
+        return properties.map { it.toDto() }
+    }
+
     private fun setDataToView(daily: List<CovidDaily>) {
 
-        val currentPropertyName = propertiesDto.find { it.name.name == currentProperty.name }!!.name
-        view?.setCurrentProperty(currentPropertyName)
+        view?.setCurrentProperty(currentProperty.toDto().name)
 
         view?.setData(
             resourcesManager.resolveProperty(currentProperty),
