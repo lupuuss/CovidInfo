@@ -25,7 +25,9 @@ class AndroidResourcesManager(private val context: Context) : ResourcesManager {
 
     override fun resolveRegion(region: Region): String {
 
-        val id = context.resources.getIdentifier(region.id, "string", context.packageName)
+        val normId = region.id.replace("-", "_")
+
+        val id = context.resources.getIdentifier(normId, "string", context.packageName)
 
         if (id == 0) return region.name
 
@@ -33,7 +35,10 @@ class AndroidResourcesManager(private val context: Context) : ResourcesManager {
     }
 
     override fun resolveTarget(target: CovidTarget): String {
-        val id = context.resources.getIdentifier(target.id, "string", context.packageName)
+
+        val normId = target.id.replace("-", "_")
+
+        val id = context.resources.getIdentifier(normId, "string", context.packageName)
 
         if (id == 0) return target.name
 
